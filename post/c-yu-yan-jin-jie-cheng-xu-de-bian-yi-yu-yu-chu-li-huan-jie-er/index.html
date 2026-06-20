@@ -1,0 +1,222 @@
+<html>
+  <head>
+    <meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>C语言进阶-程序的编译与预处理环节（二） | Gridea</title>
+<link rel="shortcut icon" href="https://Hurricane-Q7.github.io/favicon.ico?v=1781917751713">
+<link href="https://cdn.jsdelivr.net/npm/remixicon@2.3.0/fonts/remixicon.css" rel="stylesheet">
+<link rel="stylesheet" href="https://Hurricane-Q7.github.io/styles/main.css">
+<link rel="alternate" type="application/atom+xml" title="C语言进阶-程序的编译与预处理环节（二） | Gridea - Atom Feed" href="https://Hurricane-Q7.github.io/atom.xml">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Droid+Serif:400,700">
+
+
+
+    <meta name="description" content="宏的一些基本操作
+宏的多行定义
+宏不单单是可以定义一行语句，可以定义多行语句，具体写法如下
+#define 宏名()    \
+    语句1;       \
+    语句2;       \
+    语句3;
+    //最后一行语句不..." />
+    <meta name="keywords" content="" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.10.0/katex.min.css">
+    <script src="//cdn.jsdelivr.net/gh/highlightjs/cdn-release@11.5.1/build/highlight.min.js"></script>
+  </head>
+  <body>
+    <div class="main">
+      <div class="main-content">
+        <div class="site-header">
+  <a href="https://Hurricane-Q7.github.io">
+  <img class="avatar" src="https://Hurricane-Q7.github.io/images/avatar.png?v=1781917751713" alt="">
+  </a>
+  <h1 class="site-title">
+    Gridea
+  </h1>
+  <p class="site-description">
+    言者所以在意，得意而忘言
+  </p>
+  <div class="menu-container">
+    
+      
+        <a href="/" class="menu">
+          首页
+        </a>
+      
+    
+      
+        <a href="/archives" class="menu">
+          归档
+        </a>
+      
+    
+      
+        <a href="/tags" class="menu">
+          标签
+        </a>
+      
+    
+      
+        <a href="/post/about" class="menu">
+          关于
+        </a>
+      
+    
+  </div>
+  <div class="social-container">
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+  </div>
+</div>
+
+        <div class="post-detail">
+          <article class="post">
+            <h2 class="post-title">
+              C语言进阶-程序的编译与预处理环节（二）
+            </h2>
+            <div class="post-info">
+              <span>
+                2026-06-13
+              </span>
+              <span>
+                2 min read
+              </span>
+              
+            </div>
+            
+            <div class="post-content-wrapper">
+              <div class="post-content" v-pre>
+                <h1 id="宏的一些基本操作">宏的一些基本操作</h1>
+<h2 id="宏的多行定义">宏的多行定义</h2>
+<p>宏不单单是可以定义一行语句，可以定义多行语句，具体写法如下</p>
+<pre><code class="language-c">#define 宏名()    \
+    语句1;       \
+    语句2;       \
+    语句3;
+    //最后一行语句不加反斜线
+    //宏的本质就是文本替换，再使用该宏后实际上就是：
+    语句1；
+    语句2；
+    语句3；
+</code></pre>
+<p>下面是一个更加规范的写法：</p>
+<pre><code class="language-c">//这样写不容易出问题，更规范一些！
+#define HELLO()           \
+do {                      \
+    printf(&quot;Hello\n&quot;);    \
+    printf(&quot;World\n&quot;);    \
+} while(0)
+</code></pre>
+<h1 id="条件编译">条件编译</h1>
+<h1 id="常见写法1">常见写法1</h1>
+<p>这些写的作用是防止该头文件被重复编译。</p>
+<pre><code class="language-c">#ifndef 头文件名
+#define 头文件名
+//头文件的内容
+#endif 
+</code></pre>
+<h1 id="文件包含">文件包含</h1>
+<p>文件包含一共有两种方式：<br>
+<code>#include&lt;stdio.h&gt;</code><br>
+<code>#include&quot;test.h&quot;</code><br>
+一种是尖括号，一种是双引号。<br>
+这两种方式的主要区别是<strong>查找策略不同</strong>：</p>
+<pre><code class="language-c">1. 尖括号的查找策略是从标准路径下去查找，如果找不到就报错。
+eg：VS环境的标准头文件的路径：
+C:\proaram Files (x86)\Microsoft VisualStudio 12.o\VC\include
+2. 双引号包含的头文件查找策略是先在源文件所在目录下查找，如果该头文件未找到，编译器就像查找库函数头文件一样在标准位置查找头文件。
+</code></pre>
+<p><strong>一句话：引用标准库文件的时候用&lt;&gt;，引用自己的本地文件的时候用&quot;&quot;。</strong></p>
+
+              </div>
+              <div class="toc-container">
+                <ul class="markdownIt-TOC">
+<li><a href="#%E5%AE%8F%E7%9A%84%E4%B8%80%E4%BA%9B%E5%9F%BA%E6%9C%AC%E6%93%8D%E4%BD%9C">宏的一些基本操作</a>
+<ul>
+<li><a href="#%E5%AE%8F%E7%9A%84%E5%A4%9A%E8%A1%8C%E5%AE%9A%E4%B9%89">宏的多行定义</a></li>
+</ul>
+</li>
+<li><a href="#%E6%9D%A1%E4%BB%B6%E7%BC%96%E8%AF%91">条件编译</a></li>
+<li><a href="#%E5%B8%B8%E8%A7%81%E5%86%99%E6%B3%951">常见写法1</a></li>
+<li><a href="#%E6%96%87%E4%BB%B6%E5%8C%85%E5%90%AB">文件包含</a></li>
+</ul>
+
+              </div>
+            </div>
+          </article>
+        </div>
+
+        
+          <div class="next-post">
+            <div class="next">下一篇</div>
+            <a href="https://Hurricane-Q7.github.io/post/c-yu-yan-jin-jie-cheng-xu-de-bian-yi-yu-yu-chu-li-huan-jie/">
+              <h3 class="post-title">
+                C语言进阶-程序的编译与预处理环节（一）
+              </h3>
+            </a>
+          </div>
+        
+
+        
+
+        <div class="site-footer">
+  Powered by <a href="https://github.com/getgridea/gridea" target="_blank">Gridea</a>
+  <a class="rss" href="https://Hurricane-Q7.github.io/atom.xml" target="_blank">
+    <i class="ri-rss-line"></i> RSS
+  </a>
+</div>
+
+      </div>
+    </div>
+
+    <script>
+      hljs.initHighlightingOnLoad()
+
+      let mainNavLinks = document.querySelectorAll(".markdownIt-TOC a");
+
+      // This should probably be throttled.
+      // Especially because it triggers during smooth scrolling.
+      // https://lodash.com/docs/4.17.10#throttle
+      // You could do like...
+      // window.addEventListener("scroll", () => {
+      //    _.throttle(doThatStuff, 100);
+      // });
+      // Only not doing it here to keep this Pen dependency-free.
+
+      window.addEventListener("scroll", event => {
+        let fromTop = window.scrollY;
+
+        mainNavLinks.forEach((link, index) => {
+          let section = document.getElementById(decodeURI(link.hash).substring(1));
+          let nextSection = null
+          if (mainNavLinks[index + 1]) {
+            nextSection = document.getElementById(decodeURI(mainNavLinks[index + 1].hash).substring(1));
+          }
+          if (section.offsetTop <= fromTop) {
+            if (nextSection) {
+              if (nextSection.offsetTop > fromTop) {
+                link.classList.add("current");
+              } else {
+                link.classList.remove("current");    
+              }
+            } else {
+              link.classList.add("current");
+            }
+          } else {
+            link.classList.remove("current");
+          }
+        });
+      });
+
+    </script>
+  </body>
+</html>

@@ -1,0 +1,257 @@
+<html>
+  <head>
+    <meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>1.15号-C语言-操作符(初识) | Gridea</title>
+<link rel="shortcut icon" href="https://Hurricane-Q7.github.io/favicon.ico?v=1781917751713">
+<link href="https://cdn.jsdelivr.net/npm/remixicon@2.3.0/fonts/remixicon.css" rel="stylesheet">
+<link rel="stylesheet" href="https://Hurricane-Q7.github.io/styles/main.css">
+<link rel="alternate" type="application/atom+xml" title="1.15号-C语言-操作符(初识) | Gridea - Atom Feed" href="https://Hurricane-Q7.github.io/atom.xml">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Droid+Serif:400,700">
+
+
+
+    <meta name="description" content="操作符
+C语言中有很多操作符
+算术操作符
++ - * /（除法操作符） %（求余数）++ --
+int a = 7/2;//此时a=3,也就是商，当除号两端都是整数时，执行的是整数除法，如果两端只要有一个浮点数或两个浮点数就执行浮点数除法。..." />
+    <meta name="keywords" content="" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.10.0/katex.min.css">
+    <script src="//cdn.jsdelivr.net/gh/highlightjs/cdn-release@11.5.1/build/highlight.min.js"></script>
+  </head>
+  <body>
+    <div class="main">
+      <div class="main-content">
+        <div class="site-header">
+  <a href="https://Hurricane-Q7.github.io">
+  <img class="avatar" src="https://Hurricane-Q7.github.io/images/avatar.png?v=1781917751713" alt="">
+  </a>
+  <h1 class="site-title">
+    Gridea
+  </h1>
+  <p class="site-description">
+    言者所以在意，得意而忘言
+  </p>
+  <div class="menu-container">
+    
+      
+        <a href="/" class="menu">
+          首页
+        </a>
+      
+    
+      
+        <a href="/archives" class="menu">
+          归档
+        </a>
+      
+    
+      
+        <a href="/tags" class="menu">
+          标签
+        </a>
+      
+    
+      
+        <a href="/post/about" class="menu">
+          关于
+        </a>
+      
+    
+  </div>
+  <div class="social-container">
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+  </div>
+</div>
+
+        <div class="post-detail">
+          <article class="post">
+            <h2 class="post-title">
+              1.15号-C语言-操作符(初识)
+            </h2>
+            <div class="post-info">
+              <span>
+                2026-01-15
+              </span>
+              <span>
+                3 min read
+              </span>
+              
+            </div>
+            
+            <div class="post-content-wrapper">
+              <div class="post-content" v-pre>
+                <h1 id="操作符">操作符</h1>
+<p>C语言中有很多操作符</p>
+<pre><code class="language-c">算术操作符
++ - * /（除法操作符） %（求余数）++ --
+int a = 7/2;//此时a=3,也就是商，当除号两端都是整数时，执行的是整数除法，如果两端只要有一个浮点数或两个浮点数就执行浮点数除法。
+ 例如：
+ float a = 7 / 2.0;//
+ printf(&quot;%.2f&quot;,a);//结果为3.50
+ 取模操作符的两个数只能是整数
+ int b = 7%2;//b == 1;
+</code></pre>
+<pre><code class="language-c">***位操作符***
+移位操作符：
+&lt;&lt;左移  右移&gt;&gt;
+位操作符:
+&amp; ^ |
+</code></pre>
+<pre><code class="language-c">赋值运算符
+1. =；a = 3;
+2. +=;a = a+3等价于a+=3;+号在前面，先执行+号，后面的不言而喻了。
+3.-=；
+4.*=；
+5. /=；
+&amp;=;^=;|=;&gt;&gt;= &lt;&lt;=;
+</code></pre>
+<pre><code class="language-c">单目操作符（只有一个操作对象）
+1. !逻辑反操作，真的变假，假的变真
+2. + -
+3. &amp;取地址操作符，单个操作对象为取地址，双个对象为按位与操作符！
+4. sizeof,这是一个单目操作符，并不是一个函数，常用来求操作数的类型长度，单位是Byte
+常见用法:
+求数组元素个数:
+int arr[10];
+int len = sizeof(数组名)/sizeof(数组的一元素);
+printf(&quot;%d\n&quot;,sizeof(arr));//计算的是整个数组的大小，共40BYTE
+其次,
+sizeof(int);//计算类型的长度时，括号不可省略。
+5. ~ 对一个数的二进制按位取反
+6. -- ++
+7.* 间接访问操作符（指针的解引用操作）
+8.（类型）强制转换数据类型
+int a = (int)3.14;//字面浮点数3.14，编译器默认理解位double 类型
+printf(&quot;%d\n&quot;,a);
+</code></pre>
+<pre><code class="language-c">关系操作符
+&gt;  
+&gt;= 
+&lt; 
+v
+&lt;= 
+!= 不相等
+==相等
+优先级：
+&lt; &gt; &lt;= &gt;=这四种相同优先级，按右结合性处理。
+== 与！= 优先级最低且相同。
+优先级: 算术运算符&gt;关系运算符&gt;赋值运算符
+</code></pre>
+<pre><code class="language-c">逻辑操作符
+&amp;&amp; 逻辑与（and）一假即假 全真才真
+|| 逻辑或(or) 一真即真
+</code></pre>
+<pre><code class="language-c">条件表达式（三目表达式）
+(exp1?exp2:exp3)
+exp1为真，则exp2作为整个条件表达式的值
+exp1为假，则exp3作为整个条件表达式的值
+int a=10,b=20;
+int r = (a&gt;b?a:b);//r==20
+return 0;
+</code></pre>
+<pre><code class="language-c">逗号表达式：用逗号隔开的一串表达式；
+语法规则：从左向右依次计算,整个表达式的结果是最后一个表达式的结果
+</code></pre>
+<pre><code class="language-c">下标引用、函数调用、和结构成员
+下标运算符:[]    
+函数调用运算符:() 
+成员运算符：
+. -&gt;
+</code></pre>
+<ul>
+<li>十进制的数字组成:<br>
+0 1 2 3 4 5 6 7 8 9</li>
+<li>八进制的数字组成:<br>
+0 1 2 3 4 5 6 7</li>
+<li>十六进制的数字组成:<br>
+0 1 2 3 4 5 6 7 8 9 a b c d e f</li>
+</ul>
+
+              </div>
+              <div class="toc-container">
+                <ul class="markdownIt-TOC">
+<li><a href="#%E6%93%8D%E4%BD%9C%E7%AC%A6">操作符</a></li>
+</ul>
+
+              </div>
+            </div>
+          </article>
+        </div>
+
+        
+          <div class="next-post">
+            <div class="next">下一篇</div>
+            <a href="https://Hurricane-Q7.github.io/post/114-ri-c-yu-yan-xue-xi-chu-shi/">
+              <h3 class="post-title">
+                1.14日-C语言-选择、循环语句、数组（初识）
+              </h3>
+            </a>
+          </div>
+        
+
+        
+
+        <div class="site-footer">
+  Powered by <a href="https://github.com/getgridea/gridea" target="_blank">Gridea</a>
+  <a class="rss" href="https://Hurricane-Q7.github.io/atom.xml" target="_blank">
+    <i class="ri-rss-line"></i> RSS
+  </a>
+</div>
+
+      </div>
+    </div>
+
+    <script>
+      hljs.initHighlightingOnLoad()
+
+      let mainNavLinks = document.querySelectorAll(".markdownIt-TOC a");
+
+      // This should probably be throttled.
+      // Especially because it triggers during smooth scrolling.
+      // https://lodash.com/docs/4.17.10#throttle
+      // You could do like...
+      // window.addEventListener("scroll", () => {
+      //    _.throttle(doThatStuff, 100);
+      // });
+      // Only not doing it here to keep this Pen dependency-free.
+
+      window.addEventListener("scroll", event => {
+        let fromTop = window.scrollY;
+
+        mainNavLinks.forEach((link, index) => {
+          let section = document.getElementById(decodeURI(link.hash).substring(1));
+          let nextSection = null
+          if (mainNavLinks[index + 1]) {
+            nextSection = document.getElementById(decodeURI(mainNavLinks[index + 1].hash).substring(1));
+          }
+          if (section.offsetTop <= fromTop) {
+            if (nextSection) {
+              if (nextSection.offsetTop > fromTop) {
+                link.classList.add("current");
+              } else {
+                link.classList.remove("current");    
+              }
+            } else {
+              link.classList.add("current");
+            }
+          } else {
+            link.classList.remove("current");
+          }
+        });
+      });
+
+    </script>
+  </body>
+</html>

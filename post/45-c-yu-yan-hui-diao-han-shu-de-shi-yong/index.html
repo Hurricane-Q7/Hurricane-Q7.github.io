@@ -1,0 +1,198 @@
+<html>
+  <head>
+    <meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>4.5-C语言-qsort函数与回调函数 | Gridea</title>
+<link rel="shortcut icon" href="https://Hurricane-Q7.github.io/favicon.ico?v=1781917751713">
+<link href="https://cdn.jsdelivr.net/npm/remixicon@2.3.0/fonts/remixicon.css" rel="stylesheet">
+<link rel="stylesheet" href="https://Hurricane-Q7.github.io/styles/main.css">
+<link rel="alternate" type="application/atom+xml" title="4.5-C语言-qsort函数与回调函数 | Gridea - Atom Feed" href="https://Hurricane-Q7.github.io/atom.xml">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Droid+Serif:400,700">
+
+
+
+    <meta name="description" content="qsort函数
+头文件&lt;stdlib.h&gt;
+qsort函数是一个排序函数（默认是升序的），本质上是快速排序！
+函数模型：
+void qsort( void *base, size_t num, size_t width, int..." />
+    <meta name="keywords" content="C语言学习笔记" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.10.0/katex.min.css">
+    <script src="//cdn.jsdelivr.net/gh/highlightjs/cdn-release@11.5.1/build/highlight.min.js"></script>
+  </head>
+  <body>
+    <div class="main">
+      <div class="main-content">
+        <div class="site-header">
+  <a href="https://Hurricane-Q7.github.io">
+  <img class="avatar" src="https://Hurricane-Q7.github.io/images/avatar.png?v=1781917751713" alt="">
+  </a>
+  <h1 class="site-title">
+    Gridea
+  </h1>
+  <p class="site-description">
+    言者所以在意，得意而忘言
+  </p>
+  <div class="menu-container">
+    
+      
+        <a href="/" class="menu">
+          首页
+        </a>
+      
+    
+      
+        <a href="/archives" class="menu">
+          归档
+        </a>
+      
+    
+      
+        <a href="/tags" class="menu">
+          标签
+        </a>
+      
+    
+      
+        <a href="/post/about" class="menu">
+          关于
+        </a>
+      
+    
+  </div>
+  <div class="social-container">
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+  </div>
+</div>
+
+        <div class="post-detail">
+          <article class="post">
+            <h2 class="post-title">
+              4.5-C语言-qsort函数与回调函数
+            </h2>
+            <div class="post-info">
+              <span>
+                2026-04-05
+              </span>
+              <span>
+                2 min read
+              </span>
+              
+                <a href="https://Hurricane-Q7.github.io/tag/YSaodvhI5R/" class="post-tag">
+                  # C语言学习笔记
+                </a>
+              
+            </div>
+            
+              <img class="post-feature-image" src="https://Hurricane-Q7.github.io/post-images/45-c-yu-yan-hui-diao-han-shu-de-shi-yong.png" alt="">
+            
+            <div class="post-content-wrapper">
+              <div class="post-content" v-pre>
+                <h1 id="qsort函数">qsort函数</h1>
+<h2 id="头文件stdlibh">头文件&lt;stdlib.h&gt;</h2>
+<p>qsort函数是一个排序函数（默认是升序的），本质上是快速排序！<br>
+函数模型：<br>
+<code>void qsort( void *base, size_t num, size_t width, int (*compare )(const void *elem1, const void *elem2 ) );</code><br>
+可见这个函数的返回值是void，并且有4个Parameters，分别是base(要排序的首元素起始地址)，num（要排序的数字个数），width（每个待排序元素的字节大小）<br>
+compare，这是一个函数指针变量，它的类型是int (* )(const void* elem 1,const void * elem 2),指向的是一个返回值是int 、参数是const void * 型的一个函数！<br>
+<strong>qsort</strong>函数可以比较多种类型的数据，但是需要我们自己提前配置好多种数据类型之间的比较函数，然后把这个比较函数的地址给传过去！！！<br>
+<img src="https://Hurricane-Q7.github.io/post-images/1775353573439.png" alt="" loading="lazy"><br>
+<img src="https://Hurricane-Q7.github.io/post-images/1775353944689.png" alt="" loading="lazy"></p>
+<h1 id="回调函数">回调函数</h1>
+<p>回调函数就是一个通过<strong>函数指针</strong>调用的函数。如果你把函数的指针（地址）作为参数传递给另一个<br>
+函数，当这个指针被用来调用其所指向的函数时，我们就说这是回调函数。回调函数不是由该函数<br>
+的实现方直接调用，而是在特定的事件或条件发生时由另外的一方调用的，用于对该事件或条件进<br>
+行响应。<br>
+<strong>用qsort函数来排序数据时，需要一个内嵌比较函数，而qsort通过这个比较函数的指针来间接访问比较函数，这个比较函数就是回调函数！</strong></p>
+
+              </div>
+              <div class="toc-container">
+                <ul class="markdownIt-TOC">
+<li><a href="#qsort%E5%87%BD%E6%95%B0">qsort函数</a>
+<ul>
+<li><a href="#%E5%A4%B4%E6%96%87%E4%BB%B6stdlibh">头文件&lt;stdlib.h&gt;</a></li>
+</ul>
+</li>
+<li><a href="#%E5%9B%9E%E8%B0%83%E5%87%BD%E6%95%B0">回调函数</a></li>
+</ul>
+
+              </div>
+            </div>
+          </article>
+        </div>
+
+        
+          <div class="next-post">
+            <div class="next">下一篇</div>
+            <a href="https://Hurricane-Q7.github.io/post/han-shu-zhi-zhen/">
+              <h3 class="post-title">
+                4.3-C语言-函数指针、函数指针数组、指向函数指针数组的指针
+              </h3>
+            </a>
+          </div>
+        
+
+        
+
+        <div class="site-footer">
+  Powered by <a href="https://github.com/getgridea/gridea" target="_blank">Gridea</a>
+  <a class="rss" href="https://Hurricane-Q7.github.io/atom.xml" target="_blank">
+    <i class="ri-rss-line"></i> RSS
+  </a>
+</div>
+
+      </div>
+    </div>
+
+    <script>
+      hljs.initHighlightingOnLoad()
+
+      let mainNavLinks = document.querySelectorAll(".markdownIt-TOC a");
+
+      // This should probably be throttled.
+      // Especially because it triggers during smooth scrolling.
+      // https://lodash.com/docs/4.17.10#throttle
+      // You could do like...
+      // window.addEventListener("scroll", () => {
+      //    _.throttle(doThatStuff, 100);
+      // });
+      // Only not doing it here to keep this Pen dependency-free.
+
+      window.addEventListener("scroll", event => {
+        let fromTop = window.scrollY;
+
+        mainNavLinks.forEach((link, index) => {
+          let section = document.getElementById(decodeURI(link.hash).substring(1));
+          let nextSection = null
+          if (mainNavLinks[index + 1]) {
+            nextSection = document.getElementById(decodeURI(mainNavLinks[index + 1].hash).substring(1));
+          }
+          if (section.offsetTop <= fromTop) {
+            if (nextSection) {
+              if (nextSection.offsetTop > fromTop) {
+                link.classList.add("current");
+              } else {
+                link.classList.remove("current");    
+              }
+            } else {
+              link.classList.add("current");
+            }
+          } else {
+            link.classList.remove("current");
+          }
+        });
+      });
+
+    </script>
+  </body>
+</html>

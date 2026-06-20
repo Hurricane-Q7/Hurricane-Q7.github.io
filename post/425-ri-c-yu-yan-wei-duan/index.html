@@ -1,0 +1,406 @@
+<html>
+  <head>
+    <meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>4.25日-C语言-位段、枚举、联合 | Gridea</title>
+<link rel="shortcut icon" href="https://Hurricane-Q7.github.io/favicon.ico?v=1781917751713">
+<link href="https://cdn.jsdelivr.net/npm/remixicon@2.3.0/fonts/remixicon.css" rel="stylesheet">
+<link rel="stylesheet" href="https://Hurricane-Q7.github.io/styles/main.css">
+<link rel="alternate" type="application/atom+xml" title="4.25日-C语言-位段、枚举、联合 | Gridea - Atom Feed" href="https://Hurricane-Q7.github.io/atom.xml">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Droid+Serif:400,700">
+
+
+
+    <meta name="description" content="C语言的标识符只能由数字、字母、下划线组成，且第一个字符必须是字母或下划线。
+位段
+C语言的标识符只能由数字、字母、下划线组成，且第一个字母必须是字母或下划线。
+位段（Bit-fields）不是一种独立的数据类型，它是结构体（struct）..." />
+    <meta name="keywords" content="C语言学习笔记" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.10.0/katex.min.css">
+    <script src="//cdn.jsdelivr.net/gh/highlightjs/cdn-release@11.5.1/build/highlight.min.js"></script>
+  </head>
+  <body>
+    <div class="main">
+      <div class="main-content">
+        <div class="site-header">
+  <a href="https://Hurricane-Q7.github.io">
+  <img class="avatar" src="https://Hurricane-Q7.github.io/images/avatar.png?v=1781917751713" alt="">
+  </a>
+  <h1 class="site-title">
+    Gridea
+  </h1>
+  <p class="site-description">
+    言者所以在意，得意而忘言
+  </p>
+  <div class="menu-container">
+    
+      
+        <a href="/" class="menu">
+          首页
+        </a>
+      
+    
+      
+        <a href="/archives" class="menu">
+          归档
+        </a>
+      
+    
+      
+        <a href="/tags" class="menu">
+          标签
+        </a>
+      
+    
+      
+        <a href="/post/about" class="menu">
+          关于
+        </a>
+      
+    
+  </div>
+  <div class="social-container">
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+  </div>
+</div>
+
+        <div class="post-detail">
+          <article class="post">
+            <h2 class="post-title">
+              4.25日-C语言-位段、枚举、联合
+            </h2>
+            <div class="post-info">
+              <span>
+                2026-04-25
+              </span>
+              <span>
+                7 min read
+              </span>
+              
+                <a href="https://Hurricane-Q7.github.io/tag/YSaodvhI5R/" class="post-tag">
+                  # C语言学习笔记
+                </a>
+              
+            </div>
+            
+              <img class="post-feature-image" src="https://Hurricane-Q7.github.io/post-images/425-ri-c-yu-yan-wei-duan.png" alt="">
+            
+            <div class="post-content-wrapper">
+              <div class="post-content" v-pre>
+                <p>C语言的标识符只能由<u><strong>数字、字母、下划线</strong></u>组成，且第一个字符必须是<strong>字母或下划线。</strong></p>
+<h1 id="位段">位段</h1>
+<p>C语言的标识符只能由数字、字母、下划线组成，且第一个字母必须是字母或下划线。<br>
+<strong>位段（Bit-fields）不是一种独立的数据类型，它是结构体（struct）的一种特殊用法。</strong></p>
+<h2 id="member">member</h2>
+<p>1.位段的成员必须是 int、unsigned int 或signed int 。<br>
+2.位段的成员名后边有一个冒号和一个数字。</p>
+<pre><code class="language-c">struct A
+{ 
+    int _a:2;//_a这个变量只被分配2个bit位
+    int _b:5;//同理
+    int _c:10;
+    int _d:30;
+};
+//位段是可以节省内存空间的
+sizeof(struct A);//?
+//看上面4个变量，一共需要47个bit位，一个一个来看，_a用两个就可以了，_b用5个，_c用10个，_c用30个，由于数据的类型还是int，这里还是先分配一个int大小的内存空间（32bits），这一个内存空间
+//一口气可以放下_a,b,c这三个变量，但是缺放不下_d，所以要再开辟一个内存空间来存放_d的30个bit位，所以strut的类型是8byte，但是这30个bit位的存放情况是不清楚的，是一口气存放在第二个空间呢，还是再第一个空间存一部分第二个再一部分呢？不确定
+
+</code></pre>
+<h2 id="内存分配">内存分配</h2>
+<ol>
+<li>位段的成员可以是 int unsigned int signed int 或者是 char （属于整形家族）类型</li>
+<li>位段的空间上是按照需要以4个字节（ int ）或者1个字节（ char ）的方式来开辟的。</li>
+<li>位段涉及很多不确定因素，位段是不跨平台的，注重可移植的程序应该避免使用位段。</li>
+</ol>
+<h2 id="位段的跨平台问题">位段的跨平台问题</h2>
+<ol>
+<li>int 位段被当成有符号数还是无符号数是不确定的。</li>
+<li>位段中最大位的数目不能确定。（16位机器最大16，32位机器最大32，写成27，在16位机<br>
+器会出问题。</li>
+<li>位段中的成员在内存中从左向右分配，还是从右向左分配标准尚未定义。</li>
+<li>当一个结构包含两个位段，第二个位段成员比较大，无法容纳于第一个位段剩余的位时，是<br>
+舍弃剩余的位还是利用，这是不确定的。<br>
+总结：<br>
+跟结构相比，位段可以达到同样的效果，但是可以很好的节省空间，但是有跨平台的问题存在。</li>
+</ol>
+<h1 id="枚举enumeration">枚举（Enumeration）</h1>
+<p>在C语言中，<strong>枚举（Enumeration，简称 enum）</strong> 是一种由用户定义的整型常量(也称为枚举常量)集合。简单来说，它就是给一串整数起了一堆“好记的名字”，让代码的可读性瞬间提升</p>
+<pre><code class="language-c">enum Day
+//enum是枚举类型的关键字，Day是自定义标签
+{
+    Mon,
+    Tues,
+    Wed,
+    Thur,//每个枚举常量之间要用逗号隔开
+    Fri,
+    Sat,
+    Sun
+};//和结构体一样，结尾带上分号
+enum Sex
+{
+    Male;
+    Female;
+    Secret;
+};
+enum Color
+{
+    RED,
+    GREEN,
+    BLUE
+};
+</code></pre>
+<p>花括号里面的东西称为<strong>枚举常量</strong>，也有可能的取值，默认从0开始，一次递增1，也可以在定义的时候赋予初值。</p>
+<pre><code class="language-c">enum Day
+{
+	Mon=1,
+	Tues,//2
+	Wen,//3
+	Tur,//4
+	Fri,//5
+	Sat,//6
+	Sun//7
+};
+int main()
+{
+    enum Day d = Mon;//用枚举常量来给枚举变量赋值，这样更加严谨
+	printf(&quot;%d\n&quot;, Mon);//1
+	printf(&quot;%d\n&quot;, Tues);
+	printf(&quot;%d\n&quot;, Wen);
+	printf(&quot;%d\n&quot;, Tur);
+	printf(&quot;%d\n&quot;, Fri);
+	printf(&quot;%d\n&quot;, Sat);
+	printf(&quot;%d\n&quot;, Sun);//7
+	return 0;
+}
+</code></pre>
+<h2 id="枚举的advantages">枚举的Advantages</h2>
+<p>我们可以使用 #define 定义常量，为什么非要使用枚举？<br>
+枚举的优点：</p>
+<ol>
+<li>增加代码的可读性和可维护性<br>
+<img src="https://Hurricane-Q7.github.io/post-images/1778294497661.png" alt="" loading="lazy"></li>
+<li>和#define定义的标识符比较枚举有类型检查，更加严谨。(C++里面的)</li>
+<li>防止了命名污染（封装）</li>
+<li>便于调试 （define替换的话会替换，而枚举不替换）</li>
+<li>使用方便，一次可以定义多个常量<br>
+这些东西要多写代码才会理解的更加深刻，写的代码多了才会更加认同枚举是很方便的！</li>
+</ol>
+<h1 id="联合体共用体">联合体（共用体）</h1>
+<p>联合体是C语言中一种自定义数据类型，也被叫作为共用体，最大的特点就是联合体内部的成员会公用一块内存空间。</p>
+<pre><code class="language-c">union 联合体名 {
+    类型1 成员1;
+    类型2 成员2;
+    ...
+};
+union un
+{
+	int a;
+	char c;
+};
+</code></pre>
+<h2 id="union的核心特点">union的核心特点</h2>
+<p><strong>核心特点（最重要）</strong></p>
+<ul>
+<li>所有成员共用同一块内存空间</li>
+<li>同一时间只能存放一个成员的值</li>
+<li>联合体大小 = 最大成员的大小</li>
+</ul>
+<pre><code class="language-c">int main()
+{
+	union un
+	{
+		int a;//4个字节
+		char c;
+	};
+	union un u;
+	printf(&quot;%d\n&quot;, sizeof(union un));
+	printf(&quot;%p\n&quot;, &amp;u);
+	printf(&quot;%p\n&quot;, &amp;u.a);
+	printf(&quot;%p\n&quot;, &amp;u.c);//打印发现，内部成员的起始地址都是一样的，说明它们会共同使用一块内存空间
+	return 0;
+}
+</code></pre>
+<p>用联合体来判断大小端存储</p>
+<pre><code class="language-c">int check_sys()
+{
+	//内存地址：低------&gt;高
+	//1的十六进制
+	//0x00 00 00 01
+	//小端存放
+	//0x01 00 00 00
+	union un
+	{
+		int a;
+		char c;
+	}u;
+	u.a = 1;
+	//return *(char*)&amp;u;//可以这样写
+	return u.c;
+}
+int main()
+{
+	int ret = check_sys();
+	if (ret == 1)
+	{
+		printf(&quot;小端存放!&quot;);
+	}
+	else {
+		printf(&quot;大端存放!&quot;);
+	}
+	return 0;
+}
+</code></pre>
+<p><strong>联合体 = 共享内存的多类型变量，同一时间只用一个，省空间。</strong></p>
+<h2 id="union大小的计算">union大小的计算</h2>
+<ul>
+<li>联合的大小至少是最大成员的大小。</li>
+<li>当最大成员大小不是最大对齐数的整数倍的时候，就要对齐到最大对齐数的整数倍。</li>
+</ul>
+<pre><code class="language-c">union Un1
+{
+	char c[5];//对齐数：1
+	int i;//对齐数：4
+};
+
+union Un2
+{
+	short arr[7];//对齐数：2，short类型两个字节
+	int i;
+    //arr[7]一共占14个字节，Int i 和该数组起始地址是一样的，但是对齐数不一样，这里选择最大对齐数是4，14个字节不是4的倍数，所以要对齐到16个字节
+};
+
+int main()
+{
+	printf(&quot;%d\n&quot;, sizeof(union Un1));//8 Byte
+	printf(&quot;%d\n&quot;, sizeof(union Un2));//16 Byte
+	return 0;
+}
+</code></pre>
+<h3 id="相关的练习题">相关的练习题</h3>
+<pre><code class="language-c">union Test {
+    int a;
+    char b[4];
+};
+
+int main() {
+    union Test t;
+    t.a = 0x12345678;
+    //小端存储：78 56 34 12
+    //由于联合体成员共用一块内存空间，共同使用4个字节的大小，而且起始地址是一样的，u.a里面的数据分为4个字节，依次为78 56 34 12 这4个部分，数组b有4个元素刚好放得下这4个字节得内容。
+    printf(&quot;%x\n&quot;, t.b[0]);
+    printf(&quot;%x\n&quot;, t.b[1]);
+    printf(&quot;%x\n&quot;, t.b[2]);
+    printf(&quot;%x\n&quot;, t.b[3]);
+
+    return 0;
+}
+</code></pre>
+
+              </div>
+              <div class="toc-container">
+                <ul class="markdownIt-TOC">
+<li><a href="#%E4%BD%8D%E6%AE%B5">位段</a>
+<ul>
+<li><a href="#member">member</a></li>
+<li><a href="#%E5%86%85%E5%AD%98%E5%88%86%E9%85%8D">内存分配</a></li>
+<li><a href="#%E4%BD%8D%E6%AE%B5%E7%9A%84%E8%B7%A8%E5%B9%B3%E5%8F%B0%E9%97%AE%E9%A2%98">位段的跨平台问题</a></li>
+</ul>
+</li>
+<li><a href="#%E6%9E%9A%E4%B8%BEenumeration">枚举（Enumeration）</a>
+<ul>
+<li><a href="#%E6%9E%9A%E4%B8%BE%E7%9A%84advantages">枚举的Advantages</a></li>
+</ul>
+</li>
+<li><a href="#%E8%81%94%E5%90%88%E4%BD%93%E5%85%B1%E7%94%A8%E4%BD%93">联合体（共用体）</a>
+<ul>
+<li><a href="#union%E7%9A%84%E6%A0%B8%E5%BF%83%E7%89%B9%E7%82%B9">union的核心特点</a></li>
+<li><a href="#union%E5%A4%A7%E5%B0%8F%E7%9A%84%E8%AE%A1%E7%AE%97">union大小的计算</a>
+<ul>
+<li><a href="#%E7%9B%B8%E5%85%B3%E7%9A%84%E7%BB%83%E4%B9%A0%E9%A2%98">相关的练习题</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+              </div>
+            </div>
+          </article>
+        </div>
+
+        
+          <div class="next-post">
+            <div class="next">下一篇</div>
+            <a href="https://Hurricane-Q7.github.io/post/di-ba-zhou-c-yu-yan-lian-xi-ti/">
+              <h3 class="post-title">
+                第八周-C语言练习题
+              </h3>
+            </a>
+          </div>
+        
+
+        
+
+        <div class="site-footer">
+  Powered by <a href="https://github.com/getgridea/gridea" target="_blank">Gridea</a>
+  <a class="rss" href="https://Hurricane-Q7.github.io/atom.xml" target="_blank">
+    <i class="ri-rss-line"></i> RSS
+  </a>
+</div>
+
+      </div>
+    </div>
+
+    <script>
+      hljs.initHighlightingOnLoad()
+
+      let mainNavLinks = document.querySelectorAll(".markdownIt-TOC a");
+
+      // This should probably be throttled.
+      // Especially because it triggers during smooth scrolling.
+      // https://lodash.com/docs/4.17.10#throttle
+      // You could do like...
+      // window.addEventListener("scroll", () => {
+      //    _.throttle(doThatStuff, 100);
+      // });
+      // Only not doing it here to keep this Pen dependency-free.
+
+      window.addEventListener("scroll", event => {
+        let fromTop = window.scrollY;
+
+        mainNavLinks.forEach((link, index) => {
+          let section = document.getElementById(decodeURI(link.hash).substring(1));
+          let nextSection = null
+          if (mainNavLinks[index + 1]) {
+            nextSection = document.getElementById(decodeURI(mainNavLinks[index + 1].hash).substring(1));
+          }
+          if (section.offsetTop <= fromTop) {
+            if (nextSection) {
+              if (nextSection.offsetTop > fromTop) {
+                link.classList.add("current");
+              } else {
+                link.classList.remove("current");    
+              }
+            } else {
+              link.classList.add("current");
+            }
+          } else {
+            link.classList.remove("current");
+          }
+        });
+      });
+
+    </script>
+  </body>
+</html>

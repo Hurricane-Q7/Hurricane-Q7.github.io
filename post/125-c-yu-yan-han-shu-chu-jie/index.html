@@ -1,0 +1,280 @@
+<html>
+  <head>
+    <meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>1.25-C语言-函数（初阶） | Gridea</title>
+<link rel="shortcut icon" href="https://Hurricane-Q7.github.io/favicon.ico?v=1781917751713">
+<link href="https://cdn.jsdelivr.net/npm/remixicon@2.3.0/fonts/remixicon.css" rel="stylesheet">
+<link rel="stylesheet" href="https://Hurricane-Q7.github.io/styles/main.css">
+<link rel="alternate" type="application/atom+xml" title="1.25-C语言-函数（初阶） | Gridea - Atom Feed" href="https://Hurricane-Q7.github.io/atom.xml">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Droid+Serif:400,700">
+
+
+
+    <meta name="description" content="函数
+子程序：是一个大型程序中的某部分代码，由一个或多个语句块组成。负责完成某项特定的任务，而且相较于其他代码，具备相对的独立性！
+一般会有输入参数并有返回值，提供对过程的分装和细节的隐藏。这些代码通常被集成为软件库。
+在一个函数内部复合语..." />
+    <meta name="keywords" content="" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.10.0/katex.min.css">
+    <script src="//cdn.jsdelivr.net/gh/highlightjs/cdn-release@11.5.1/build/highlight.min.js"></script>
+  </head>
+  <body>
+    <div class="main">
+      <div class="main-content">
+        <div class="site-header">
+  <a href="https://Hurricane-Q7.github.io">
+  <img class="avatar" src="https://Hurricane-Q7.github.io/images/avatar.png?v=1781917751713" alt="">
+  </a>
+  <h1 class="site-title">
+    Gridea
+  </h1>
+  <p class="site-description">
+    言者所以在意，得意而忘言
+  </p>
+  <div class="menu-container">
+    
+      
+        <a href="/" class="menu">
+          首页
+        </a>
+      
+    
+      
+        <a href="/archives" class="menu">
+          归档
+        </a>
+      
+    
+      
+        <a href="/tags" class="menu">
+          标签
+        </a>
+      
+    
+      
+        <a href="/post/about" class="menu">
+          关于
+        </a>
+      
+    
+  </div>
+  <div class="social-container">
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+  </div>
+</div>
+
+        <div class="post-detail">
+          <article class="post">
+            <h2 class="post-title">
+              1.25-C语言-函数（初阶）
+            </h2>
+            <div class="post-info">
+              <span>
+                2026-01-25
+              </span>
+              <span>
+                4 min read
+              </span>
+              
+            </div>
+            
+            <div class="post-content-wrapper">
+              <div class="post-content" v-pre>
+                <h1 id="函数">函数</h1>
+<p>子程序：是一个大型程序中的某部分代码，由一个或多个语句块组成。负责完成某项特定的任务，而且相较于其他代码，具备相对的独立性！<br>
+一般会有输入参数并有返回值，提供对过程的分装和细节的隐藏。这些代码通常被集成为软件库。<br>
+在一个函数内部复合语句中定义的变量的作用域只能在{}中有效</p>
+<h2 id="库函数">库函数</h2>
+<p>库函数一定要用#include&lt;对应的头文件.h&gt;<br>
+常见的库函数类型:</p>
+<ol>
+<li>IO函数（input/output）</li>
+<li>字符串操作函数</li>
+<li>内存操作函数</li>
+<li>时间/日期函数</li>
+<li>数学函数</li>
+<li>其他库函数</li>
+</ol>
+<h2 id="自定义函数">自定义函数</h2>
+<p><strong>tips</strong> :积极尝试阅读英文文档，学会利用英文文档来学习C语言的一些函数，建议养成这个良好的习惯。</p>
+<pre><code class="language-c">实现两个数值互相交换：
+void swap(int x, int y)
+{
+    int z = 0;
+    z = x;//借助中间变量来实现交换功能
+    x = y;
+    y = z;
+}
+int main()
+{
+    int a = 0;
+    int b = 0;
+    printf(&quot;交换前:&quot;);
+    scanf(&quot;%d %d&quot;, &amp;a, &amp;b);
+    swap(a, b);
+    printf(&quot;交换后:%d %d &quot;, a, b);//发现并没有实现互相交换的效果
+    return 0;
+}
+错误分析:a 与 b是实参，x ，y,z是形参，在主函数与自定义函数中，参数的传递是单向的，实参-&gt;形参，它们都有独立的，有自己独一的地址，我们在swap函数中实现了形参的交换，但是并不会影响实参。
+当实参传递给形参的时候，形参是实参的一份临时拷贝，对形参的修改不会影响实参!
+</code></pre>
+<pre><code class="language-c">正确做法:
+void swap(int* x, int* y)
+{
+    int z = *x;
+    *x = *y;
+    *y = z;
+}
+int main()
+{
+    int a = 0;
+    int b = 0;
+    printf(&quot;交换前:&quot;);
+    scanf(&quot;%d %d&quot;, &amp;a, &amp;b);
+    swap(&amp;a,&amp;b);
+    printf(&quot;交换后:%d %d &quot;, a, b);
+    return 0;
+}
+</code></pre>
+<h1 id="函数的参数">函数的参数</h1>
+<h2 id="实际参数实参">实际参数（实参）</h2>
+<p>真实传给函数的参数，叫实参。<br>
+实参可以是：常量、变量、表达式、函数等。<br>
+无论实参是何种类型的量，在进行函数调用时，它们都必须有确定的值，以便把这些值传给形参。</p>
+<h2 id="形式参数形参">形式参数（形参）</h2>
+<p>形式参数是指函数名后括号中的变量，以为形式参数中只有在函数调用的过程中才实例化（分配内存单元）<br>
+，所以叫形式参数，形式参数当函数调用完成之后就自动销毁了，形式参数只有在函数内部有效!<br>
+当实参传递给形参的时候，形参是实参的一份临时拷贝!<br>
+对形参的修改不能改变实参！</p>
+<h1 id="函数调用">函数调用</h1>
+<h2 id="传值调用">传值调用</h2>
+<ul>
+<li>函数的形参和实参分别占有不同的内存块，对形参的修改不会影响实参!</li>
+</ul>
+<h2 id="传址调用">传址调用</h2>
+<ul>
+<li>传址调用是把函数外部创建变量的内存地址传给函数参数如的一种调用函数的方式。</li>
+<li>这种传参方式可以上函数和函数外边的变量建立起真正的联系，也就是函数内部可以直接操作函数外部的变量。</li>
+</ul>
+<pre><code class="language-c">传址调用：
+void swap(int * pa,int *pb)//pa 与 pb 是两个指针变量，作为形参来接收a与b的地址。
+{
+    int z =*pa;//z = a;
+    *pa = *pb;// a = b;
+    *pb = z;//b = z;
+    //通过解引用操作，间接访问外部参数!
+}
+int main()
+{
+    int a = 5;
+    int b = 10;
+    swap(&amp;a,&amp;b);//分别取出a与b的地址，传给函数swap
+    return 0;
+}
+</code></pre>
+<figure data-type="image" tabindex="1"><img src="https://Hurricane-Q7.github.io/post-images/1772804593624.png" alt="" loading="lazy"></figure>
+
+              </div>
+              <div class="toc-container">
+                <ul class="markdownIt-TOC">
+<li><a href="#%E5%87%BD%E6%95%B0">函数</a>
+<ul>
+<li><a href="#%E5%BA%93%E5%87%BD%E6%95%B0">库函数</a></li>
+<li><a href="#%E8%87%AA%E5%AE%9A%E4%B9%89%E5%87%BD%E6%95%B0">自定义函数</a></li>
+</ul>
+</li>
+<li><a href="#%E5%87%BD%E6%95%B0%E7%9A%84%E5%8F%82%E6%95%B0">函数的参数</a>
+<ul>
+<li><a href="#%E5%AE%9E%E9%99%85%E5%8F%82%E6%95%B0%E5%AE%9E%E5%8F%82">实际参数（实参）</a></li>
+<li><a href="#%E5%BD%A2%E5%BC%8F%E5%8F%82%E6%95%B0%E5%BD%A2%E5%8F%82">形式参数（形参）</a></li>
+</ul>
+</li>
+<li><a href="#%E5%87%BD%E6%95%B0%E8%B0%83%E7%94%A8">函数调用</a>
+<ul>
+<li><a href="#%E4%BC%A0%E5%80%BC%E8%B0%83%E7%94%A8">传值调用</a></li>
+<li><a href="#%E4%BC%A0%E5%9D%80%E8%B0%83%E7%94%A8">传址调用</a></li>
+</ul>
+</li>
+</ul>
+
+              </div>
+            </div>
+          </article>
+        </div>
+
+        
+          <div class="next-post">
+            <div class="next">下一篇</div>
+            <a href="https://Hurricane-Q7.github.io/post/123-ri-c-yu-yan-fen-zhi-xun-huan-da-dian-ying/">
+              <h3 class="post-title">
+                Simple Number Guessing Game
+              </h3>
+            </a>
+          </div>
+        
+
+        
+
+        <div class="site-footer">
+  Powered by <a href="https://github.com/getgridea/gridea" target="_blank">Gridea</a>
+  <a class="rss" href="https://Hurricane-Q7.github.io/atom.xml" target="_blank">
+    <i class="ri-rss-line"></i> RSS
+  </a>
+</div>
+
+      </div>
+    </div>
+
+    <script>
+      hljs.initHighlightingOnLoad()
+
+      let mainNavLinks = document.querySelectorAll(".markdownIt-TOC a");
+
+      // This should probably be throttled.
+      // Especially because it triggers during smooth scrolling.
+      // https://lodash.com/docs/4.17.10#throttle
+      // You could do like...
+      // window.addEventListener("scroll", () => {
+      //    _.throttle(doThatStuff, 100);
+      // });
+      // Only not doing it here to keep this Pen dependency-free.
+
+      window.addEventListener("scroll", event => {
+        let fromTop = window.scrollY;
+
+        mainNavLinks.forEach((link, index) => {
+          let section = document.getElementById(decodeURI(link.hash).substring(1));
+          let nextSection = null
+          if (mainNavLinks[index + 1]) {
+            nextSection = document.getElementById(decodeURI(mainNavLinks[index + 1].hash).substring(1));
+          }
+          if (section.offsetTop <= fromTop) {
+            if (nextSection) {
+              if (nextSection.offsetTop > fromTop) {
+                link.classList.add("current");
+              } else {
+                link.classList.remove("current");    
+              }
+            } else {
+              link.classList.add("current");
+            }
+          } else {
+            link.classList.remove("current");
+          }
+        });
+      });
+
+    </script>
+  </body>
+</html>

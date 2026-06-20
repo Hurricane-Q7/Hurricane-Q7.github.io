@@ -1,0 +1,248 @@
+<html>
+  <head>
+    <meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>1.20日-C语言分支，循环语句（初阶） | Gridea</title>
+<link rel="shortcut icon" href="https://Hurricane-Q7.github.io/favicon.ico?v=1781917751713">
+<link href="https://cdn.jsdelivr.net/npm/remixicon@2.3.0/fonts/remixicon.css" rel="stylesheet">
+<link rel="stylesheet" href="https://Hurricane-Q7.github.io/styles/main.css">
+<link rel="alternate" type="application/atom+xml" title="1.20日-C语言分支，循环语句（初阶） | Gridea - Atom Feed" href="https://Hurricane-Q7.github.io/atom.xml">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Droid+Serif:400,700">
+
+
+
+    <meta name="description" content="循环语句
+#include&lt;stdio.h
+int main()
+{
+    int ch = getchar();//getchar的返回失败的时候返回值就是是EOF(end of file),其实就是-1，-1是个整形数据，最好用..." />
+    <meta name="keywords" content="" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.10.0/katex.min.css">
+    <script src="//cdn.jsdelivr.net/gh/highlightjs/cdn-release@11.5.1/build/highlight.min.js"></script>
+  </head>
+  <body>
+    <div class="main">
+      <div class="main-content">
+        <div class="site-header">
+  <a href="https://Hurricane-Q7.github.io">
+  <img class="avatar" src="https://Hurricane-Q7.github.io/images/avatar.png?v=1781917751713" alt="">
+  </a>
+  <h1 class="site-title">
+    Gridea
+  </h1>
+  <p class="site-description">
+    言者所以在意，得意而忘言
+  </p>
+  <div class="menu-container">
+    
+      
+        <a href="/" class="menu">
+          首页
+        </a>
+      
+    
+      
+        <a href="/archives" class="menu">
+          归档
+        </a>
+      
+    
+      
+        <a href="/tags" class="menu">
+          标签
+        </a>
+      
+    
+      
+        <a href="/post/about" class="menu">
+          关于
+        </a>
+      
+    
+  </div>
+  <div class="social-container">
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+  </div>
+</div>
+
+        <div class="post-detail">
+          <article class="post">
+            <h2 class="post-title">
+              1.20日-C语言分支，循环语句（初阶）
+            </h2>
+            <div class="post-info">
+              <span>
+                2026-01-20
+              </span>
+              <span>
+                3 min read
+              </span>
+              
+            </div>
+            
+            <div class="post-content-wrapper">
+              <div class="post-content" v-pre>
+                <h1 id="循环语句">循环语句</h1>
+<pre><code class="language-c">#include&lt;stdio.h
+int main()
+{
+    int ch = getchar();//getchar的返回失败的时候返回值就是是EOF(end of file),其实就是-1，-1是个整形数据，最好用int,当然也可以用char!getchar返回成功是返回值就是字符的ASCII值！
+    printf(&quot;%c\n&quot;,ch);
+    putchar(ch);
+    return 0;
+}
+</code></pre>
+<pre><code class="language-c">int main()
+{
+    int ch = 0;
+    while((ch=getchar())!=EOF)//getchar实际上接收了两个字符，'a'与'\n'
+    //显然两个的值都不等于-1,putchar会输出两次，一次是'a'，另一次是'\n',实现了自动换行。
+    {
+        putchar(ch);
+    }
+    return 0;
+
+}
+</code></pre>
+<h2 id="getchar与scanf">getchar与scanf</h2>
+<p>C语言中，scanf 和 getchar 这类输入函数，不会直接从键盘读取数据，而是从「输入缓冲区」中读取数据。我们从键盘上输入东西时，会先放到输入缓冲区里面，然后scanf与getchar会主动去读取!</p>
+<ul>
+<li>scanf(&quot;%s&quot;) 的规则：只读取「非空白字符」，遇到 空格 / 制表符 / 回车（\n）这类空白字符就会停止读取。</li>
+<li>getchar来者不拒，照单全收，但是只能读取一个字符!<br>
+关于缓冲区的代码</li>
+</ul>
+<pre><code class="language-c">
+#define _CRT_SECURE_NO_WARNINGS
+#include&lt;stdio.h&gt;
+int main()
+{
+	char password[20] = { 0 };
+	printf(&quot;请输入密码:&gt;&quot;);
+	scanf(&quot;%s&quot;, password);//输入123456'\n',先放在缓冲区里面，根据scanf的规则，scanf读取123456,getchar读取回车符!
+	printf(&quot;请确认密码(Y/N):&gt;&quot;);
+	int ret = getchar();
+	if ('Y' == ret)//这里显然不相等，执行else部分
+	{
+		printf(&quot;YES\n&quot;);
+	}
+	else {
+		printf(&quot;No\n&quot;);//输出NO,可见这个代码并没有实现让确认密码的功能!
+	}
+	return 0;//缓冲区不干净!
+}
+</code></pre>
+<pre><code class="language-c">#define _CRT_SECURE_NO_WARNINGS
+#include&lt;stdio.h&gt;
+int main()
+{
+	char password[20] = { 0 };
+	printf(&quot;请输入密码:&gt;&quot;);
+	scanf(&quot;%s&quot;, password);
+    int ch = 0;
+    while((ch=getchar())!='\n')
+    {
+        ;//这里代码的作用是清理缓冲区的字符!
+    }
+	printf(&quot;请确认密码(Y/N):&gt;&quot;);
+	int ret = getchar();
+	if ('Y' == ret)
+	{
+		printf(&quot;YES\n&quot;);
+	}
+	else {
+		printf(&quot;No\n&quot;);
+	}
+	return 0;
+}
+</code></pre>
+
+              </div>
+              <div class="toc-container">
+                <ul class="markdownIt-TOC">
+<li><a href="#%E5%BE%AA%E7%8E%AF%E8%AF%AD%E5%8F%A5">循环语句</a>
+<ul>
+<li><a href="#getchar%E4%B8%8Escanf">getchar与scanf</a></li>
+</ul>
+</li>
+</ul>
+
+              </div>
+            </div>
+          </article>
+        </div>
+
+        
+          <div class="next-post">
+            <div class="next">下一篇</div>
+            <a href="https://Hurricane-Q7.github.io/post/windows-zhong-san-ge-ji-ben-ming-ling/">
+              <h3 class="post-title">
+                windows中三个基本命令
+              </h3>
+            </a>
+          </div>
+        
+
+        
+
+        <div class="site-footer">
+  Powered by <a href="https://github.com/getgridea/gridea" target="_blank">Gridea</a>
+  <a class="rss" href="https://Hurricane-Q7.github.io/atom.xml" target="_blank">
+    <i class="ri-rss-line"></i> RSS
+  </a>
+</div>
+
+      </div>
+    </div>
+
+    <script>
+      hljs.initHighlightingOnLoad()
+
+      let mainNavLinks = document.querySelectorAll(".markdownIt-TOC a");
+
+      // This should probably be throttled.
+      // Especially because it triggers during smooth scrolling.
+      // https://lodash.com/docs/4.17.10#throttle
+      // You could do like...
+      // window.addEventListener("scroll", () => {
+      //    _.throttle(doThatStuff, 100);
+      // });
+      // Only not doing it here to keep this Pen dependency-free.
+
+      window.addEventListener("scroll", event => {
+        let fromTop = window.scrollY;
+
+        mainNavLinks.forEach((link, index) => {
+          let section = document.getElementById(decodeURI(link.hash).substring(1));
+          let nextSection = null
+          if (mainNavLinks[index + 1]) {
+            nextSection = document.getElementById(decodeURI(mainNavLinks[index + 1].hash).substring(1));
+          }
+          if (section.offsetTop <= fromTop) {
+            if (nextSection) {
+              if (nextSection.offsetTop > fromTop) {
+                link.classList.add("current");
+              } else {
+                link.classList.remove("current");    
+              }
+            } else {
+              link.classList.add("current");
+            }
+          } else {
+            link.classList.remove("current");
+          }
+        });
+      });
+
+    </script>
+  </body>
+</html>

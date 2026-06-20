@@ -1,0 +1,271 @@
+<html>
+  <head>
+    <meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>1.29-C语言-函数的声明、定义（初阶） | Gridea</title>
+<link rel="shortcut icon" href="https://Hurricane-Q7.github.io/favicon.ico?v=1781917751713">
+<link href="https://cdn.jsdelivr.net/npm/remixicon@2.3.0/fonts/remixicon.css" rel="stylesheet">
+<link rel="stylesheet" href="https://Hurricane-Q7.github.io/styles/main.css">
+<link rel="alternate" type="application/atom+xml" title="1.29-C语言-函数的声明、定义（初阶） | Gridea - Atom Feed" href="https://Hurricane-Q7.github.io/atom.xml">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Droid+Serif:400,700">
+
+
+
+    <meta name="description" content="函数的声明与定义
+函数的声明
+
+告诉编译器函数的名字、参数、返回类型，但是具体函数是不是存在的，函数声明决定不了
+函数的声明一般出现在函数的使用之前，要满足先声明后使用规则。
+函数的声明一般放在头文件当中，在主函数中想要调用该函数，只需要在..." />
+    <meta name="keywords" content="" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.10.0/katex.min.css">
+    <script src="//cdn.jsdelivr.net/gh/highlightjs/cdn-release@11.5.1/build/highlight.min.js"></script>
+  </head>
+  <body>
+    <div class="main">
+      <div class="main-content">
+        <div class="site-header">
+  <a href="https://Hurricane-Q7.github.io">
+  <img class="avatar" src="https://Hurricane-Q7.github.io/images/avatar.png?v=1781917751713" alt="">
+  </a>
+  <h1 class="site-title">
+    Gridea
+  </h1>
+  <p class="site-description">
+    言者所以在意，得意而忘言
+  </p>
+  <div class="menu-container">
+    
+      
+        <a href="/" class="menu">
+          首页
+        </a>
+      
+    
+      
+        <a href="/archives" class="menu">
+          归档
+        </a>
+      
+    
+      
+        <a href="/tags" class="menu">
+          标签
+        </a>
+      
+    
+      
+        <a href="/post/about" class="menu">
+          关于
+        </a>
+      
+    
+  </div>
+  <div class="social-container">
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+  </div>
+</div>
+
+        <div class="post-detail">
+          <article class="post">
+            <h2 class="post-title">
+              1.29-C语言-函数的声明、定义（初阶）
+            </h2>
+            <div class="post-info">
+              <span>
+                2026-01-29
+              </span>
+              <span>
+                3 min read
+              </span>
+              
+            </div>
+            
+            <div class="post-content-wrapper">
+              <div class="post-content" v-pre>
+                <h1 id="函数的声明与定义">函数的声明与定义</h1>
+<h2 id="函数的声明">函数的声明</h2>
+<ol>
+<li>告诉编译器函数的<strong>名字、参数、返回类型</strong>，但是具体函数是不是存在的，函数声明决定不了</li>
+<li>函数的声明一般出现在函数的使用之前，要<strong>满足先声明后使用规则</strong>。</li>
+<li>函数的声明一般放在头文件当中，在主函数中想要调用该函数，只需要在调用前先包含该函数的头文件即可，函数的头文件里面一般存放的是函数的声明部分，函数的定义部分放在别的源文件里面即可。</li>
+</ol>
+<h2 id="函数的定义">函数的定义</h2>
+<p>函数的定义是指函数的具体实现，交待函数功能的实现。</p>
+<pre><code class="language-c">int add(int x,int y);//函数声明
+int main()
+{
+
+}
+int add(int x,int y)//函数定义
+{
+    return x+y;
+}
+</code></pre>
+<p>生成好静态库以后，要想使用，一定要先导入一下，用以下指令<br>
+<code> #pragma comment(lib,&quot;mul.lib&quot;)</code></p>
+<h1 id="函数嵌套调用与链式访问">函数嵌套调用与链式访问</h1>
+<h2 id="函数可以嵌套调用但是不可以嵌套定义">函数可以嵌套调用但是不可以嵌套定义</h2>
+<p>编译器：Compiler<br>
+解释器：Interpreter</p>
+<pre><code class="language-c">#include&lt;stdio.h&gt;
+void new_line() 
+{
+    printf(&quot;hehe\n&quot;);
+}
+void three_line()
+{
+    int i = 0;
+    for(i=0;i&lt;3;i++)
+    {
+        new_line();//嵌套调用
+    }
+}
+int main()
+    {
+        three_line();
+        return 0;
+    }
+
+
+
+
+嵌套定义：
+void new_line() 
+{
+    printf(&quot;hehe\n&quot;);
+    void three_line()
+{
+    int i = 0;
+    for(i=0;i&lt;3;i++)
+    {
+        new_line();//嵌套定义，不可以这样操作；
+    }
+}
+}
+</code></pre>
+<h1 id="链式访问依赖函数的返回值">链式访问，依赖函数的返回值</h1>
+<p>链式访问就是一个函数的返回值，当作另一个函数的参数<br>
+函数不写返回值的时候，默认返回类型是int型</p>
+<pre><code class="language-c">int main()
+{
+	char arr[20] = &quot;hello&quot;;
+	int ret = strlen(strcat(arr, &quot;bit&quot;));//链接两个字符串的后面都有'\0',连接时将两个字符串1后面的'\0'取消，只在新的字符串保留'\0'。
+	printf(&quot;%d\n&quot;, ret);//打印结果是8,strlen只统计'\0'之前的字符个数!
+	return 0;
+}
+</code></pre>
+<pre><code class="language-c">int main()
+{
+    int len = strlen(&quot;abcdef&quot;);
+    printf(&quot;%d\n&quot;,strlen(&quot;abcdef&quot;));
+    return 0;p
+}
+</code></pre>
+<pre><code class="language-c">int main()
+{
+    //printf的返回值是打印的字符个数
+	printf(&quot;%d&quot;, printf(&quot;%d&quot;, printf(&quot;%d&quot;, 43)));
+	//4321
+	return 0;
+}
+</code></pre>
+<p>总之，定义函数时要规范定义！</p>
+
+              </div>
+              <div class="toc-container">
+                <ul class="markdownIt-TOC">
+<li><a href="#%E5%87%BD%E6%95%B0%E7%9A%84%E5%A3%B0%E6%98%8E%E4%B8%8E%E5%AE%9A%E4%B9%89">函数的声明与定义</a>
+<ul>
+<li><a href="#%E5%87%BD%E6%95%B0%E7%9A%84%E5%A3%B0%E6%98%8E">函数的声明</a></li>
+<li><a href="#%E5%87%BD%E6%95%B0%E7%9A%84%E5%AE%9A%E4%B9%89">函数的定义</a></li>
+</ul>
+</li>
+<li><a href="#%E5%87%BD%E6%95%B0%E5%B5%8C%E5%A5%97%E8%B0%83%E7%94%A8%E4%B8%8E%E9%93%BE%E5%BC%8F%E8%AE%BF%E9%97%AE">函数嵌套调用与链式访问</a>
+<ul>
+<li><a href="#%E5%87%BD%E6%95%B0%E5%8F%AF%E4%BB%A5%E5%B5%8C%E5%A5%97%E8%B0%83%E7%94%A8%E4%BD%86%E6%98%AF%E4%B8%8D%E5%8F%AF%E4%BB%A5%E5%B5%8C%E5%A5%97%E5%AE%9A%E4%B9%89">函数可以嵌套调用但是不可以嵌套定义</a></li>
+</ul>
+</li>
+<li><a href="#%E9%93%BE%E5%BC%8F%E8%AE%BF%E9%97%AE%E4%BE%9D%E8%B5%96%E5%87%BD%E6%95%B0%E7%9A%84%E8%BF%94%E5%9B%9E%E5%80%BC">链式访问，依赖函数的返回值</a></li>
+</ul>
+
+              </div>
+            </div>
+          </article>
+        </div>
+
+        
+          <div class="next-post">
+            <div class="next">下一篇</div>
+            <a href="https://Hurricane-Q7.github.io/post/126-c-yu-yan-han-shu-ji-chu-lian-xi/">
+              <h3 class="post-title">
+                1.26-C语言-函数基础练习
+              </h3>
+            </a>
+          </div>
+        
+
+        
+
+        <div class="site-footer">
+  Powered by <a href="https://github.com/getgridea/gridea" target="_blank">Gridea</a>
+  <a class="rss" href="https://Hurricane-Q7.github.io/atom.xml" target="_blank">
+    <i class="ri-rss-line"></i> RSS
+  </a>
+</div>
+
+      </div>
+    </div>
+
+    <script>
+      hljs.initHighlightingOnLoad()
+
+      let mainNavLinks = document.querySelectorAll(".markdownIt-TOC a");
+
+      // This should probably be throttled.
+      // Especially because it triggers during smooth scrolling.
+      // https://lodash.com/docs/4.17.10#throttle
+      // You could do like...
+      // window.addEventListener("scroll", () => {
+      //    _.throttle(doThatStuff, 100);
+      // });
+      // Only not doing it here to keep this Pen dependency-free.
+
+      window.addEventListener("scroll", event => {
+        let fromTop = window.scrollY;
+
+        mainNavLinks.forEach((link, index) => {
+          let section = document.getElementById(decodeURI(link.hash).substring(1));
+          let nextSection = null
+          if (mainNavLinks[index + 1]) {
+            nextSection = document.getElementById(decodeURI(mainNavLinks[index + 1].hash).substring(1));
+          }
+          if (section.offsetTop <= fromTop) {
+            if (nextSection) {
+              if (nextSection.offsetTop > fromTop) {
+                link.classList.add("current");
+              } else {
+                link.classList.remove("current");    
+              }
+            } else {
+              link.classList.add("current");
+            }
+          } else {
+            link.classList.remove("current");
+          }
+        });
+      });
+
+    </script>
+  </body>
+</html>

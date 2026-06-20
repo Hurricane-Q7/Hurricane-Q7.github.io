@@ -1,0 +1,382 @@
+<html>
+  <head>
+    <meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Git-分布式版本管理工具的Further Study! | Gridea</title>
+<link rel="shortcut icon" href="https://Hurricane-Q7.github.io/favicon.ico?v=1781917751713">
+<link href="https://cdn.jsdelivr.net/npm/remixicon@2.3.0/fonts/remixicon.css" rel="stylesheet">
+<link rel="stylesheet" href="https://Hurricane-Q7.github.io/styles/main.css">
+<link rel="alternate" type="application/atom+xml" title="Git-分布式版本管理工具的Further Study! | Gridea - Atom Feed" href="https://Hurricane-Q7.github.io/atom.xml">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Droid+Serif:400,700">
+
+
+
+    <meta name="description" content="Git分区思想🌟🌟🌟🌟🌟
+
+1. 工作区：你现在正在干什么
+2. 暂存区：你准备提交什么
+**Git 设置暂存区的最大价值，就是让你能够“选择并组织本次提交的内容”，而不是把工作区所有修改一股脑提交到仓库。 这也是 Git 比很多..." />
+    <meta name="keywords" content="git学习" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.10.0/katex.min.css">
+    <script src="//cdn.jsdelivr.net/gh/highlightjs/cdn-release@11.5.1/build/highlight.min.js"></script>
+  </head>
+  <body>
+    <div class="main">
+      <div class="main-content">
+        <div class="site-header">
+  <a href="https://Hurricane-Q7.github.io">
+  <img class="avatar" src="https://Hurricane-Q7.github.io/images/avatar.png?v=1781917751713" alt="">
+  </a>
+  <h1 class="site-title">
+    Gridea
+  </h1>
+  <p class="site-description">
+    言者所以在意，得意而忘言
+  </p>
+  <div class="menu-container">
+    
+      
+        <a href="/" class="menu">
+          首页
+        </a>
+      
+    
+      
+        <a href="/archives" class="menu">
+          归档
+        </a>
+      
+    
+      
+        <a href="/tags" class="menu">
+          标签
+        </a>
+      
+    
+      
+        <a href="/post/about" class="menu">
+          关于
+        </a>
+      
+    
+  </div>
+  <div class="social-container">
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+  </div>
+</div>
+
+        <div class="post-detail">
+          <article class="post">
+            <h2 class="post-title">
+              Git-分布式版本管理工具的Further Study!
+            </h2>
+            <div class="post-info">
+              <span>
+                2026-03-24
+              </span>
+              <span>
+                8 min read
+              </span>
+              
+                <a href="https://Hurricane-Q7.github.io/tag/NIJ0rL2Ccj/" class="post-tag">
+                  # git学习
+                </a>
+              
+            </div>
+            
+              <img class="post-feature-image" src="https://Hurricane-Q7.github.io/post-images/git-fen-bu-shi-ban-ben-guan-li-gong-ju-de-further-study.png" alt="">
+            
+            <div class="post-content-wrapper">
+              <div class="post-content" v-pre>
+                <h1 id="git分区思想">Git分区思想🌟🌟🌟🌟🌟</h1>
+<figure data-type="image" tabindex="1"><img src="https://Hurricane-Q7.github.io/post-images/1774399184210.png" alt="" loading="lazy"></figure>
+<pre><code class="language-c">1. 工作区：你现在正在干什么
+2. 暂存区：你准备提交什么
+**Git 设置暂存区的最大价值，就是让你能够“选择并组织本次提交的内容”，而不是把工作区所有修改一股脑提交到仓库。 这也是 Git 比很多早期版本控制工具更灵活的重要原因。**
+3.   仓库：你以前干过什么（提交过哪些？）
+</code></pre>
+<h2 id="git操作的基本workflow">Git操作的基本Workflow</h2>
+<figure data-type="image" tabindex="2"><img src="https://Hurricane-Q7.github.io/post-images/1779954045457.png" alt="" loading="lazy"></figure>
+<h2 id="git基础操作addcommitstatuslogdiffreset">Git基础操作（add/commit/status/log/diff/reset）</h2>
+<p><strong>HEAD</strong>是git中一个很重要的概念</p>
+<pre><code class="language-c"> HEAD 本身通常指向当前分支，而不是直接指向当前版本（提交）。
+ 当然HEAD也可以简单记为当前地版本号。
+</code></pre>
+<p><strong>指令速查：</strong></p>
+<pre><code class="language-c">git基础必会内容：
+git init 在本地创建一个git repository.
+git status //常看文件状态
+git add和git commit//把文件添加到暂存区，把暂存区的文件添加到git仓库
+git log //查看提交记录、日期、提交人、commitID
+git diff //查看变化
+.gitignore //git的忽略配置文件
+git reset
+</code></pre>
+<p><strong>git status 查看文件修改的状态</strong>：</p>
+<ul>
+<li>作用：查看当前文件的修改状态</li>
+<li>格式：git status</li>
+<li>常见状态：<br>
+modified（已跟踪文件被修改）<br>
+Untracked files（Git根本不认识的新文件）</li>
+</ul>
+<pre><code class="language-c">1. untracked（新添加的文件）
+2. unstaged  （未进入暂存区）
+3. to be commited(在暂存区里等待提交）
+在工作区里面添加文件后，不代表git认识这个文件，因为此时你还没有用git跟踪一下，此时用git status看一下，显示Untracked状态，说明此时git不认识这个文件，这时候最好git add 文件一下，告诉git。
+</code></pre>
+<p><strong>git log查看commit日志</strong>：</p>
+<ul>
+<li>作用：查看提交记录，与commitID</li>
+<li>格式：git log [options]</li>
+<li>
+<pre><code>      --all显示所有分支
+</code></pre>
+</li>
+<li>
+<pre><code>      --pretty=oneline将提交信息显示为一行
+</code></pre>
+</li>
+<li>
+<pre><code>      --abbrev-commit 使得输出的commit更简短
+</code></pre>
+</li>
+<li>
+<pre><code>      --graph 以图的形式显示 
+     以上参数可以组合起来使用。
+</code></pre>
+</li>
+</ul>
+<p><strong>git commit-提交指令</strong>：</p>
+<ul>
+<li>作用：将文件或目录提交到本地仓库，提交后会形成历史记录（暂存区-&gt;本地仓库）</li>
+<li>格式：git commit -m &quot;提交信息&quot;<br>
+<strong>git add 指令</strong>：</li>
+<li>作用：将文件或目录添加到从工作区到暂存区</li>
+<li>格式：git add 文件名/git add .（全部提交）<br>
+<strong>git diff 查看文件修改情况:</strong>:🌟🌟🌟</li>
+</ul>
+<pre><code class="language-c">
+- 作用：查看文件变更内容
+- 核心思想：git diff指令地作用就是比较不同状态下的文件的差异
+常见指令: 
+1. git diff 文件名 （对比工作区和暂存区）
+2. git diff --cached 文件名(对比暂存区和仓库)
+3. git diff A  B(A和B可以是版本ID也可以是两个不同的分支)
+4. git diff --stat:
+git diff --stat 就是“代码改动统计表”，用于快速查看哪些文件发生了变化，以及变化规模，而不显示具体代码内容。
+5. git diff --HEAD :比较工作区和仓库的变化。
+6. git diff HEAD~ HEAD:比较当前指向版本和上一个版本地差异（HEAD~用来表示上一个版本，HEAD~2 表示上两个版本）
+</code></pre>
+<p><strong>git restore 修复改动指令</strong></p>
+<pre><code class="language-c">- 作用：修复改动
+- 命令形式：git restore --staged/git restore 文件名
+git restore --staged 文件名可以把暂存区的文件直接拉到工作区，取消暂存区。
+git restore 文件名，可以撤销在工作区里面的修改，但是前提必须是git要认识这个文件，想要让git认识这个文件，就要先add一下。
+</code></pre>
+<p><strong>git reset --hard 版本回退（非常重要）</strong>：</p>
+<pre><code class="language-c">- 作用： 切换版本
+- 命令形式：git reset --hard commitID
+--hard参数有啥意义？
+--hard会回退到上个版本的已提交状态(commit后)，
+而--soft会回退到上个版本的未提交状态（已经add后），
+--mixed会回退到上个版本已添加但未提交的状态。现在，先放心使用--hard。
+</code></pre>
+<p><strong>git reset Git 的 HEAD（当前版本指针）回到之前的某个位置，并根据参数决定是否同时修改暂存区和工作区。</strong></p>
+<pre><code class="language-c">git reset比起git restore更加关注历史提交记录。
+- 作用：版本回退
+- 命令形式：git reset --soft/--mixed/--hard COMMITID
+git reset 后面的参数各有各的作用，具体的作用看下图!!!
+</code></pre>
+<p>git-reset的常见用法：<br>
+<img src="https://Hurricane-Q7.github.io/post-images/1780827787558.png" alt="" loading="lazy"><br>
+<strong>git reflog - 查看已经删除的记录</strong></p>
+<ul>
+<li>git reflog</li>
+<li>这个指令可以看到已经删除的提交记录（commit ID）<br>
+<img src="https://Hurricane-Q7.github.io/post-images/1774505222496.png" alt="" loading="lazy"></li>
+</ul>
+<h2 id="git的忽略配置文件gitignore">Git的忽略配置文件.gitignore🌟🌟🌟🌟🌟</h2>
+<p><strong>功能介绍</strong>：<br>
+这个功能需要我们写一个配置文件来实现，这个配置文件的名字叫做**.gitignore**，我们可以把我们当前目录下面不想要暂存、提交、上传的文件或目录的名字<strong>写进</strong>这个配置文件，这样就git记下来了。<br>
+<strong>使用示例(vs的项目目录下)</strong>：<br>
+一般用vs创建的项目目录下有很多东西，为了让自己的仓库变干净一点，项目里面有的东西我们可以过滤掉，这样在执行git add/git commit等命令时就不会把它们也移动git工作区域了。<br>
+<img src="https://Hurricane-Q7.github.io/post-images/1779971330121.png" alt="" loading="lazy"><br>
+添加并修改.gitignore配置文件</p>
+<pre><code class="language-c">.vs/
+Git_test.slnx
+Git_test.vcxproj
+Git_test.vcxproj.filters
+Git_test.vcxproj.user
+# 添加完这些后，在使用git add 后，它们就不会在暂存区里面了，然后就可以大胆的commit了。
+</code></pre>
+<h1 id="git核心操作-分支管理">Git核心操作-分支管理🌟🌟🌟🌟🌟🌟</h1>
+<p><code>Head指向谁，就说明当前在哪个分支上</code><br>
+分支是Git中的一个很重要的概念！</p>
+<h3 id="关于分支的常见命令">关于分支的常见命令</h3>
+<pre><code class="language-c">1. git branch //查看所有分支
+2. git branch 分支名称 //创建分支
+3. git checkout 分支名称 //切换到分支
+4. git checkout -b 分支名称 //创建并切换到该分支
+5. git branch -d 分支名称 //删除强制删除是 -D
+6. git branch -m 当前分支name 分支名称//修改当前分支名称
+7. git merge 分支1 //假如当前是分支0，这条指令的意思是把分支1和并到分支0上
+</code></pre>
+<h4 id="使用git中的merge指令时可能遇到的问题">使用Git中的merge指令时可能遇到的问题</h4>
+<p>在当前分支下先创建一个分支，在这两个分支上同时修改共有文件，分别进行add/commit指令，最后切换到原分支，使用git merge 新创建的分支，此时会发现冲突！<br>
+<img src="https://Hurricane-Q7.github.io/post-images/1774702231096.png" alt="" loading="lazy"><br>
+解决方法：</p>
+<ol>
+<li>暴力修改，直接修改文件内容</li>
+<li>add / commit 双板斧</li>
+</ol>
+<h1 id="开发中分支的使用原则与流程">开发中分支的使用原则与流程</h1>
+<p><img src="https://Hurricane-Q7.github.io/post-images/1775283987745.png" alt="" loading="lazy"><br>
+<img src="https://Hurricane-Q7.github.io/post-images/1775284081321.png" alt="" loading="lazy"></p>
+<h1 id="git和远程仓库">Git和远程仓库！！！</h1>
+<p>使用git可以把本地仓库里面的代码统统推送到远程仓库上！</p>
+<pre><code class="language-c">基本步骤：
+1. 绑定链接关系
+git remote add &lt;远程仓库名&gt; &lt;远程仓库地址https/ssh&gt;
+2. 查看远程仓库
+git remote 
+3. 推送代码
+命令：git push [-f] [--set-upstream] [远端名称[本地分支名][:远端分支名]]
+如果远程分支和本地分支名称相同，则可以只写本地分支！
+- [-f] 强制推送
+- git push origin master 
+-- set-upstream 推送到远端的同时并且建立起和远端分支的关联关系
+- git push --set-stream origin master
+如果当前分支和远端分支关联，则可以省略分支名和远端名
+- git push 将master 分支推送到已关联的远端分支
+</code></pre>
+<h2 id="git-clone">Git clone</h2>
+<p>命令：git clone &lt;仓库链接&gt; &lt;别名&gt;<br>
+作用：把远程仓库里面的内容全部拉到本地指定路径里面！<br>
+<strong>注意：git clone这个指令一般只用来第一次拉取代码，后续一般是git pull！</strong></p>
+<h2 id="从远程仓库抓取和拉取">从远程仓库抓取和拉取</h2>
+<p>远程分支和本地的分支一样，我们可以进行merge操作，只需要先把远端仓库里的更新都下载到本地，在进行操作。</p>
+<ul>
+<li>抓取命令：git fetch [remote name][fetch name]
+<ul>
+<li>抓取指令就是将仓库里的更新都抓取到本地，不会进行合并（merge）</li>
+<li>如果不指定远端名和分支名，则抓取所有分支。</li>
+</ul>
+</li>
+<li>拉取命令：git pull [remote name][branch name]
+<ul>
+<li>拉取指令就是将远端仓库的修改拉到本地并自动进行合并，等同于fetch+merge</li>
+<li>如果不指定远端名和分支名，则抓取所有分支。</li>
+</ul>
+</li>
+</ul>
+
+              </div>
+              <div class="toc-container">
+                <ul class="markdownIt-TOC">
+<li><a href="#git%E5%88%86%E5%8C%BA%E6%80%9D%E6%83%B3">Git分区思想🌟🌟🌟🌟🌟</a>
+<ul>
+<li><a href="#git%E6%93%8D%E4%BD%9C%E7%9A%84%E5%9F%BA%E6%9C%ACworkflow">Git操作的基本Workflow</a></li>
+<li><a href="#git%E5%9F%BA%E7%A1%80%E6%93%8D%E4%BD%9Caddcommitstatuslogdiffreset">Git基础操作（add/commit/status/log/diff/reset）</a></li>
+<li><a href="#git%E7%9A%84%E5%BF%BD%E7%95%A5%E9%85%8D%E7%BD%AE%E6%96%87%E4%BB%B6gitignore">Git的忽略配置文件.gitignore🌟🌟🌟🌟🌟</a></li>
+</ul>
+</li>
+<li><a href="#git%E6%A0%B8%E5%BF%83%E6%93%8D%E4%BD%9C-%E5%88%86%E6%94%AF%E7%AE%A1%E7%90%86">Git核心操作-分支管理🌟🌟🌟🌟🌟🌟</a><br>
+*
+<ul>
+<li><a href="#%E5%85%B3%E4%BA%8E%E5%88%86%E6%94%AF%E7%9A%84%E5%B8%B8%E8%A7%81%E5%91%BD%E4%BB%A4">关于分支的常见命令</a>
+<ul>
+<li><a href="#%E4%BD%BF%E7%94%A8git%E4%B8%AD%E7%9A%84merge%E6%8C%87%E4%BB%A4%E6%97%B6%E5%8F%AF%E8%83%BD%E9%81%87%E5%88%B0%E7%9A%84%E9%97%AE%E9%A2%98">使用Git中的merge指令时可能遇到的问题</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a href="#%E5%BC%80%E5%8F%91%E4%B8%AD%E5%88%86%E6%94%AF%E7%9A%84%E4%BD%BF%E7%94%A8%E5%8E%9F%E5%88%99%E4%B8%8E%E6%B5%81%E7%A8%8B">开发中分支的使用原则与流程</a></li>
+<li><a href="#git%E5%92%8C%E8%BF%9C%E7%A8%8B%E4%BB%93%E5%BA%93">Git和远程仓库！！！</a>
+<ul>
+<li><a href="#git-clone">Git clone</a></li>
+<li><a href="#%E4%BB%8E%E8%BF%9C%E7%A8%8B%E4%BB%93%E5%BA%93%E6%8A%93%E5%8F%96%E5%92%8C%E6%8B%89%E5%8F%96">从远程仓库抓取和拉取</a></li>
+</ul>
+</li>
+</ul>
+
+              </div>
+            </div>
+          </article>
+        </div>
+
+        
+          <div class="next-post">
+            <div class="next">下一篇</div>
+            <a href="https://Hurricane-Q7.github.io/post/321-c-shu-ju-cun-chu-lian-xi-ti-bu-fen/">
+              <h3 class="post-title">
+                3.21-C数据存储练习题部分，三码，整型提升·
+              </h3>
+            </a>
+          </div>
+        
+
+        
+
+        <div class="site-footer">
+  Powered by <a href="https://github.com/getgridea/gridea" target="_blank">Gridea</a>
+  <a class="rss" href="https://Hurricane-Q7.github.io/atom.xml" target="_blank">
+    <i class="ri-rss-line"></i> RSS
+  </a>
+</div>
+
+      </div>
+    </div>
+
+    <script>
+      hljs.initHighlightingOnLoad()
+
+      let mainNavLinks = document.querySelectorAll(".markdownIt-TOC a");
+
+      // This should probably be throttled.
+      // Especially because it triggers during smooth scrolling.
+      // https://lodash.com/docs/4.17.10#throttle
+      // You could do like...
+      // window.addEventListener("scroll", () => {
+      //    _.throttle(doThatStuff, 100);
+      // });
+      // Only not doing it here to keep this Pen dependency-free.
+
+      window.addEventListener("scroll", event => {
+        let fromTop = window.scrollY;
+
+        mainNavLinks.forEach((link, index) => {
+          let section = document.getElementById(decodeURI(link.hash).substring(1));
+          let nextSection = null
+          if (mainNavLinks[index + 1]) {
+            nextSection = document.getElementById(decodeURI(mainNavLinks[index + 1].hash).substring(1));
+          }
+          if (section.offsetTop <= fromTop) {
+            if (nextSection) {
+              if (nextSection.offsetTop > fromTop) {
+                link.classList.add("current");
+              } else {
+                link.classList.remove("current");    
+              }
+            } else {
+              link.classList.add("current");
+            }
+          } else {
+            link.classList.remove("current");
+          }
+        });
+      });
+
+    </script>
+  </body>
+</html>

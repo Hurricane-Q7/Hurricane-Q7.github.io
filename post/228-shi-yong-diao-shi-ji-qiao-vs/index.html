@@ -1,0 +1,270 @@
+<html>
+  <head>
+    <meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>2.28-使用调试技巧（vs） | Gridea</title>
+<link rel="shortcut icon" href="https://Hurricane-Q7.github.io/favicon.ico?v=1781917751713">
+<link href="https://cdn.jsdelivr.net/npm/remixicon@2.3.0/fonts/remixicon.css" rel="stylesheet">
+<link rel="stylesheet" href="https://Hurricane-Q7.github.io/styles/main.css">
+<link rel="alternate" type="application/atom+xml" title="2.28-使用调试技巧（vs） | Gridea - Atom Feed" href="https://Hurricane-Q7.github.io/atom.xml">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Droid+Serif:400,700">
+
+
+
+    <meta name="description" content="调试的时候查看变量的信息
+步骤：调试-&gt;窗口-&gt;监视
+调试的时候查看内存信息
+
+注意：看内存时，要有变量的地址信息。
+左侧是地址信息，中间的数据以16进制的形式表现出来，一共4列，由每行每列确定的数字组合大小为1个字节
+
+查看调..." />
+    <meta name="keywords" content="" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.10.0/katex.min.css">
+    <script src="//cdn.jsdelivr.net/gh/highlightjs/cdn-release@11.5.1/build/highlight.min.js"></script>
+  </head>
+  <body>
+    <div class="main">
+      <div class="main-content">
+        <div class="site-header">
+  <a href="https://Hurricane-Q7.github.io">
+  <img class="avatar" src="https://Hurricane-Q7.github.io/images/avatar.png?v=1781917751713" alt="">
+  </a>
+  <h1 class="site-title">
+    Gridea
+  </h1>
+  <p class="site-description">
+    言者所以在意，得意而忘言
+  </p>
+  <div class="menu-container">
+    
+      
+        <a href="/" class="menu">
+          首页
+        </a>
+      
+    
+      
+        <a href="/archives" class="menu">
+          归档
+        </a>
+      
+    
+      
+        <a href="/tags" class="menu">
+          标签
+        </a>
+      
+    
+      
+        <a href="/post/about" class="menu">
+          关于
+        </a>
+      
+    
+  </div>
+  <div class="social-container">
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+  </div>
+</div>
+
+        <div class="post-detail">
+          <article class="post">
+            <h2 class="post-title">
+              2.28-使用调试技巧（vs）
+            </h2>
+            <div class="post-info">
+              <span>
+                2026-02-28
+              </span>
+              <span>
+                4 min read
+              </span>
+              
+            </div>
+            
+            <div class="post-content-wrapper">
+              <div class="post-content" v-pre>
+                <h1 id="调试的时候查看变量的信息">调试的时候查看变量的信息</h1>
+<p>步骤：调试-&gt;窗口-&gt;监视</p>
+<h1 id="调试的时候查看内存信息">调试的时候查看内存信息</h1>
+<figure data-type="image" tabindex="1"><img src="https://Hurricane-Q7.github.io/post-images/1772267774547.png" alt="" loading="lazy"></figure>
+<pre><code class="language-c">注意：看内存时，要有变量的地址信息。
+左侧是地址信息，中间的数据以16进制的形式表现出来，一共4列，由每行每列确定的数字组合大小为1个字节
+</code></pre>
+<h1 id="查看调用堆栈">查看调用堆栈</h1>
+<p>查看函数嵌套调用的调用逻辑（显示外部代码），直观明了的展示出来！</p>
+<h1 id="查看汇编">查看汇编</h1>
+<hr>
+<p><strong>纸上得来终觉浅，绝知此事要躬行！</strong><br>
+<strong>要想提升调试能力，还是要多多练习啊！</strong></p>
+<pre><code class="language-c">示例一
+int main()
+{
+	int i = 0;
+	int factorial = 1;
+	int sum = 0;
+	for (int j = 1; j &lt;=10; j++)//外层for循环控制循环次数
+	{
+		//每次算完一次阶乘，及时调整factorial,避免下次计算使用上次的值
+        for (i = 1; i &lt;= j; i++)//内存循环来实现计算每个的阶乘
+	    {
+		   factorial = factorial * i;//累乘
+	    }
+		sum = sum + factorial;
+	}
+	
+	//printf(&quot;%d的阶乘是%d&quot;, i-1, factorial);
+	printf(&quot;%d&quot;, sum);
+	return 0;
+}
+</code></pre>
+<ul>
+<li>栈的生长方向：程序为局部变量分配栈内存时，是从高内存地址向低内存地址“堆叠” 的（可以理解为往一个向下的桶里放东西，先放的在桶上方 / 高地址，后放的在桶下方 / 低地址）。</li>
+<li>数组的内存布局：数组本身的元素在内存中是连续且从低地址到高地址排列的（arr [0] 在低地址，arr [9] 在高地址）。</li>
+</ul>
+<pre><code class="language-c">示例二
+int main()
+{
+    int i = 0;//栈区里高地址
+    int arr[10 ]={1,2,3,4,5,6,7,8,9,10};//低地址
+    for(i=0;i&lt;=12;i++)
+    {
+        arr[i]=0;
+        printf(&quot;hehe\n&quot;);
+    }
+    return 0;
+}
+错误分析：
+在main函数里面创建的局部变量是放在内存中的栈区里面的，栈的生长方向是从高地址到低地址（简单来说：看变量创建的先后顺序）。
+在本段代码中变量i是高地址，arr数组是低地址。
+当i增加到10的时候，数组已经发生了越界访问，增加到12时，arr[12]的地址已经和i的地址一样，arr[12]的地址将i的地址给覆盖了，两者指向同一个内存空间，arr[12]=0&lt;=&gt;i=0;
+本质：正是因为先定义的i在高地址、后定义的arr在低地址，越界的arr[12]才能覆盖i；
+</code></pre>
+<h1 id="优秀的代码">优秀的代码</h1>
+<ol>
+<li>代码运行正常</li>
+<li>bug很少</li>
+<li>效率高</li>
+<li>可维护性高</li>
+<li>可读性高</li>
+<li>注释清晰</li>
+<li>文档齐全</li>
+</ol>
+<h1 id="常见的coding技巧">常见的coding技巧</h1>
+<ol>
+<li>使用assert</li>
+<li>尽量使用const修饰变量</li>
+<li>养成良好的编码风格</li>
+<li>添加必要的注释</li>
+<li>避免编码的陷阱</li>
+</ol>
+<h1 id="assert程序调试宏头文件asserth">assert程序调试宏（头文件：&lt;assert.h&gt;）</h1>
+<p>在 C 语言中，assert 是一个用于程序调试的宏（不是函数），核心作用是断言检查—— 验证程序运行时某个条件是否为真，如果条件不成立（为假），程序会立刻终止并输出详细的错误信息，帮助你快速定位问题！<br>
+<strong>使用格式</strong><br>
+<code>assert(条件表达式)</code></p>
+<ul>
+<li>如果 条件表达式 的结果为非 0（真）：程序正常继续运行，assert 不会产生任何效果；</li>
+<li>如果 条件表达式 的结果为0（假）：程序会终止运行，并在控制台输出错误信息（包含文件名、行号、断言的条件）。</li>
+</ul>
+<h1 id="常见的三种类型错误">常见的三种类型错误</h1>
+<p>一个C语言源文件(main.c)想要成为一个可执行程序（.exe）,需要经过编译、链接，先编译后链接！</p>
+<ol>
+<li>编译错误（语法层面过不去，语法错误），双击解决问题</li>
+<li>链接错误（一般是标识符不存在或拼写错误）</li>
+<li>运行错误（可以运行，结果不和个人意愿，通过调试代码解决）</li>
+</ol>
+
+              </div>
+              <div class="toc-container">
+                <ul class="markdownIt-TOC">
+<li><a href="#%E8%B0%83%E8%AF%95%E7%9A%84%E6%97%B6%E5%80%99%E6%9F%A5%E7%9C%8B%E5%8F%98%E9%87%8F%E7%9A%84%E4%BF%A1%E6%81%AF">调试的时候查看变量的信息</a></li>
+<li><a href="#%E8%B0%83%E8%AF%95%E7%9A%84%E6%97%B6%E5%80%99%E6%9F%A5%E7%9C%8B%E5%86%85%E5%AD%98%E4%BF%A1%E6%81%AF">调试的时候查看内存信息</a></li>
+<li><a href="#%E6%9F%A5%E7%9C%8B%E8%B0%83%E7%94%A8%E5%A0%86%E6%A0%88">查看调用堆栈</a></li>
+<li><a href="#%E6%9F%A5%E7%9C%8B%E6%B1%87%E7%BC%96">查看汇编</a></li>
+<li><a href="#%E4%BC%98%E7%A7%80%E7%9A%84%E4%BB%A3%E7%A0%81">优秀的代码</a></li>
+<li><a href="#%E5%B8%B8%E8%A7%81%E7%9A%84coding%E6%8A%80%E5%B7%A7">常见的coding技巧</a></li>
+<li><a href="#assert%E7%A8%8B%E5%BA%8F%E8%B0%83%E8%AF%95%E5%AE%8F%E5%A4%B4%E6%96%87%E4%BB%B6asserth">assert程序调试宏（头文件：&lt;assert.h&gt;）</a></li>
+<li><a href="#%E5%B8%B8%E8%A7%81%E7%9A%84%E4%B8%89%E7%A7%8D%E7%B1%BB%E5%9E%8B%E9%94%99%E8%AF%AF">常见的三种类型错误</a></li>
+</ul>
+
+              </div>
+            </div>
+          </article>
+        </div>
+
+        
+          <div class="next-post">
+            <div class="next">下一篇</div>
+            <a href="https://Hurricane-Q7.github.io/post/227-shi-yong-tiao-shi-ji-qiao/">
+              <h3 class="post-title">
+                2.27-实用调试技巧
+              </h3>
+            </a>
+          </div>
+        
+
+        
+
+        <div class="site-footer">
+  Powered by <a href="https://github.com/getgridea/gridea" target="_blank">Gridea</a>
+  <a class="rss" href="https://Hurricane-Q7.github.io/atom.xml" target="_blank">
+    <i class="ri-rss-line"></i> RSS
+  </a>
+</div>
+
+      </div>
+    </div>
+
+    <script>
+      hljs.initHighlightingOnLoad()
+
+      let mainNavLinks = document.querySelectorAll(".markdownIt-TOC a");
+
+      // This should probably be throttled.
+      // Especially because it triggers during smooth scrolling.
+      // https://lodash.com/docs/4.17.10#throttle
+      // You could do like...
+      // window.addEventListener("scroll", () => {
+      //    _.throttle(doThatStuff, 100);
+      // });
+      // Only not doing it here to keep this Pen dependency-free.
+
+      window.addEventListener("scroll", event => {
+        let fromTop = window.scrollY;
+
+        mainNavLinks.forEach((link, index) => {
+          let section = document.getElementById(decodeURI(link.hash).substring(1));
+          let nextSection = null
+          if (mainNavLinks[index + 1]) {
+            nextSection = document.getElementById(decodeURI(mainNavLinks[index + 1].hash).substring(1));
+          }
+          if (section.offsetTop <= fromTop) {
+            if (nextSection) {
+              if (nextSection.offsetTop > fromTop) {
+                link.classList.add("current");
+              } else {
+                link.classList.remove("current");    
+              }
+            } else {
+              link.classList.add("current");
+            }
+          } else {
+            link.classList.remove("current");
+          }
+        });
+      });
+
+    </script>
+  </body>
+</html>

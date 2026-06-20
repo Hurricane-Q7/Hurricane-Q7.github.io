@@ -1,0 +1,457 @@
+<html>
+  <head>
+    <meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>2.24日-C语言猜数字游戏pro | Gridea</title>
+<link rel="shortcut icon" href="https://Hurricane-Q7.github.io/favicon.ico?v=1781917751713">
+<link href="https://cdn.jsdelivr.net/npm/remixicon@2.3.0/fonts/remixicon.css" rel="stylesheet">
+<link rel="stylesheet" href="https://Hurricane-Q7.github.io/styles/main.css">
+<link rel="alternate" type="application/atom+xml" title="2.24日-C语言猜数字游戏pro | Gridea - Atom Feed" href="https://Hurricane-Q7.github.io/atom.xml">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Droid+Serif:400,700">
+
+
+
+    <meta name="description" content="猜数字小游戏pro
+整体逻辑
+
+先生成目标数字
+玩家去猜目标数字
+猜对则程序结束，猜错则重复，并给反馈！
+
+一些功能
+
+生成合法的目标数字
+
+//目标数字生成要求：
+//1. 首位不能是数字0！
+//2. 一共生成4位数字！
+//3. 不能..." />
+    <meta name="keywords" content="C语言小游戏/项目" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.10.0/katex.min.css">
+    <script src="//cdn.jsdelivr.net/gh/highlightjs/cdn-release@11.5.1/build/highlight.min.js"></script>
+  </head>
+  <body>
+    <div class="main">
+      <div class="main-content">
+        <div class="site-header">
+  <a href="https://Hurricane-Q7.github.io">
+  <img class="avatar" src="https://Hurricane-Q7.github.io/images/avatar.png?v=1781917751713" alt="">
+  </a>
+  <h1 class="site-title">
+    Gridea
+  </h1>
+  <p class="site-description">
+    言者所以在意，得意而忘言
+  </p>
+  <div class="menu-container">
+    
+      
+        <a href="/" class="menu">
+          首页
+        </a>
+      
+    
+      
+        <a href="/archives" class="menu">
+          归档
+        </a>
+      
+    
+      
+        <a href="/tags" class="menu">
+          标签
+        </a>
+      
+    
+      
+        <a href="/post/about" class="menu">
+          关于
+        </a>
+      
+    
+  </div>
+  <div class="social-container">
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+  </div>
+</div>
+
+        <div class="post-detail">
+          <article class="post">
+            <h2 class="post-title">
+              2.24日-C语言猜数字游戏pro
+            </h2>
+            <div class="post-info">
+              <span>
+                2026-02-24
+              </span>
+              <span>
+                9 min read
+              </span>
+              
+                <a href="https://Hurricane-Q7.github.io/tag/umeiJwyklZ/" class="post-tag">
+                  # C语言小游戏/项目
+                </a>
+              
+            </div>
+            
+            <div class="post-content-wrapper">
+              <div class="post-content" v-pre>
+                <h1 id="猜数字小游戏pro">猜数字小游戏pro</h1>
+<h2 id="整体逻辑">整体逻辑</h2>
+<ol>
+<li>先生成目标数字</li>
+<li>玩家去猜目标数字</li>
+<li>猜对则程序结束，猜错则重复，并给反馈！</li>
+</ol>
+<h2 id="一些功能">一些功能</h2>
+<ol>
+<li>生成合法的目标数字</li>
+</ol>
+<pre><code class="language-c">//目标数字生成要求：
+//1. 首位不能是数字0！
+//2. 一共生成4位数字！
+//3. 不能有重复的数字！
+void generate_target(int target[])//目标数字生成器
+{
+ int num = 0;//num代表生成的数字
+ int i = 0;//用i来代表下标位数
+ int used[10] = { 0 };//用一个数组来标记生成的数字有没有用过，用过标记为1，没有用过标记为0
+ //第一位数字生成
+ while (i == 0)
+ {
+ 	int num = rand() % 10;//用一个变量来存放生成的数字（0~9）;
+ 	if (num != 0 &amp;&amp; !used[num])//!1为假，也就是代表用过了，!0为真，代表没有被标记，可以使用！
+ 	{
+ 		target[i++] = num;//赋值完即使更新调整
+ 		used[num] = 1;
+ 	}
+ }
+ //后三位数字生成
+ while (i &lt; 4)
+ {
+ 	int num = rand() % 10;
+ 	if (!used[num])//后三位只要满足不重复即可
+ 	{
+ 		target[i++] = num;//当前i位置，数字赋值完再进行下一位
+ 		used[num] = 1;
+ 	}
+ }
+
+}
+
+</code></pre>
+<ol start="2">
+<li>检验玩家输入的猜测数字</li>
+</ol>
+<pre><code class="language-c">检验玩家输入的字符个数够不够、纯不纯、合不合法（首位非零，不能有重复数字）
+int is_valid(int guess[])//检验玩家输入是否合法（首位非零，没有重复数字）,返回1说明合法，返回0说明不合法
+{
+ //guess在main里面完成了动态初始化，guess[i] = input[i] - '0',利用与其余ASCII值差值转化成了整数！
+ int i = 0;
+ int used[10] = { 0 };//定义一个标记型数组（1/0）
+ int num = 0;
+ if (guess[0] == 0)//先检查首位为不为非零
+ {
+ 	return 0;
+ }
+ 
+ for (i = 0; i &lt; 4; i++)//检查重复部分
+ {
+ 	num = guess[i];//1234，num依次被赋值1 2 3 4
+ 	if (used[num]==1)//num代表使用过的数字
+ 	{
+ 		return 0;
+ 	}
+ 	used[num] = 1;//标记用过了
+ }
+ return 1;//一个非void函数尽量有返回值
+ 
+}
+
+</code></pre>
+<ol start="3">
+<li>反馈机制（计算A与B）</li>
+</ol>
+<pre><code class="language-c">void calculate_ab(int target[], int guess[], int* a, int* b)
+{
+ //计算a与b
+ *a = 0;
+ *b = 0;
+ int i = 0;
+ int target_used[4] = { 0 };
+ int guess_used[4] = { 0 };
+ for (i = 0; i &lt; 4; i++)
+ {
+ 	if (guess[i] == target[i])
+ 	{
+ 		(*a)++;
+ 		target_used[i] = 1;
+ 		guess_used[i] = 1;
+ 	}
+ }
+ for (i = 0; i &lt; 4; i++)
+ {
+ 	if (guess_used[i] == 0)//先排查已经被计算过A的元素
+ 	{
+ 		for (int j = 0; j &lt; 4; j++)
+ 		{
+ 			if (!target_used[j] &amp;&amp; target[j] == guess[i])
+ 			{
+ 				(*b)++;
+ 				target_used[j] = 1;
+ 				break;
+ 			}
+ 		}
+ 	}
+ }
+}
+</code></pre>
+<ol start="4">
+<li>提示功能(从玩家输入的数字当中随机挑选元素给予提示)</li>
+</ol>
+<pre><code class="language-c">void give_hint(int target[], int guess[])//提示功能生成器
+{ //需要依赖玩家先进行输入数字（完成动态初始化），玩家不输入则输出提示信息
+ int i = 0;
+ int select_index = rand() % 4;// 下标生成范围0~3，符合target生成要求
+ int num = guess[select_index];
+ int exists = 0;//用一个标记变量来检测玩家输入的数字随机一个有没有在目标数字中
+ for (i = 0; i &lt; 4; i++)
+ {
+ 	if (target[i] == num)
+ 	{
+ 		exists = 1;//表示有在目标数字中
+ 		break;//立马退出循环
+ 	}
+ }
+ printf(&quot;数字%d%s在目标数字中!&quot;, num, exists ? &quot;&quot; : &quot;不&quot;);//运用三目操作符来控制输出内容！
+} 
+</code></pre>
+<h1 id="总结与反思">总结与反思</h1>
+<h2 id="初始化方式">初始化方式</h2>
+<pre><code class="language-c">int arr[5]={0,1,2,3,4,};//静态初始化，创建变量与完成初始化同时完成！
+for(int i = 0;i&lt;5;i++)
+{
+    arr[i] = i;//动态初始化，后续进行初始化！
+}
+</code></pre>
+<h2 id="break-与-continue在循环中的差异">break 与 continue在循环中的差异</h2>
+<p><strong>简单来说：break 是直接终止整个循环，而 continue 是跳过当前次循环的剩余代码，直接进入下一次循环判断部分，或循环控制部分（for循环）</strong></p>
+<pre><code class="language-c">#include &lt;stdio.h&gt;
+
+int main() {
+    // 循环打印 1-5，但遇到 3 就跳过本次打印，继续下一次循环
+    for (int i = 1; i &lt;= 5; i++) {
+        if (i == 3) {
+            continue;  // 触发 continue，跳过本次循环的 printf，直接去判断 i++
+        }
+        printf(&quot;i = %d\n&quot;, i);  // continue 后这行代码本次不执行，但下一次循环会执行
+    }
+    printf(&quot;循环结束\n&quot;);
+    return 0;
+}
+</code></pre>
+<p><strong>常见用法</strong><br>
+break：常用于「满足某个条件时提前结束循环」，比如：遍历数组找到目标值后立即停止遍历、用户输入错误时退出输入循环。<br>
+continue：常用于「过滤掉不需要处理的情况」，比如：遍历数字时跳过偶数、读取文件时跳过空行。<br>
+<strong>总结</strong></p>
+<ul>
+<li>break：终止整个循环，循环彻底结束，程序执行循环外的代码；</li>
+<li>continue：while与dowhilez中直接跳过剩余代码，来到循环条件判断部分，for循环中来到了循环变量控制部分（表达式3）<br>
+注意：while/do-while 中用 continue 需手动更新循环变量，避免无限循环。</li>
+</ul>
+<pre><code class="language-c">#include &lt;stdio.h&gt;
+
+int main() {
+    int i = 1;  // 相当于for的表达式1
+    while (i &lt;= 5) {  // 相当于for的表达式2
+        if (i == 3) {
+            printf(&quot;触发continue\n&quot;);
+            // 如果这里不手动i++，会无限循环！
+            // i++; 
+            continue;  // 直接跳回while条件判断（i&lt;=5），不会自动更新i
+        }
+        printf(&quot;当前i = %d\n&quot;, i);
+        i++;  // 相当于for的表达式3
+    }
+    return 0;
+}
+</code></pre>
+<h1 id="第一次重写版错误代码1">第一次重写版错误代码1</h1>
+<pre><code class="language-c">错误原因i++,位置错误与使用逻辑错误，应该等生成的数字（后三位）检验玩后，i再作调整，这样则一直再为当前target[i]找合适的数字进行保存，则不会跳到下一位，而下面的代码就是我犯的错误，按照我的代码如果该数字重复，则执行i++，条过当前位置i,为i+1寻找数字！
+void generate_target(int target[])
+{
+	int i = 0;
+	int used[10] = { 0 };//每次调用generate_target都会清空used数组信息，避免下次影响使用！
+	
+	while (i == 0)
+	{
+		int num = rand() % 10;
+		if (num!= 0&amp;&amp;!used[num])
+		{
+			target[i++] = num;
+			used[num] = 1;
+		}
+	}
+	while (i &lt; 4)
+	{
+		int num = rand() % 10;
+		if (!used[num])
+		{
+			target[i] = num;
+			used[num] = 1;
+		}
+		i++;//应该把i++放到if语句内部！
+	}
+}
+</code></pre>
+<h1 id="计算ab">计算AB</h1>
+<p>总结：写代码前要明确实现的功能也就是代码起到的作用，最重要的是要先用自然语言把逻辑讲清楚，把逻辑拆解到不能再拆解的样子最好，然后再结合语法知识用代码实现具体的功能！</p>
+<pre><code class="language-c">void calculate_ab(int target[], int guess[], int* a, int* b)
+{
+	*a = 0;
+	*b = 0;
+	int i = 0;
+	int j = 0;
+	int target_used[4] = { 0 };//定义两个标记型数组，用来标记数组元素是否已经统计过A或B了，0:未统计,1:已统计
+	int guess_used[4] = { 0 };//
+	for (i = 0; i &lt; 4; i++)//计算A的数量(A代表正确的数字在正确的位置上)
+	{                      //计算逻辑：只需要将guess与target中的元素一一比较即可，相等就加一，不相等就继续
+		if (guess[i] == target[i])
+		{
+			(*a)++;
+			target_used[i] = 1;//对统计过的数组元素进行标记
+			guess_used[i] = 1;
+		}
+	}
+	//i 代表target的索引
+	//j 代表guess的索引
+	for (i = 0; i &lt; 4; i++)//计算B(B代表正确的数字在错误的位置上)
+	{                      //计算逻辑：遍历target中「没算过A」的位，去guess里找「没算过A」且数字相同的位
+		if (!target_used[i])
+		{
+			for (j = 0; j &lt; 4; j++)
+			{
+				if (!guess_used[j] &amp;&amp; target[i] == guess[j])
+				{
+					(*b)++;
+					guess_used[j] = 1;
+					break;
+				}
+			}
+		}
+	}
+	printf(&quot;反馈：%dA%dB\n&quot;, *a, *b);
+}
+//计算逻辑：
+//先计算A（数字对、位置对）的值，再计算B（数字对、位置不对）！
+//计算A：只需要讲target与gues中的元素一一比较即可，相等A就加一，不相等就找下一位！
+//计算B: 首先要知道，已经算过A的数字肯定不能再参与计算B了，不然就会造成重复，因此要筛选已经用
+//过的数字，核心逻辑是，从没有被使用过的target数组元素里面找，然后在从guess里面没有用过的元素（隔绝相同的位置）找target与guess相等的元素，找到后B就加1然后再对guess数组进行标记，找不到就下一位！
+</code></pre>
+<h1 id="清理缓冲区">清理缓冲区</h1>
+<p>scanf(&quot;%s&quot;)：scanf在读取字符串时，在遇到第一个空白的时候会停止不再读取输入。第一个空白字符后的所有字符都会被保留在缓冲区中，直到缓冲区被刷新或者被scanf读取走。<br>
+<code>while (getchar() != '\n'); // 读取并丢弃缓冲区剩余字符（包括换行）</code></p>
+<h1 id="逻辑反与指针">逻辑反与指针</h1>
+<figure data-type="image" tabindex="1"><img src="https://Hurricane-Q7.github.io/post-images/1772936711304.png" alt="" loading="lazy"></figure>
+
+              </div>
+              <div class="toc-container">
+                <ul class="markdownIt-TOC">
+<li><a href="#%E7%8C%9C%E6%95%B0%E5%AD%97%E5%B0%8F%E6%B8%B8%E6%88%8Fpro">猜数字小游戏pro</a>
+<ul>
+<li><a href="#%E6%95%B4%E4%BD%93%E9%80%BB%E8%BE%91">整体逻辑</a></li>
+<li><a href="#%E4%B8%80%E4%BA%9B%E5%8A%9F%E8%83%BD">一些功能</a></li>
+</ul>
+</li>
+<li><a href="#%E6%80%BB%E7%BB%93%E4%B8%8E%E5%8F%8D%E6%80%9D">总结与反思</a>
+<ul>
+<li><a href="#%E5%88%9D%E5%A7%8B%E5%8C%96%E6%96%B9%E5%BC%8F">初始化方式</a></li>
+<li><a href="#break-%E4%B8%8E-continue%E5%9C%A8%E5%BE%AA%E7%8E%AF%E4%B8%AD%E7%9A%84%E5%B7%AE%E5%BC%82">break 与 continue在循环中的差异</a></li>
+</ul>
+</li>
+<li><a href="#%E7%AC%AC%E4%B8%80%E6%AC%A1%E9%87%8D%E5%86%99%E7%89%88%E9%94%99%E8%AF%AF%E4%BB%A3%E7%A0%811">第一次重写版错误代码1</a></li>
+<li><a href="#%E8%AE%A1%E7%AE%97ab">计算AB</a></li>
+<li><a href="#%E6%B8%85%E7%90%86%E7%BC%93%E5%86%B2%E5%8C%BA">清理缓冲区</a></li>
+<li><a href="#%E9%80%BB%E8%BE%91%E5%8F%8D%E4%B8%8E%E6%8C%87%E9%92%88">逻辑反与指针</a></li>
+</ul>
+
+              </div>
+            </div>
+          </article>
+        </div>
+
+        
+          <div class="next-post">
+            <div class="next">下一篇</div>
+            <a href="https://Hurricane-Q7.github.io/post/222-ri-c-yu-yan-jie-gou-ti-chu-jie/">
+              <h3 class="post-title">
+                2.22日-C语言-结构体（初阶）
+              </h3>
+            </a>
+          </div>
+        
+
+        
+
+        <div class="site-footer">
+  Powered by <a href="https://github.com/getgridea/gridea" target="_blank">Gridea</a>
+  <a class="rss" href="https://Hurricane-Q7.github.io/atom.xml" target="_blank">
+    <i class="ri-rss-line"></i> RSS
+  </a>
+</div>
+
+      </div>
+    </div>
+
+    <script>
+      hljs.initHighlightingOnLoad()
+
+      let mainNavLinks = document.querySelectorAll(".markdownIt-TOC a");
+
+      // This should probably be throttled.
+      // Especially because it triggers during smooth scrolling.
+      // https://lodash.com/docs/4.17.10#throttle
+      // You could do like...
+      // window.addEventListener("scroll", () => {
+      //    _.throttle(doThatStuff, 100);
+      // });
+      // Only not doing it here to keep this Pen dependency-free.
+
+      window.addEventListener("scroll", event => {
+        let fromTop = window.scrollY;
+
+        mainNavLinks.forEach((link, index) => {
+          let section = document.getElementById(decodeURI(link.hash).substring(1));
+          let nextSection = null
+          if (mainNavLinks[index + 1]) {
+            nextSection = document.getElementById(decodeURI(mainNavLinks[index + 1].hash).substring(1));
+          }
+          if (section.offsetTop <= fromTop) {
+            if (nextSection) {
+              if (nextSection.offsetTop > fromTop) {
+                link.classList.add("current");
+              } else {
+                link.classList.remove("current");    
+              }
+            } else {
+              link.classList.add("current");
+            }
+          } else {
+            link.classList.remove("current");
+          }
+        });
+      });
+
+    </script>
+  </body>
+</html>

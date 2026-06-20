@@ -1,0 +1,335 @@
+<html>
+  <head>
+    <meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>第八周-C语言练习题 | Gridea</title>
+<link rel="shortcut icon" href="https://Hurricane-Q7.github.io/favicon.ico?v=1781917751713">
+<link href="https://cdn.jsdelivr.net/npm/remixicon@2.3.0/fonts/remixicon.css" rel="stylesheet">
+<link rel="stylesheet" href="https://Hurricane-Q7.github.io/styles/main.css">
+<link rel="alternate" type="application/atom+xml" title="第八周-C语言练习题 | Gridea - Atom Feed" href="https://Hurricane-Q7.github.io/atom.xml">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Droid+Serif:400,700">
+
+
+
+    <meta name="description" content="乐乐改数字（牛客BC116）
+自己的方法
+算法思想：
+利用num/10这种方式，把数字的每一位存放到数组里面，随后对数组元素从后往前进行判断，看是偶数还是奇数，偶数就更新数组元素为0，奇数就更新为1，判断后再用一个变量从数组最后一个元素后往..." />
+    <meta name="keywords" content="C语言学习笔记" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.10.0/katex.min.css">
+    <script src="//cdn.jsdelivr.net/gh/highlightjs/cdn-release@11.5.1/build/highlight.min.js"></script>
+  </head>
+  <body>
+    <div class="main">
+      <div class="main-content">
+        <div class="site-header">
+  <a href="https://Hurricane-Q7.github.io">
+  <img class="avatar" src="https://Hurricane-Q7.github.io/images/avatar.png?v=1781917751713" alt="">
+  </a>
+  <h1 class="site-title">
+    Gridea
+  </h1>
+  <p class="site-description">
+    言者所以在意，得意而忘言
+  </p>
+  <div class="menu-container">
+    
+      
+        <a href="/" class="menu">
+          首页
+        </a>
+      
+    
+      
+        <a href="/archives" class="menu">
+          归档
+        </a>
+      
+    
+      
+        <a href="/tags" class="menu">
+          标签
+        </a>
+      
+    
+      
+        <a href="/post/about" class="menu">
+          关于
+        </a>
+      
+    
+  </div>
+  <div class="social-container">
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+  </div>
+</div>
+
+        <div class="post-detail">
+          <article class="post">
+            <h2 class="post-title">
+              第八周-C语言练习题
+            </h2>
+            <div class="post-info">
+              <span>
+                2026-04-22
+              </span>
+              <span>
+                5 min read
+              </span>
+              
+                <a href="https://Hurricane-Q7.github.io/tag/YSaodvhI5R/" class="post-tag">
+                  # C语言学习笔记
+                </a>
+              
+            </div>
+            
+              <img class="post-feature-image" src="https://Hurricane-Q7.github.io/post-images/di-ba-zhou-c-yu-yan-lian-xi-ti.png" alt="">
+            
+            <div class="post-content-wrapper">
+              <div class="post-content" v-pre>
+                <h1 id="乐乐改数字牛客bc116">乐乐改数字（牛客BC116）</h1>
+<h2 id="自己的方法">自己的方法</h2>
+<p>算法思想：<br>
+利用num/10这种方式，把数字的每一位存放到数组里面，随后对数组元素从后往前进行判断，看是偶数还是奇数，偶数就更新数组元素为0，奇数就更新为1，判断后再用一个变量从数组最后一个元素后往前遍历来记录奇数1的位置，最后从flag记录的下标处来打印数组！</p>
+<pre><code class="language-c">//描述：小乐乐喜欢数字，尤其喜欢0和1。他现在得到了一个数，想把每位的数变成0或1。如果某一位是奇数，就把它变成1，如果是偶数，那么就把它变成0。请你回答他最后得到的数是多少。
+#include&lt;stdio.h&gt;
+int main()
+{
+     //输入
+    int num = 0;
+    int digit_of_num = 1;//统计数字的位数,默认一位
+    scanf(&quot;%d&quot;,&amp;num);
+    int tmp = num;
+    //调整
+    while(tmp/10)
+    {
+        digit_of_num++;
+        tmp /= 10;//去掉最后一位
+    }
+    int arr[digit_of_num];
+    //把num的每一位数用数组arr来保存
+    int i = 0;
+    for (i = digit_of_num-1;i&gt;=0 ;i--) 
+    {
+       arr[i] = num % 10;
+       num /=10;
+    }
+    //核心：判断数组元素是偶数or奇数？偶数把元素变为0，奇数就变为1
+    for(i=0;i&lt;digit_of_num;i++)
+    {
+       if(arr[i]&gt;=2)
+       {
+         if(arr[i]%2==0)//偶数
+        {
+            arr[i]=0;
+        }
+        if(arr[i]%2==1)//奇数
+        {
+            arr[i]=1;
+        }
+       }
+    }
+    //输出：牛客对格式有要求，belike:0000 0001这样的，结果却要输出 1
+    int flag = 0;
+    //flag变量用来记录从后往前遍历数组元素不为偶数的下标数
+    for(i=digit_of_num-1;i&gt;=0;i--)
+    {
+         if(arr[i]%2==0)
+         {
+            continue;//跳过剩下代码，来到循环变量调整部分
+         }
+         if(arr[i]%2==1)
+         {
+            flag=i;
+         }
+    }
+    //从flag开始打印
+    for(flag;flag&lt;digit_of_num;flag++)
+    {
+       printf(&quot;%d&quot;,arr[flag]);  
+    }
+    return 0;
+}
+</code></pre>
+<h2 id="鹏哥的方法十进制计算">鹏哥的方法（十进制计算）</h2>
+<pre><code class="language-c">#define _CRT_SECURE_NO_WARNINGS
+#include&lt;stdio.h&gt;
+#include&lt;math.h&gt;
+牛客BC116 乐乐改数字
+鹏哥的方法（十进制计算）
+题目：如果某一位是奇数，就把它变成1，如果是偶数，那么就把它变成0。请你回答他最后得到的数是多少
+ 数字：1234 改后：1010，改动后的数字是十进制的表现形式，那么就可以用十进制的方法输出
+算法思想：对输入数字的每一位数判断，判断奇数or偶数，判断后计算变动后的数字的每一位的值乘上权重后的结果，给
+上一个变量sum累加每位数字乘后的值，其实也就是计算10进制数字，最后输出sum即可
+int main()
+{		
+	//输入
+	int num = 0;
+	int sum = 0;//总结求和
+	int i = 0;//进行十进制计算时要用的位数，从0开始
+	scanf(&quot;%d&quot;, &amp;num);
+	while (num)
+	{
+		int bit = num % 10;//提取数字的每一位
+
+		if (bit % 2 == 1)
+		{
+			bit = 1;
+		}
+		if (bit % 2 == 0)
+		{
+			bit = 0;
+		}
+		sum += bit * pow(10, i);
+		i++;
+		num /= 10;
+	}
+	//输出
+	printf(&quot;%d\n&quot;, sum);
+
+	return 0;
+}
+</code></pre>
+<h1 id="第三题乐乐网购题">第三题乐乐网购题</h1>
+<h2 id="自己写的">自己写的</h2>
+<pre><code class="language-c">#include&lt;stdio.h&gt;
+//先打折扣，打完折扣后在看有没有卷来减money
+int main()
+{
+   float price = 0.0f;
+   int month = 0;
+   int day = 0;
+   int is_Coupon = 0;//优惠卷判断，1有卷，0没有卷
+   //输入
+   scanf(&quot;%f %d %d %d&quot;,&amp;price,&amp;month,&amp;day,&amp;is_Coupon);
+   //处理
+   //先判断今天是不是折扣日
+   if(11==day &amp;&amp; 11==month){
+    price *= 0.7;
+   }else if(12==day&amp;&amp;12 == month){
+    price *= 0.8;
+   }
+   //再判断有没有优惠卷
+   if(1==is_Coupon)
+   {
+    price -= 50;
+   }
+   //输出(一件衣服的花费的实际价钱)
+   if(price&lt;0)
+   {
+    price = 0; //这里是题目要求，不过也符合实际情况，一件一份的价钱怎么可能为负数呢！
+   }
+   printf(&quot;%.2f&quot;,price);//保留后两位数字打印！
+    return 0;
+}
+</code></pre>
+<h3 id="遇到的一个错误">遇到的一个错误</h3>
+<p>在 C 语言中：</p>
+<ul>
+<li>printf 的格式控制（如 %.2f）是用来控制输出显示的（保留两位小数）。</li>
+<li>scanf 的格式控制是用来匹配输入格式的。<br>
+<code> scanf(&quot;%.f ……&quot;,……)</code>；<br>
+在输入的格式控制符号里面加.企图限制输入格式，是不对的。<br>
+精度控制 (.n) 只属于 printf，不属于 scanf。</li>
+</ul>
+
+              </div>
+              <div class="toc-container">
+                <ul class="markdownIt-TOC">
+<li><a href="#%E4%B9%90%E4%B9%90%E6%94%B9%E6%95%B0%E5%AD%97%E7%89%9B%E5%AE%A2bc116">乐乐改数字（牛客BC116）</a>
+<ul>
+<li><a href="#%E8%87%AA%E5%B7%B1%E7%9A%84%E6%96%B9%E6%B3%95">自己的方法</a></li>
+<li><a href="#%E9%B9%8F%E5%93%A5%E7%9A%84%E6%96%B9%E6%B3%95%E5%8D%81%E8%BF%9B%E5%88%B6%E8%AE%A1%E7%AE%97">鹏哥的方法（十进制计算）</a></li>
+</ul>
+</li>
+<li><a href="#%E7%AC%AC%E4%B8%89%E9%A2%98%E4%B9%90%E4%B9%90%E7%BD%91%E8%B4%AD%E9%A2%98">第三题乐乐网购题</a>
+<ul>
+<li><a href="#%E8%87%AA%E5%B7%B1%E5%86%99%E7%9A%84">自己写的</a>
+<ul>
+<li><a href="#%E9%81%87%E5%88%B0%E7%9A%84%E4%B8%80%E4%B8%AA%E9%94%99%E8%AF%AF">遇到的一个错误</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+              </div>
+            </div>
+          </article>
+        </div>
+
+        
+          <div class="next-post">
+            <div class="next">下一篇</div>
+            <a href="https://Hurricane-Q7.github.io/post/421-ri-c-yu-yan-jie-gou-ti-nei-cun-dui-qi-yu-jie-gou-ti-chuan-can/">
+              <h3 class="post-title">
+                ⭐4.21日-C语言-结构体内存对齐与结构体传参
+              </h3>
+            </a>
+          </div>
+        
+
+        
+
+        <div class="site-footer">
+  Powered by <a href="https://github.com/getgridea/gridea" target="_blank">Gridea</a>
+  <a class="rss" href="https://Hurricane-Q7.github.io/atom.xml" target="_blank">
+    <i class="ri-rss-line"></i> RSS
+  </a>
+</div>
+
+      </div>
+    </div>
+
+    <script>
+      hljs.initHighlightingOnLoad()
+
+      let mainNavLinks = document.querySelectorAll(".markdownIt-TOC a");
+
+      // This should probably be throttled.
+      // Especially because it triggers during smooth scrolling.
+      // https://lodash.com/docs/4.17.10#throttle
+      // You could do like...
+      // window.addEventListener("scroll", () => {
+      //    _.throttle(doThatStuff, 100);
+      // });
+      // Only not doing it here to keep this Pen dependency-free.
+
+      window.addEventListener("scroll", event => {
+        let fromTop = window.scrollY;
+
+        mainNavLinks.forEach((link, index) => {
+          let section = document.getElementById(decodeURI(link.hash).substring(1));
+          let nextSection = null
+          if (mainNavLinks[index + 1]) {
+            nextSection = document.getElementById(decodeURI(mainNavLinks[index + 1].hash).substring(1));
+          }
+          if (section.offsetTop <= fromTop) {
+            if (nextSection) {
+              if (nextSection.offsetTop > fromTop) {
+                link.classList.add("current");
+              } else {
+                link.classList.remove("current");    
+              }
+            } else {
+              link.classList.add("current");
+            }
+          } else {
+            link.classList.remove("current");
+          }
+        });
+      });
+
+    </script>
+  </body>
+</html>

@@ -1,0 +1,250 @@
+<html>
+  <head>
+    <meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>1.31-C语言-函数递归用迭代（初阶） | Gridea</title>
+<link rel="shortcut icon" href="https://Hurricane-Q7.github.io/favicon.ico?v=1781917751713">
+<link href="https://cdn.jsdelivr.net/npm/remixicon@2.3.0/fonts/remixicon.css" rel="stylesheet">
+<link rel="stylesheet" href="https://Hurricane-Q7.github.io/styles/main.css">
+<link rel="alternate" type="application/atom+xml" title="1.31-C语言-函数递归用迭代（初阶） | Gridea - Atom Feed" href="https://Hurricane-Q7.github.io/atom.xml">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Droid+Serif:400,700">
+
+
+
+    <meta name="description" content="函数递归
+程序调用自身的编程技巧称为递归。
+一个过程或函数在其定义或说明中有直接或间接调用自身的
+一种方法，它通常把一个大型复杂的问题层层转化为一个与原问题相似的规模较小的问题来求解，
+递归的主要思考方式在于:把大事化小，小事化了
+递归递归..." />
+    <meta name="keywords" content="" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.10.0/katex.min.css">
+    <script src="//cdn.jsdelivr.net/gh/highlightjs/cdn-release@11.5.1/build/highlight.min.js"></script>
+  </head>
+  <body>
+    <div class="main">
+      <div class="main-content">
+        <div class="site-header">
+  <a href="https://Hurricane-Q7.github.io">
+  <img class="avatar" src="https://Hurricane-Q7.github.io/images/avatar.png?v=1781917751713" alt="">
+  </a>
+  <h1 class="site-title">
+    Gridea
+  </h1>
+  <p class="site-description">
+    言者所以在意，得意而忘言
+  </p>
+  <div class="menu-container">
+    
+      
+        <a href="/" class="menu">
+          首页
+        </a>
+      
+    
+      
+        <a href="/archives" class="menu">
+          归档
+        </a>
+      
+    
+      
+        <a href="/tags" class="menu">
+          标签
+        </a>
+      
+    
+      
+        <a href="/post/about" class="menu">
+          关于
+        </a>
+      
+    
+  </div>
+  <div class="social-container">
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+  </div>
+</div>
+
+        <div class="post-detail">
+          <article class="post">
+            <h2 class="post-title">
+              1.31-C语言-函数递归用迭代（初阶）
+            </h2>
+            <div class="post-info">
+              <span>
+                2026-01-31
+              </span>
+              <span>
+                3 min read
+              </span>
+              
+            </div>
+            
+            <div class="post-content-wrapper">
+              <div class="post-content" v-pre>
+                <h1 id="函数递归">函数递归</h1>
+<p>程序调用自身的编程技巧称为<strong>递归</strong>。<br>
+一个过程或函数在其定义或说明中有直接或间接调用自身的<br>
+一种方法，它通常把一个大型复杂的问题层层转化为一个与原问题相似的规模较小的问题来求解，<br>
+递归的主要思考方式在于:把<strong>大事化小，小事化了</strong><br>
+递归递归，先递后归！<br>
+递与归是两个动作！</p>
+<pre><code class="language-c">void print(unsigned int n)
+{
+	if (n &gt; 9)
+	{
+		print(n / 10);
+	}
+	printf(&quot;%d &quot;, n % 10);
+}
+int main()
+{
+	unsigned int num = 0;
+	scanf(&quot;%u&quot;, &amp;num);
+	print(num);//函数调用完会回到刚开始调用的地方，执行剩下的部分，与返回值什么是void型无关的。
+	return 0;
+}
+x % 10 是编程中提取整数 x 个位数字的经典写法（比如从 123 中提取 3）
+余数等于 “被除数” 减去 “除数乘以商” 的结果
+</code></pre>
+<h2 id="递归的两个必要条件">递归的两个必要条件</h2>
+<ol>
+<li><strong>存在限制条件</strong>，当满足这个限制条件的时候，递归便不再继续。</li>
+<li><strong>每次递归调用之后越来越接近这个限制条件。</strong><br>
+死递归：函数一直重复调用自己，没有中止条件，最终会导致在内存栈区造成栈溢出，疑问每次调用函数操作系统都会在虚拟内存区域的栈空间上创建一个函数栈帧。<br>
+递归次数太多容易出现<strong>栈溢出</strong>(Stack overflow)的情况！<br>
+<strong>那如何解决上述的问题:</strong><br>
+1.将递归改写成非递归。<br>
+2.使用static对象替代nonstatic局部对象。在递归函数设计中，可以使用static对象替代nonstatic局部对象(即栈对象)，这不<br>
+仅可以减少每次递归调用和返回时产生和释放nonstatic对象的开销，而且static对象还可以保存递归调用的中间状态，并且可为各个调用层所访问。<br>
+函数递归的几个经典项目: 汉诺塔问题 青蛙跳台阶</li>
+</ol>
+<h1 id="迭代">迭代</h1>
+<p>循环是一种迭代！</p>
+<pre><code class="language-c">int fib(int n)
+{
+	int count = 1;
+	int a = 1;
+	int b = 1;
+	int c = a + b;
+	int i = 3;
+	if (n &lt;= 2)
+	{
+		return 1;
+	}
+	else//n&gt;2的情况,当n等于三的时候，c=a+b执行一次，n=4的时候a+b执行两次
+	{
+		while (count&lt;=n-2)
+		{
+			
+			c = a + b;
+			a = b;
+			b = c;
+			count++;
+		}
+	}
+	return c;
+}
+int main()
+{
+	int n = 0;
+	printf(&quot;请输入一个数字，以求斐波那契数：&quot;);
+	scanf(&quot;%d&quot;, &amp;n);
+	int ret = fib(n);
+	printf(&quot;该数字对应的斐波那契数字是：%d\n&quot;, ret);
+	return 0;
+}
+</code></pre>
+
+              </div>
+              <div class="toc-container">
+                <ul class="markdownIt-TOC">
+<li><a href="#%E5%87%BD%E6%95%B0%E9%80%92%E5%BD%92">函数递归</a>
+<ul>
+<li><a href="#%E9%80%92%E5%BD%92%E7%9A%84%E4%B8%A4%E4%B8%AA%E5%BF%85%E8%A6%81%E6%9D%A1%E4%BB%B6">递归的两个必要条件</a></li>
+</ul>
+</li>
+<li><a href="#%E8%BF%AD%E4%BB%A3">迭代</a></li>
+</ul>
+
+              </div>
+            </div>
+          </article>
+        </div>
+
+        
+          <div class="next-post">
+            <div class="next">下一篇</div>
+            <a href="https://Hurricane-Q7.github.io/post/129-c-yu-yan-han-shu-de-qian-tao-chu-jie/">
+              <h3 class="post-title">
+                1.29-C语言-函数的声明、定义（初阶）
+              </h3>
+            </a>
+          </div>
+        
+
+        
+
+        <div class="site-footer">
+  Powered by <a href="https://github.com/getgridea/gridea" target="_blank">Gridea</a>
+  <a class="rss" href="https://Hurricane-Q7.github.io/atom.xml" target="_blank">
+    <i class="ri-rss-line"></i> RSS
+  </a>
+</div>
+
+      </div>
+    </div>
+
+    <script>
+      hljs.initHighlightingOnLoad()
+
+      let mainNavLinks = document.querySelectorAll(".markdownIt-TOC a");
+
+      // This should probably be throttled.
+      // Especially because it triggers during smooth scrolling.
+      // https://lodash.com/docs/4.17.10#throttle
+      // You could do like...
+      // window.addEventListener("scroll", () => {
+      //    _.throttle(doThatStuff, 100);
+      // });
+      // Only not doing it here to keep this Pen dependency-free.
+
+      window.addEventListener("scroll", event => {
+        let fromTop = window.scrollY;
+
+        mainNavLinks.forEach((link, index) => {
+          let section = document.getElementById(decodeURI(link.hash).substring(1));
+          let nextSection = null
+          if (mainNavLinks[index + 1]) {
+            nextSection = document.getElementById(decodeURI(mainNavLinks[index + 1].hash).substring(1));
+          }
+          if (section.offsetTop <= fromTop) {
+            if (nextSection) {
+              if (nextSection.offsetTop > fromTop) {
+                link.classList.add("current");
+              } else {
+                link.classList.remove("current");    
+              }
+            } else {
+              link.classList.add("current");
+            }
+          } else {
+            link.classList.remove("current");
+          }
+        });
+      });
+
+    </script>
+  </body>
+</html>

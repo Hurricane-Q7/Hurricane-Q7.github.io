@@ -1,0 +1,335 @@
+<html>
+  <head>
+    <meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>4.11日-C语言-内存操作函数 | Gridea</title>
+<link rel="shortcut icon" href="https://Hurricane-Q7.github.io/favicon.ico?v=1781917751713">
+<link href="https://cdn.jsdelivr.net/npm/remixicon@2.3.0/fonts/remixicon.css" rel="stylesheet">
+<link rel="stylesheet" href="https://Hurricane-Q7.github.io/styles/main.css">
+<link rel="alternate" type="application/atom+xml" title="4.11日-C语言-内存操作函数 | Gridea - Atom Feed" href="https://Hurricane-Q7.github.io/atom.xml">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Droid+Serif:400,700">
+
+
+
+    <meta name="description" content="memcpy函数
+函数模型：
+void * memcpy (void * destination,const void * source，size_t num);
+函数作用：
+Copy block of memory，内存块拷贝函数
+
+函数..." />
+    <meta name="keywords" content="C语言学习笔记" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.10.0/katex.min.css">
+    <script src="//cdn.jsdelivr.net/gh/highlightjs/cdn-release@11.5.1/build/highlight.min.js"></script>
+  </head>
+  <body>
+    <div class="main">
+      <div class="main-content">
+        <div class="site-header">
+  <a href="https://Hurricane-Q7.github.io">
+  <img class="avatar" src="https://Hurricane-Q7.github.io/images/avatar.png?v=1781917751713" alt="">
+  </a>
+  <h1 class="site-title">
+    Gridea
+  </h1>
+  <p class="site-description">
+    言者所以在意，得意而忘言
+  </p>
+  <div class="menu-container">
+    
+      
+        <a href="/" class="menu">
+          首页
+        </a>
+      
+    
+      
+        <a href="/archives" class="menu">
+          归档
+        </a>
+      
+    
+      
+        <a href="/tags" class="menu">
+          标签
+        </a>
+      
+    
+      
+        <a href="/post/about" class="menu">
+          关于
+        </a>
+      
+    
+  </div>
+  <div class="social-container">
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+  </div>
+</div>
+
+        <div class="post-detail">
+          <article class="post">
+            <h2 class="post-title">
+              4.11日-C语言-内存操作函数
+            </h2>
+            <div class="post-info">
+              <span>
+                2026-04-11
+              </span>
+              <span>
+                4 min read
+              </span>
+              
+                <a href="https://Hurricane-Q7.github.io/tag/YSaodvhI5R/" class="post-tag">
+                  # C语言学习笔记
+                </a>
+              
+            </div>
+            
+              <img class="post-feature-image" src="https://Hurricane-Q7.github.io/post-images/411-ri-c-yu-yan-nei-cun-cao-zuo-han-shu.png" alt="">
+            
+            <div class="post-content-wrapper">
+              <div class="post-content" v-pre>
+                <h1 id="memcpy函数">memcpy函数</h1>
+<h2 id="函数模型">函数模型：</h2>
+<p><code>void * memcpy (void * destination,const void * source，size_t num);</code></p>
+<h2 id="函数作用">函数作用：</h2>
+<p><strong>Copy block of memory</strong>，内存块拷贝函数</p>
+<ul>
+<li>函数memcpy从source的位置开始向后复制num个字节的数据到destination的内存位置。</li>
+<li>这个函数在遇到‘0'的时候并不会停下来。</li>
+<li>如果source和destination有任何的重叠，复制的结果都是未定义的。</li>
+<li>也就是说memcpy函数是不用来处理重叠数据之间的内存拷贝滴！</li>
+</ul>
+<h2 id="函数参数">函数参数：</h2>
+<h3 id="destination">destination</h3>
+<p>Pointer to the destination array where the content is to be copied, type-casted to a pointer of type void*.</p>
+<h3 id="source">source</h3>
+<p>Pointer to the source of data to be copied, type-casted to a pointer of type const void*.</p>
+<h3 id="num">num</h3>
+<p>这个num就是你要拷贝的数据的字节大小！<br>
+Number of bytes to copy.<br>
+size_t is an unsigned integral type.</p>
+<pre><code class="language-c">#include &lt;stdio.h&gt;
+#include &lt;string.h&gt;
+
+struct {
+  char name[40];
+  int age;
+} person, person_copy;
+
+int main ()
+{
+  char myname[] = &quot;Pierre de Fermat&quot;;
+
+  /* using memcpy to copy string: */
+  memcpy ( person.name, myname, strlen(myname)+1 );
+  person.age = 46;
+
+  /* using memcpy to copy structure: */
+  memcpy ( &amp;person_copy, &amp;person, sizeof(person) );
+
+  printf (&quot;person_copy: %s, %d \n&quot;, person_copy.name, person_copy.age );
+
+  return 0;
+}
+</code></pre>
+<h3 id="模拟实现memcpy举例memcpy不能拷贝有重叠内存空间的数据拷贝">模拟实现memcpy，举例memcpy不能拷贝有重叠内存空间的数据拷贝</h3>
+<pre><code class="language-c">void* my_memcpy(void* dest, void * src,size_t num)
+{
+	//复制的量取决于num里面放的字节数
+	//num里面放多少字节就copy多少字节的内容
+	assert(dest &amp;&amp; src);
+	void* ret_value = dest;
+	while (num--)
+	{
+		
+		*(char*)dest = *(char*)src;
+		dest = (char*)dest + 1;
+		src = (char*)src + 1;
+	}
+	return dest;
+}
+
+int main()
+{
+	int arr1[] = { 1,2,3,4,5,6,7,8,9,10 };
+	int arr2[20] = { 0 };
+    //把arr1里的1,2,3,4,5拷贝到3~7的位置
+	//预期结果：1 2 1 2 3 4 5 8 9 10;
+	my_memcpy(arr1 + 2, arr1, 20);//再VS里面用memcpy也能达到预期效果，这是因为vs升级了memcpy的功能！
+	int i = 0;
+	for (i = 0; i &lt; 10; i++)
+	{
+		printf(&quot;%d &quot;, arr1[i]);
+	}
+    //实际结果：1 2 1 2 3 4 5 8 9 10
+	return 0;
+}
+</code></pre>
+<h1 id="memmove">memmove</h1>
+<p>memmove的参数、返回值、函数模型和memcpy一样的！</p>
+<h1 id="memcmp">memcmp</h1>
+<figure data-type="image" tabindex="1"><img src="https://Hurricane-Q7.github.io/post-images/1775909197027.png" alt="" loading="lazy"></figure>
+<h1 id="memset内存空间填充函数">memset（内存空间填充函数）</h1>
+<p><strong>头文件：&lt;string.h&gt;</strong><br>
+函数介绍：<br>
+Fill block of memory.<br>
+Sets the first num bytes of the block of memory pointed by ptr to the specified value.填充由指向特定值的指针指向内存块的前num个字节</p>
+<h2 id="函数模型-2">函数模型：</h2>
+<p>memset是以字节为单位来按value来初始化内容的！<br>
+<code>void * memset ( void * ptr, int value, size_t num );</code></p>
+<h2 id="我的参数">我的参数</h2>
+<p><strong>num</strong>:将要被set特定值的字节个数！<br>
+<img src="https://Hurricane-Q7.github.io/post-images/1775905731649.png" alt="" loading="lazy"></p>
+<h2 id="return-value">Return Value</h2>
+<p>ptr is returned!</p>
+<pre><code class="language-c">int main()
+{
+	int arr[10] = { 0 };
+	memset(arr, 1, sizeof(arr));//这里想把数组的内容全部初始化为1
+    //memset是按字节为单位来初始化内容的，这里把40个字节的内容全部变成1
+    //二进制表示
+    //0原来的二进制：
+    //00000000 00000000 00000000 00000000
+    //以字节为单位变动后：
+    //00000001 00000001 00000001 00000001（16843009）
+	int i = 0;
+	for (i = 0; i &lt; 10; i++)
+	{
+		printf(&quot;%d \n&quot;, arr[i]);//组合4个字节为一个int型数据
+	}
+	return 0;
+}
+//发现结果没有符合预期：
+//16843009
+//16843009
+//16843009
+//……
+</code></pre>
+<pre><code class="language-c">为什么可以通过memset将数组内容初始化0或-1？
+整型数据在内存中是按补码进行存储的。
+-1的补码是：
+11111111 11111111 11111111 11111111
+然后把每一个字节的内容变成-1的补码内容，最后在组合输出！
+int main()
+{
+    int arr[10]={0};
+    memset(arr,-1,sizeof(arr));
+    int i = 0;
+    for(i=0;i&lt;10;i++)
+    {
+        printf(&quot;%d &quot;,arr[i]);
+    }
+}
+归根结底，还是-1与0的补码的特殊性（都是0或1）！
+</code></pre>
+
+              </div>
+              <div class="toc-container">
+                <ul class="markdownIt-TOC">
+<li><a href="#memcpy%E5%87%BD%E6%95%B0">memcpy函数</a>
+<ul>
+<li><a href="#%E5%87%BD%E6%95%B0%E6%A8%A1%E5%9E%8B">函数模型：</a></li>
+<li><a href="#%E5%87%BD%E6%95%B0%E4%BD%9C%E7%94%A8">函数作用：</a></li>
+<li><a href="#%E5%87%BD%E6%95%B0%E5%8F%82%E6%95%B0">函数参数：</a>
+<ul>
+<li><a href="#destination">destination</a></li>
+<li><a href="#source">source</a></li>
+<li><a href="#num">num</a></li>
+<li><a href="#%E6%A8%A1%E6%8B%9F%E5%AE%9E%E7%8E%B0memcpy%E4%B8%BE%E4%BE%8Bmemcpy%E4%B8%8D%E8%83%BD%E6%8B%B7%E8%B4%9D%E6%9C%89%E9%87%8D%E5%8F%A0%E5%86%85%E5%AD%98%E7%A9%BA%E9%97%B4%E7%9A%84%E6%95%B0%E6%8D%AE%E6%8B%B7%E8%B4%9D">模拟实现memcpy，举例memcpy不能拷贝有重叠内存空间的数据拷贝</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a href="#memmove">memmove</a></li>
+<li><a href="#memcmp">memcmp</a></li>
+<li><a href="#memset%E5%86%85%E5%AD%98%E7%A9%BA%E9%97%B4%E5%A1%AB%E5%85%85%E5%87%BD%E6%95%B0">memset（内存空间填充函数）</a>
+<ul>
+<li><a href="#%E5%87%BD%E6%95%B0%E6%A8%A1%E5%9E%8B-2">函数模型：</a></li>
+<li><a href="#%E6%88%91%E7%9A%84%E5%8F%82%E6%95%B0">我的参数</a></li>
+<li><a href="#return-value">Return Value</a></li>
+</ul>
+</li>
+</ul>
+
+              </div>
+            </div>
+          </article>
+        </div>
+
+        
+          <div class="next-post">
+            <div class="next">下一篇</div>
+            <a href="https://Hurricane-Q7.github.io/post/49-ri-shi-shi-tian-qi-shi-zhong-xiang-mu/">
+              <h3 class="post-title">
+                ESP32-学习
+              </h3>
+            </a>
+          </div>
+        
+
+        
+
+        <div class="site-footer">
+  Powered by <a href="https://github.com/getgridea/gridea" target="_blank">Gridea</a>
+  <a class="rss" href="https://Hurricane-Q7.github.io/atom.xml" target="_blank">
+    <i class="ri-rss-line"></i> RSS
+  </a>
+</div>
+
+      </div>
+    </div>
+
+    <script>
+      hljs.initHighlightingOnLoad()
+
+      let mainNavLinks = document.querySelectorAll(".markdownIt-TOC a");
+
+      // This should probably be throttled.
+      // Especially because it triggers during smooth scrolling.
+      // https://lodash.com/docs/4.17.10#throttle
+      // You could do like...
+      // window.addEventListener("scroll", () => {
+      //    _.throttle(doThatStuff, 100);
+      // });
+      // Only not doing it here to keep this Pen dependency-free.
+
+      window.addEventListener("scroll", event => {
+        let fromTop = window.scrollY;
+
+        mainNavLinks.forEach((link, index) => {
+          let section = document.getElementById(decodeURI(link.hash).substring(1));
+          let nextSection = null
+          if (mainNavLinks[index + 1]) {
+            nextSection = document.getElementById(decodeURI(mainNavLinks[index + 1].hash).substring(1));
+          }
+          if (section.offsetTop <= fromTop) {
+            if (nextSection) {
+              if (nextSection.offsetTop > fromTop) {
+                link.classList.add("current");
+              } else {
+                link.classList.remove("current");    
+              }
+            } else {
+              link.classList.add("current");
+            }
+          } else {
+            link.classList.remove("current");
+          }
+        });
+      });
+
+    </script>
+  </body>
+</html>

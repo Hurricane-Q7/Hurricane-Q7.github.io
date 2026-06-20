@@ -1,0 +1,320 @@
+<html>
+  <head>
+    <meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>C语言进阶-程序的编译与预处理环节（一） | Gridea</title>
+<link rel="shortcut icon" href="https://Hurricane-Q7.github.io/favicon.ico?v=1781917751713">
+<link href="https://cdn.jsdelivr.net/npm/remixicon@2.3.0/fonts/remixicon.css" rel="stylesheet">
+<link rel="stylesheet" href="https://Hurricane-Q7.github.io/styles/main.css">
+<link rel="alternate" type="application/atom+xml" title="C语言进阶-程序的编译与预处理环节（一） | Gridea - Atom Feed" href="https://Hurricane-Q7.github.io/atom.xml">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Droid+Serif:400,700">
+
+
+
+    <meta name="description" content="一个C源文件变成一个可执行程序的流程
+大致流程是这样的：预处理/预编译-&gt;编译-&gt;汇编-&gt;链接
+一个源文件想要成为一个可执行程序一般要经过这4个步骤，但是再日常中表达，我们一般把上述的4个步骤统称为编译.
+
+常见的Comp..." />
+    <meta name="keywords" content="" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.10.0/katex.min.css">
+    <script src="//cdn.jsdelivr.net/gh/highlightjs/cdn-release@11.5.1/build/highlight.min.js"></script>
+  </head>
+  <body>
+    <div class="main">
+      <div class="main-content">
+        <div class="site-header">
+  <a href="https://Hurricane-Q7.github.io">
+  <img class="avatar" src="https://Hurricane-Q7.github.io/images/avatar.png?v=1781917751713" alt="">
+  </a>
+  <h1 class="site-title">
+    Gridea
+  </h1>
+  <p class="site-description">
+    言者所以在意，得意而忘言
+  </p>
+  <div class="menu-container">
+    
+      
+        <a href="/" class="menu">
+          首页
+        </a>
+      
+    
+      
+        <a href="/archives" class="menu">
+          归档
+        </a>
+      
+    
+      
+        <a href="/tags" class="menu">
+          标签
+        </a>
+      
+    
+      
+        <a href="/post/about" class="menu">
+          关于
+        </a>
+      
+    
+  </div>
+  <div class="social-container">
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+  </div>
+</div>
+
+        <div class="post-detail">
+          <article class="post">
+            <h2 class="post-title">
+              C语言进阶-程序的编译与预处理环节（一）
+            </h2>
+            <div class="post-info">
+              <span>
+                2026-05-30
+              </span>
+              <span>
+                5 min read
+              </span>
+              
+            </div>
+            
+            <div class="post-content-wrapper">
+              <div class="post-content" v-pre>
+                <h1 id="一个c源文件变成一个可执行程序的流程">一个C源文件变成一个可执行程序的流程</h1>
+<p>大致流程是这样的：<strong>预处理/预编译-&gt;编译-&gt;汇编-&gt;链接</strong><br>
+一个源文件想要成为一个可执行程序一般要经过这4个步骤，但是再日常中表达，我们一般把上述的4个步骤统称为<strong>编译</strong>.<br>
+<img src="https://Hurricane-Q7.github.io/post-images/1780106606527.png" alt="" loading="lazy"><br>
+常见的Compiler编译器:</p>
+<ul>
+<li>GCC - Linux/跨平台，最广泛使用</li>
+<li>Clang (基于LLVM) - macos / 跨平台，错误信息友好</li>
+<li>MSVC - Windows 集成在Visual Studio</li>
+</ul>
+<h1 id="c源文件例子">C源文件例子</h1>
+<p>假设有一个C语言源文件，名字叫main.c</p>
+<pre><code class="language-c">#include &lt;stdio.h&gt;
+#define MAX 100
+int main()
+{
+    printf(&quot;%d\n&quot;, MAX);
+    return 0;
+}
+</code></pre>
+<p><strong>编译器采用gcc！！！</strong></p>
+<pre><code class="language-c">对应个各个操作的gcc指令：
+1. gcc -E 预处理
+2. gcc -S 编译生成汇编代码
+3. gcc -c 编译加汇编
+
+</code></pre>
+<h2 id="第一步-预处理环节">第一步-预处理环节</h2>
+<p>Linux环境下对应指令：<br>
+<code>gcc c源文件 -E -o test.i</code><br>
+预处理环节做了哪些事情？</p>
+<ol>
+<li>头文件的包含（拷贝头文件到预处理后生成的文件中）</li>
+<li>define定义符号的替换，删除定义的符号</li>
+<li>删除注释（注释是给人看的，机器看不懂）</li>
+<li>条件编译（根据宏定义决定保留还是删除）</li>
+</ol>
+<h2 id="第二部-编译环节">第二部-编译环节</h2>
+<p><code> gcc test.i -S</code><br>
+编译环节做了哪些事情？</p>
+<ol>
+<li>把C语言代码转换成了汇编代码（不会改变C语言源文件）</li>
+<li>语法分析、词法分析、符号分析、语义分析。<br>
+注意：符号分析是把一些全局区的变量名和函数名给汇总起来，方便后续链接使用。</li>
+</ol>
+<h2 id="第三步-汇编环节">第三步-汇编环节</h2>
+<p><code> gcc test.s -c</code></p>
+<ol>
+<li>将编译环节内生成的<strong>汇编代码</strong>给变成<strong>二进制机器码</strong>，并生成目标文件（.o后缀的文件）</li>
+<li>结合符号汇总，形成<strong>符号表。</strong></li>
+</ol>
+<h2 id="第四步-链接环节变成可执行程序">第四步-链接环节（变成可执行程序）</h2>
+<ol>
+<li>合并段表</li>
+<li>符号表的合并与重定位</li>
+</ol>
+<h2 id="程序的运行环境">程序的运行环境</h2>
+<h1 id="预处理详解">预处理详解</h1>
+<h2 id="预定义符号">预定义符号</h2>
+<p><strong>FILE</strong>      //进行编译的源文件<br>
+<strong>LINE</strong>     //文件当前的行号<br>
+<strong>DATE</strong>    //文件被编译的日期<br>
+<strong>TIME</strong>    //文件被编译的时间<br>
+<strong>STDC</strong>    //如果编译器遵循ANSI C，其值为1，否则未定义<br>
+用法：</p>
+<pre><code class="language-c">#include&lt;stdio.h&gt;
+//预处理详解
+int main()
+{
+	int i = 0;
+	for (i = 0; i &lt; 10; i++)
+	{
+		printf(&quot;Files:%s Lines:%d date:%s Time:%s i的值:%d&quot;,__FILE__,__LINE__,__DATE__,__TIME__,i);//打印信息
+	}
+	return 0;
+}
+</code></pre>
+<h2 id="define定义标识符">define定义标识符</h2>
+<p>这里很简单，define定义的标识符，在预处理阶段会发生替换<br>
+<code>#define MAX 100</code>中，MAX会被替换成100。<br>
+来看<strong>define</strong>的一些操作：</p>
+<pre><code class="language-c">1. #define reg register //为register这个关键字，创建一个简短的名字
+2. #define do_forever for(;;)
+3. #define CASE break;case//在写case语句的时候，自动把break加上
+</code></pre>
+<pre><code class="language-c">//来看一下这个骚操作
+#define CASE break;case
+switch()
+{
+    case 1:
+    CASE 2:
+     CASE 3:
+     CASE 4:
+     break;
+}
+</code></pre>
+<p>注意：在使用<strong>define</strong>关键字的时候，在最后define后面最好不要加上分号.<br>
+<code>#define MIN 100;不要加分号，以防止习惯性而导致语法错误！！！</code></p>
+<h1 id="define定义宏macro">define定义宏（macro）</h1>
+<p><strong>definition:</strong>#define 机制包括了一个规定，允许把参数替换到文本中，这种实现通常称为宏（macro）或定义宏（define macro）。<br>
+下面是一个简单的宏定义：</p>
+<pre><code class="language-c">#include&lt;stdio.h&gt;
+#define DOUBLE(x) x+x
+int main()
+{
+    int r = 0;
+    scanf(&quot;%d&quot;,&amp;r);
+    int value = DOUBLE(r);
+    printf(&quot;the value of r is %d&quot;,value);
+    //这里实际上是发生替换的，DOUBLE替换成了，
+    //int value = r*r;的
+    //所以，我们定义的宏，实际上也是会发生替换的
+    return 0;
+}
+</code></pre>
+<pre><code class="language-c">上面的写法是存在问题的:
+当宏体内出现额外的运算符号后：
+int value = DOUBLE(5+1);
+//这样写之后可能就出现了不是预期的结果，因为在给宏体传参的时候，不是把5+1这个表达式计算后传过去的，而是把5+1表达式这个整体视为一个参数给传过去的，简单来说就是直接替换。
+//实际替换结果是这样的：
+int value = 5+1*5+1;
+//这样的实际结果就是11了，更本不是我们想要的36，这说明我们的宏定义是有问题的
+更改后：
+#define DOUBLE(x) (x)+(x)//这样写确实解决了上述的问题，但是还是有些问题呢
+int main()
+{
+    int value = 10*DOUBLE(2+1);
+    //10*(2+1)+(2+1)
+    //我们理想的结果是60，但是实际上是33，看来还是有问题的，还得改
+    //更改后:define DOUBLE(x) ((x)*(x)) 
+    return 0;
+}
+</code></pre>
+
+              </div>
+              <div class="toc-container">
+                <ul class="markdownIt-TOC">
+<li><a href="#%E4%B8%80%E4%B8%AAc%E6%BA%90%E6%96%87%E4%BB%B6%E5%8F%98%E6%88%90%E4%B8%80%E4%B8%AA%E5%8F%AF%E6%89%A7%E8%A1%8C%E7%A8%8B%E5%BA%8F%E7%9A%84%E6%B5%81%E7%A8%8B">一个C源文件变成一个可执行程序的流程</a></li>
+<li><a href="#c%E6%BA%90%E6%96%87%E4%BB%B6%E4%BE%8B%E5%AD%90">C源文件例子</a>
+<ul>
+<li><a href="#%E7%AC%AC%E4%B8%80%E6%AD%A5-%E9%A2%84%E5%A4%84%E7%90%86%E7%8E%AF%E8%8A%82">第一步-预处理环节</a></li>
+<li><a href="#%E7%AC%AC%E4%BA%8C%E9%83%A8-%E7%BC%96%E8%AF%91%E7%8E%AF%E8%8A%82">第二部-编译环节</a></li>
+<li><a href="#%E7%AC%AC%E4%B8%89%E6%AD%A5-%E6%B1%87%E7%BC%96%E7%8E%AF%E8%8A%82">第三步-汇编环节</a></li>
+<li><a href="#%E7%AC%AC%E5%9B%9B%E6%AD%A5-%E9%93%BE%E6%8E%A5%E7%8E%AF%E8%8A%82%E5%8F%98%E6%88%90%E5%8F%AF%E6%89%A7%E8%A1%8C%E7%A8%8B%E5%BA%8F">第四步-链接环节（变成可执行程序）</a></li>
+<li><a href="#%E7%A8%8B%E5%BA%8F%E7%9A%84%E8%BF%90%E8%A1%8C%E7%8E%AF%E5%A2%83">程序的运行环境</a></li>
+</ul>
+</li>
+<li><a href="#%E9%A2%84%E5%A4%84%E7%90%86%E8%AF%A6%E8%A7%A3">预处理详解</a>
+<ul>
+<li><a href="#%E9%A2%84%E5%AE%9A%E4%B9%89%E7%AC%A6%E5%8F%B7">预定义符号</a></li>
+<li><a href="#define%E5%AE%9A%E4%B9%89%E6%A0%87%E8%AF%86%E7%AC%A6">define定义标识符</a></li>
+</ul>
+</li>
+<li><a href="#define%E5%AE%9A%E4%B9%89%E5%AE%8Fmacro">define定义宏（macro）</a></li>
+</ul>
+
+              </div>
+            </div>
+          </article>
+        </div>
+
+        
+          <div class="next-post">
+            <div class="next">下一篇</div>
+            <a href="https://Hurricane-Q7.github.io/post/c-yu-yan-chang-jian-dong-tai-nei-cun-cuo-wu/">
+              <h3 class="post-title">
+                C语言-常见动态内存错误与常见笔试题
+              </h3>
+            </a>
+          </div>
+        
+
+        
+
+        <div class="site-footer">
+  Powered by <a href="https://github.com/getgridea/gridea" target="_blank">Gridea</a>
+  <a class="rss" href="https://Hurricane-Q7.github.io/atom.xml" target="_blank">
+    <i class="ri-rss-line"></i> RSS
+  </a>
+</div>
+
+      </div>
+    </div>
+
+    <script>
+      hljs.initHighlightingOnLoad()
+
+      let mainNavLinks = document.querySelectorAll(".markdownIt-TOC a");
+
+      // This should probably be throttled.
+      // Especially because it triggers during smooth scrolling.
+      // https://lodash.com/docs/4.17.10#throttle
+      // You could do like...
+      // window.addEventListener("scroll", () => {
+      //    _.throttle(doThatStuff, 100);
+      // });
+      // Only not doing it here to keep this Pen dependency-free.
+
+      window.addEventListener("scroll", event => {
+        let fromTop = window.scrollY;
+
+        mainNavLinks.forEach((link, index) => {
+          let section = document.getElementById(decodeURI(link.hash).substring(1));
+          let nextSection = null
+          if (mainNavLinks[index + 1]) {
+            nextSection = document.getElementById(decodeURI(mainNavLinks[index + 1].hash).substring(1));
+          }
+          if (section.offsetTop <= fromTop) {
+            if (nextSection) {
+              if (nextSection.offsetTop > fromTop) {
+                link.classList.add("current");
+              } else {
+                link.classList.remove("current");    
+              }
+            } else {
+              link.classList.add("current");
+            }
+          } else {
+            link.classList.remove("current");
+          }
+        });
+      });
+
+    </script>
+  </body>
+</html>

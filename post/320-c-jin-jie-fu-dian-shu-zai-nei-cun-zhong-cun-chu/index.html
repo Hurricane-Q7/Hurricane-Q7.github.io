@@ -1,0 +1,210 @@
+<html>
+  <head>
+    <meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>3.20-C进阶-浮点数在内存中存储 | Gridea</title>
+<link rel="shortcut icon" href="https://Hurricane-Q7.github.io/favicon.ico?v=1781917751713">
+<link href="https://cdn.jsdelivr.net/npm/remixicon@2.3.0/fonts/remixicon.css" rel="stylesheet">
+<link rel="stylesheet" href="https://Hurricane-Q7.github.io/styles/main.css">
+<link rel="alternate" type="application/atom+xml" title="3.20-C进阶-浮点数在内存中存储 | Gridea - Atom Feed" href="https://Hurricane-Q7.github.io/atom.xml">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Droid+Serif:400,700">
+
+
+
+    <meta name="description" content="浮点数在内存中存储
+这方面的知识不太重要，了解一下就行了
+大概知道为什么一个浮点型数据是什么在内存是怎么存放的，为什么会有偏差，怎么拿出来的，就够了！
+任意一个二进制浮点数V可以表示成下面的形式：
+目前计算机界通用的浮点数存储标准叫 IEE..." />
+    <meta name="keywords" content="C语言学习笔记" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.10.0/katex.min.css">
+    <script src="//cdn.jsdelivr.net/gh/highlightjs/cdn-release@11.5.1/build/highlight.min.js"></script>
+  </head>
+  <body>
+    <div class="main">
+      <div class="main-content">
+        <div class="site-header">
+  <a href="https://Hurricane-Q7.github.io">
+  <img class="avatar" src="https://Hurricane-Q7.github.io/images/avatar.png?v=1781917751713" alt="">
+  </a>
+  <h1 class="site-title">
+    Gridea
+  </h1>
+  <p class="site-description">
+    言者所以在意，得意而忘言
+  </p>
+  <div class="menu-container">
+    
+      
+        <a href="/" class="menu">
+          首页
+        </a>
+      
+    
+      
+        <a href="/archives" class="menu">
+          归档
+        </a>
+      
+    
+      
+        <a href="/tags" class="menu">
+          标签
+        </a>
+      
+    
+      
+        <a href="/post/about" class="menu">
+          关于
+        </a>
+      
+    
+  </div>
+  <div class="social-container">
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+  </div>
+</div>
+
+        <div class="post-detail">
+          <article class="post">
+            <h2 class="post-title">
+              3.20-C进阶-浮点数在内存中存储
+            </h2>
+            <div class="post-info">
+              <span>
+                2026-03-20
+              </span>
+              <span>
+                2 min read
+              </span>
+              
+                <a href="https://Hurricane-Q7.github.io/tag/YSaodvhI5R/" class="post-tag">
+                  # C语言学习笔记
+                </a>
+              
+            </div>
+            
+              <img class="post-feature-image" src="https://Hurricane-Q7.github.io/post-images/320-c-jin-jie-fu-dian-shu-zai-nei-cun-zhong-cun-chu.png" alt="">
+            
+            <div class="post-content-wrapper">
+              <div class="post-content" v-pre>
+                <h1 id="浮点数在内存中存储">浮点数在内存中存储</h1>
+<p>这方面的知识不太重要，了解一下就行了<br>
+大概知道为什么一个浮点型数据是什么在内存是怎么存放的，为什么会有偏差，怎么拿出来的，就够了！<br>
+<strong>任意一个二进制浮点数V可以表示成下面的形式：</strong><br>
+目前计算机界通用的浮点数存储标准叫 IEEE 754 标准<br>
+当然这种表示方式是给人看的，就像整型数据的原码一样，方便人们计算它的二进制，而不是十进制数！</p>
+<pre><code class="language-c">**&quot;二进制的科学计数法&quot;**
+(-1)^S * M * 2^E
+(-1)^s表示符号位，当s=0，V为正数；当s=1，V为负数。
+M表示有效数字，大于等于1，小于2(二进制)。
+2^E表示指数位。
+</code></pre>
+<p>小数点后面的权重：2^-1   2^-2 2^-3 …………<br>
+实例：5.5</p>
+<pre><code class="language-c">float f = 5.5f;
+// 拆解：
+//核心部分
+// 101.1 
+// (-1)^0 *1.011 * 2^2
+// s:0 m: 1.011 e: 2
+</code></pre>
+<h1 id="那么为什么浮点数会有片偏差呢">那么为什么浮点数会有片偏差呢？</h1>
+<pre><code class="language-c">v = 9.5f;
+   //  1001.1
+   //   (-1)^0 * 1001.1
+   // (-1)^0 * 1.0011 * 2^3
+   //s = 0     m = 1.0011 e = 3
+   这样的数字好表达，但是可不是每个数字都是这样容易表达的
+   v1 = 9.6f
+     = 1001.100……//无限逼近，但就是达不到原数据
+     //所以，有些小数是无法在内存中精确保存的，因此会有精度丢失！
+</code></pre>
+
+              </div>
+              <div class="toc-container">
+                <ul class="markdownIt-TOC">
+<li><a href="#%E6%B5%AE%E7%82%B9%E6%95%B0%E5%9C%A8%E5%86%85%E5%AD%98%E4%B8%AD%E5%AD%98%E5%82%A8">浮点数在内存中存储</a></li>
+<li><a href="#%E9%82%A3%E4%B9%88%E4%B8%BA%E4%BB%80%E4%B9%88%E6%B5%AE%E7%82%B9%E6%95%B0%E4%BC%9A%E6%9C%89%E7%89%87%E5%81%8F%E5%B7%AE%E5%91%A2">那么为什么浮点数会有片偏差呢？</a></li>
+</ul>
+
+              </div>
+            </div>
+          </article>
+        </div>
+
+        
+          <div class="next-post">
+            <div class="next">下一篇</div>
+            <a href="https://Hurricane-Q7.github.io/post/319-ri-c-yu-yan-jin-jie-shu-ju-cun-chu-lian-xi/">
+              <h3 class="post-title">
+                3.19日-C语言进阶-数据存储练习
+              </h3>
+            </a>
+          </div>
+        
+
+        
+
+        <div class="site-footer">
+  Powered by <a href="https://github.com/getgridea/gridea" target="_blank">Gridea</a>
+  <a class="rss" href="https://Hurricane-Q7.github.io/atom.xml" target="_blank">
+    <i class="ri-rss-line"></i> RSS
+  </a>
+</div>
+
+      </div>
+    </div>
+
+    <script>
+      hljs.initHighlightingOnLoad()
+
+      let mainNavLinks = document.querySelectorAll(".markdownIt-TOC a");
+
+      // This should probably be throttled.
+      // Especially because it triggers during smooth scrolling.
+      // https://lodash.com/docs/4.17.10#throttle
+      // You could do like...
+      // window.addEventListener("scroll", () => {
+      //    _.throttle(doThatStuff, 100);
+      // });
+      // Only not doing it here to keep this Pen dependency-free.
+
+      window.addEventListener("scroll", event => {
+        let fromTop = window.scrollY;
+
+        mainNavLinks.forEach((link, index) => {
+          let section = document.getElementById(decodeURI(link.hash).substring(1));
+          let nextSection = null
+          if (mainNavLinks[index + 1]) {
+            nextSection = document.getElementById(decodeURI(mainNavLinks[index + 1].hash).substring(1));
+          }
+          if (section.offsetTop <= fromTop) {
+            if (nextSection) {
+              if (nextSection.offsetTop > fromTop) {
+                link.classList.add("current");
+              } else {
+                link.classList.remove("current");    
+              }
+            } else {
+              link.classList.add("current");
+            }
+          } else {
+            link.classList.remove("current");
+          }
+        });
+      });
+
+    </script>
+  </body>
+</html>

@@ -1,0 +1,265 @@
+<html>
+  <head>
+    <meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>C语言实现windows的dir cd mkdir指令 | Gridea</title>
+<link rel="shortcut icon" href="https://Hurricane-Q7.github.io/favicon.ico?v=1781917751713">
+<link href="https://cdn.jsdelivr.net/npm/remixicon@2.3.0/fonts/remixicon.css" rel="stylesheet">
+<link rel="stylesheet" href="https://Hurricane-Q7.github.io/styles/main.css">
+<link rel="alternate" type="application/atom+xml" title="C语言实现windows的dir cd mkdir指令 | Gridea - Atom Feed" href="https://Hurricane-Q7.github.io/atom.xml">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Droid+Serif:400,700">
+
+
+
+    <meta name="description" content="下面是我感觉值得记载的东西!
+&lt;direct.h&gt;头文件
+核心含义
+#include &lt;direct.h&gt;
+是Windows 系统专属的 C 语言头文件（不属于 ANSI C 标准），它声明了一系列用于操作文件目录 ..." />
+    <meta name="keywords" content="" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.10.0/katex.min.css">
+    <script src="//cdn.jsdelivr.net/gh/highlightjs/cdn-release@11.5.1/build/highlight.min.js"></script>
+  </head>
+  <body>
+    <div class="main">
+      <div class="main-content">
+        <div class="site-header">
+  <a href="https://Hurricane-Q7.github.io">
+  <img class="avatar" src="https://Hurricane-Q7.github.io/images/avatar.png?v=1781917751713" alt="">
+  </a>
+  <h1 class="site-title">
+    Gridea
+  </h1>
+  <p class="site-description">
+    言者所以在意，得意而忘言
+  </p>
+  <div class="menu-container">
+    
+      
+        <a href="/" class="menu">
+          首页
+        </a>
+      
+    
+      
+        <a href="/archives" class="menu">
+          归档
+        </a>
+      
+    
+      
+        <a href="/tags" class="menu">
+          标签
+        </a>
+      
+    
+      
+        <a href="/post/about" class="menu">
+          关于
+        </a>
+      
+    
+  </div>
+  <div class="social-container">
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+  </div>
+</div>
+
+        <div class="post-detail">
+          <article class="post">
+            <h2 class="post-title">
+              C语言实现windows的dir cd mkdir指令
+            </h2>
+            <div class="post-info">
+              <span>
+                2026-01-21
+              </span>
+              <span>
+                4 min read
+              </span>
+              
+            </div>
+            
+            <div class="post-content-wrapper">
+              <div class="post-content" v-pre>
+                <p>下面是我感觉值得记载的东西!</p>
+<h1 id="directh头文件">&lt;direct.h&gt;头文件</h1>
+<p><strong>核心含义</strong><br>
+#include &lt;direct.h&gt;<br>
+是Windows 系统专属的 C 语言头文件（不属于 ANSI C 标准），它声明了一系列用于操作文件目录 / 文件夹的函数，比如<strong>创建目录、获取当前工作目录、更改工作目录等。</strong><br>
+简单来说：这个头文件是 <strong>Windows 平台给 C 语言程序提供的目录操作工具箱</strong>没有包含它，就无法调用这些目录相关的函数。<br>
+<img src="https://Hurricane-Q7.github.io/post-images/1769003527011.png" alt="" loading="lazy"></p>
+<h1 id="directh包含的三个函数">&lt;direct.h&gt;包含的三个函数</h1>
+<h1 id="_getcwd函数">_getcwd函数</h1>
+<p><strong>Parameter</strong><br>
+buffer：一个字符数组（缓冲区），用来存放当前工作目录的路径字符串!<br>
+maxlen:缓冲区的最大长度（需要包含字符串结束符\0)<br>
+<strong>函数原型</strong><br>
+<code>char * _getcwd ( char * buffer,int maxlen);</code><br>
+<strong>Return Value</strong></p>
+<ul>
+<li>成功时返回指向buffer的指针；</li>
+<li>失败时返回NULL（空指针）</li>
+</ul>
+<h1 id="_chdir函数">_chdir函数</h1>
+<p>函数功能：改变当前程序的<strong>工作目录</strong>。<br>
+函数原型：<code>int _chdir(const char * dirname)</code><br>
+<strong>参数</strong>：dirname： const char *类型，代表要切换到的目标目录路径。<br>
+相对路径：如 &quot;../&quot;（上级目录）、&quot;sub_dir&quot;（当前目录下的 sub_dir 子目录）；<br>
+绝对路径：如 &quot;D:\test&quot;（Windows）、&quot;/home/user&quot;（Linux）。<br>
+注意：Windows 下路径分隔符用 \（转义后）或 /，不能直接用 \。<br>
+<strong>Return Value</strong>：</p>
+<ol>
+<li>成功：返回0；</li>
+<li>失败：返回-1；</li>
+</ol>
+<h1 id="_mkdir函数">_mkdir函数</h1>
+<p><strong>函数原型</strong>：<br>
+<code> int _mkdir(const char *dirname);</code><br>
+<strong>函数功能</strong>：<br>
+在指定路径下创建一个新的空目录（文件夹）<br>
+<strong>参数</strong>：<br>
+dirname：const char * 类型，代表要创建的目录路径，支持两种格式：</p>
+<ul>
+<li>相对路径：如 &quot;new_dir&quot;（在当前工作目录下创建名为 new_dir 的文件夹）、&quot;sub_dir/test&quot;（需确保 sub_dir 已存在，否则创建失败）；</li>
+<li>绝对路径：如 &quot;D:\my_files\temp&quot;（Windows）、&quot;/home/user/new_dir&quot;（Linux）。<br>
+关键注意：Windows 下路径分隔符用 \（转义后）或 /，不能直接用 \；且 _mkdir 只能创建最后一级目录，如果上级目录不存在（比如想创建 a/b/c，但 a/b 不存在），会创建失败。<br>
+<strong>返回值</strong>：<br>
+成功：返回 0；<br>
+失败：返回 -1，同时会设置全局变量 errno 标识错误原因（需包含 errno.h 头文件）。</li>
+</ul>
+<h1 id="ioh头文件的三个函数">&lt;io.h&gt;头文件的三个函数</h1>
+<p>该代码中&lt;io.h&gt;header file主要调用_findfirst(初始化查找) _findnext（循环查找） _findclose（释放资源）函数，这些函数是Windows专用的遍历目录函数。</p>
+<h2 id="struct-_finddata_t-file_info">struct  _finddata_t  file_info;</h2>
+<p>file_info 是 _finddata_t 类型的结构体变量（定义在io.h中）,用于存储文件/文件夹的属性信息，核心成员有：<br>
+<img src="https://Hurricane-Q7.github.io/post-images/1769485873820.png" alt="" loading="lazy"></p>
+<h2 id="_findfirst">_findfirst</h2>
+<p>实现功能：<br>
+查找指定目录下第一个匹配指定模式的文件 / 文件夹，获取其句柄和属性信息。<br>
+函数原型：<br>
+<code> long _findfirst(const char *filename, struct _finddata_t *fileinfo);</code><br>
+参数：</p>
+<ol>
+<li>filename：匹配模式（如 &quot;*&quot; 匹配所有文件 / 文件夹）；</li>
+<li>fileinfo：指向 _finddata_t 结构体的指针，用于存储找到的文件信息。<br>
+<strong>返回值：</strong><br>
+成功返回一个有效句柄（非-1的long int型）<br>
+失败返回-1（目录为空，权限不足）</li>
+</ol>
+<h2 id="_findnext">_findnext</h2>
+<p><strong>功能</strong>：基于 _findfirst 获取的句柄，查找下一个匹配的文件/文件夹。<br>
+<strong>函数原型</strong><br>
+<code>int _findnext(long handle, struct _finddata_t *fileinfo);</code><br>
+参数：<br>
+handle：_findfirst 返回的有效句柄；<br>
+fileinfo：同上，存储下一个文件的信息。<br>
+返回值：<br>
+成功：返回 0；<br>
+失败：返回 -1（如已遍历完所有文件）。</p>
+<h2 id="_findclose">_findclose</h2>
+<p>实现功能：功能：关闭 _findfirst 获取的句柄，释放系统资源（必须调用，否则会内存泄漏）<br>
+函数原型：<br>
+<code>int _findclose(long handle);</code><br>
+参数：handle：_findfirst 返回的句柄<br>
+返回值：<br>
+成功：返回0；<br>
+失败：返回-1（如句柄无效）；</p>
+
+              </div>
+              <div class="toc-container">
+                <ul class="markdownIt-TOC">
+<li><a href="#directh%E5%A4%B4%E6%96%87%E4%BB%B6">&lt;direct.h&gt;头文件</a></li>
+<li><a href="#directh%E5%8C%85%E5%90%AB%E7%9A%84%E4%B8%89%E4%B8%AA%E5%87%BD%E6%95%B0">&lt;direct.h&gt;包含的三个函数</a></li>
+<li><a href="#_getcwd%E5%87%BD%E6%95%B0">_getcwd函数</a></li>
+<li><a href="#_chdir%E5%87%BD%E6%95%B0">_chdir函数</a></li>
+<li><a href="#_mkdir%E5%87%BD%E6%95%B0">_mkdir函数</a></li>
+<li><a href="#ioh%E5%A4%B4%E6%96%87%E4%BB%B6%E7%9A%84%E4%B8%89%E4%B8%AA%E5%87%BD%E6%95%B0">&lt;io.h&gt;头文件的三个函数</a>
+<ul>
+<li><a href="#struct-_finddata_t-file_info">struct  _finddata_t  file_info;</a></li>
+<li><a href="#_findfirst">_findfirst</a></li>
+<li><a href="#_findnext">_findnext</a></li>
+<li><a href="#_findclose">_findclose</a></li>
+</ul>
+</li>
+</ul>
+
+              </div>
+            </div>
+          </article>
+        </div>
+
+        
+          <div class="next-post">
+            <div class="next">下一篇</div>
+            <a href="https://Hurricane-Q7.github.io/post/121-c-yu-yan-fen-zi-xun-huan-yu-ju-chu-jie/">
+              <h3 class="post-title">
+                1.21-C语言分支、循环语句（初阶）
+              </h3>
+            </a>
+          </div>
+        
+
+        
+
+        <div class="site-footer">
+  Powered by <a href="https://github.com/getgridea/gridea" target="_blank">Gridea</a>
+  <a class="rss" href="https://Hurricane-Q7.github.io/atom.xml" target="_blank">
+    <i class="ri-rss-line"></i> RSS
+  </a>
+</div>
+
+      </div>
+    </div>
+
+    <script>
+      hljs.initHighlightingOnLoad()
+
+      let mainNavLinks = document.querySelectorAll(".markdownIt-TOC a");
+
+      // This should probably be throttled.
+      // Especially because it triggers during smooth scrolling.
+      // https://lodash.com/docs/4.17.10#throttle
+      // You could do like...
+      // window.addEventListener("scroll", () => {
+      //    _.throttle(doThatStuff, 100);
+      // });
+      // Only not doing it here to keep this Pen dependency-free.
+
+      window.addEventListener("scroll", event => {
+        let fromTop = window.scrollY;
+
+        mainNavLinks.forEach((link, index) => {
+          let section = document.getElementById(decodeURI(link.hash).substring(1));
+          let nextSection = null
+          if (mainNavLinks[index + 1]) {
+            nextSection = document.getElementById(decodeURI(mainNavLinks[index + 1].hash).substring(1));
+          }
+          if (section.offsetTop <= fromTop) {
+            if (nextSection) {
+              if (nextSection.offsetTop > fromTop) {
+                link.classList.add("current");
+              } else {
+                link.classList.remove("current");    
+              }
+            } else {
+              link.classList.add("current");
+            }
+          } else {
+            link.classList.remove("current");
+          }
+        });
+      });
+
+    </script>
+  </body>
+</html>

@@ -1,0 +1,270 @@
+<html>
+  <head>
+    <meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>3.17日-C进阶-数据在内存中的存储 | Gridea</title>
+<link rel="shortcut icon" href="https://Hurricane-Q7.github.io/favicon.ico?v=1781917751713">
+<link href="https://cdn.jsdelivr.net/npm/remixicon@2.3.0/fonts/remixicon.css" rel="stylesheet">
+<link rel="stylesheet" href="https://Hurricane-Q7.github.io/styles/main.css">
+<link rel="alternate" type="application/atom+xml" title="3.17日-C进阶-数据在内存中的存储 | Gridea - Atom Feed" href="https://Hurricane-Q7.github.io/atom.xml">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Droid+Serif:400,700">
+
+
+
+    <meta name="description" content="#C中的数据类型
+整型数据(unsigend / signed)
+
+int
+unsigned int
+signed int//平常写int a = 10;&lt;=&gt; signed int a =10;
+short
+unsigned ..." />
+    <meta name="keywords" content="C语言学习笔记" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.10.0/katex.min.css">
+    <script src="//cdn.jsdelivr.net/gh/highlightjs/cdn-release@11.5.1/build/highlight.min.js"></script>
+  </head>
+  <body>
+    <div class="main">
+      <div class="main-content">
+        <div class="site-header">
+  <a href="https://Hurricane-Q7.github.io">
+  <img class="avatar" src="https://Hurricane-Q7.github.io/images/avatar.png?v=1781917751713" alt="">
+  </a>
+  <h1 class="site-title">
+    Gridea
+  </h1>
+  <p class="site-description">
+    言者所以在意，得意而忘言
+  </p>
+  <div class="menu-container">
+    
+      
+        <a href="/" class="menu">
+          首页
+        </a>
+      
+    
+      
+        <a href="/archives" class="menu">
+          归档
+        </a>
+      
+    
+      
+        <a href="/tags" class="menu">
+          标签
+        </a>
+      
+    
+      
+        <a href="/post/about" class="menu">
+          关于
+        </a>
+      
+    
+  </div>
+  <div class="social-container">
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+  </div>
+</div>
+
+        <div class="post-detail">
+          <article class="post">
+            <h2 class="post-title">
+              3.17日-C进阶-数据在内存中的存储
+            </h2>
+            <div class="post-info">
+              <span>
+                2026-03-17
+              </span>
+              <span>
+                4 min read
+              </span>
+              
+                <a href="https://Hurricane-Q7.github.io/tag/YSaodvhI5R/" class="post-tag">
+                  # C语言学习笔记
+                </a>
+              
+            </div>
+            
+              <img class="post-feature-image" src="https://Hurricane-Q7.github.io/post-images/317-ri-c-yu-yan-shu-ju-cun-chu.png" alt="">
+            
+            <div class="post-content-wrapper">
+              <div class="post-content" v-pre>
+                <p>#C中的数据类型</p>
+<h2 id="整型数据unsigend-signed">整型数据(unsigend / signed)</h2>
+<ul>
+<li>int<br>
+unsigned int<br>
+signed int//平常写int a = 10;&lt;=&gt; signed int a =10;</li>
+<li>short<br>
+unsigned short<br>
+signed short//&lt;=&gt;short</li>
+<li>long<br>
+unsigned long<br>
+signed long</li>
+<li>char型(可划分为三种类型)<br>
+char //到底是unsigned char 还是signed char 取决于编译器,vs 是把char 认为signed char<br>
+unsigned char<br>
+signed char</li>
+<li>long long<br>
+unsigned long long<br>
+signed long long<br>
+<u>unsigned/signed 取决于个人需要，signed 型数据的二进制原码高位是符号位,并不是有效位(0为正，1为负)，而unsigned数据的原码高位不是符号位，是有效位，每一位都是有效位</u></li>
+</ul>
+<h2 id="浮点型家族只要是表示小数就可以使用浮点数">浮点型家族：只要是表示小数就可以使用浮点数</h2>
+<ol>
+<li>float 精度低，范围小</li>
+<li>double 精度高 ，范围大</li>
+</ol>
+<h2 id="构造类型自定义类型-我们可以创建出新的类型">构造类型：自定义类型-我们可以创建出新的类型</h2>
+<p>数组类型 结构体 枚举(enum) 联合（union）</p>
+<h2 id="指针类型">指针类型</h2>
+<p>int* / float* ……</p>
+<h2 id="void数据类型">void数据类型</h2>
+<p>函数的参数与函数本身定义、指针类型</p>
+<pre><code class="language-c">void test(void)
+{
+    ;//
+}
+</code></pre>
+<h1 id="整型在内存中的存储重点">整型在内存中的存储（重点）</h1>
+<p>一个整型数据的表达形式有二进制、八进制、十进制、十六进制！<br>
+正整数的三码相同，负整数的原码、反码、补码不相同。<br>
+原码用来给人看，补码用来给CPU计算的！！！</p>
+<pre><code class="language-c">7
+原码=补码=反码：00000000000000000000000000000111
+-7
+原码：10000000000000000000000000000111（二进制序列高位是符号位0表示正数，1表示负数）
+反码：11111111111111111111111111111000（符号位不变，其余取反，0变为1，1变为0）
+补码：11111111111111111111111111111001（反码基础上加一，变成补码）
+</code></pre>
+<p><strong>Conclusions</strong>:只要是整数在内存中都是按补码进行存储的</p>
+<h2 id="why">WHY?</h2>
+<p>在计算机系统中，数值一律用补码来表示和存储。原因在于，<strong>使用补码可以将符号位和数值域统<br>
+一处理</strong>;<br>
+同时，加法和减法也可以统一处理(CPU只有加法器)此外，补码与原码相互转换，其运算过程<br>
+是相同的（<strong>计算逻辑：取反加一</strong>），不需要额外的硬件电路。</p>
+<h2 id="大小端的问题字节为单位">大小端的问题（字节为单位）</h2>
+<p>高位字节序和低位字节序是数字本身的数学属性，和内存没关系！<br>
+大小端描述的数据在内存中是如何存储的！</p>
+<pre><code class="language-c">int a = 0x 11 22 33 44//11为高位字节序内容         44为低位字节序内容
+内存中支持两种存放方式：
+1. 11 22 33 44 //高地址放低地址处，为大端字节序
+2. 44 33 22 11//低地址放高地址处，为小端字节序
+</code></pre>
+<p>内存中的地址大小是从小到大的！！！<br>
+权重的概念：<br>
+在一个多位数字中，<strong>左边的数字代表的量级更大，右边的数字代表的量级更小</strong>，量级大的权重就大，量级小的权重就小！<br>
+十进制<strong>1234</strong>为例：</p>
+<ul>
+<li>1 代表的是1*1000 （最高位）。</li>
+<li>4 代表的是4*1（最低位）。<br>
+十六进制数字判断其字节序顺序（字节为单位）时，判断标准是看数字的哪部分字节的权重更大，权重大就说明该部分是<strong>高位字节序内容</strong>，权重小的同理！<br>
+<strong>大端[字节序】存储:</strong>（正着放）<br>
+把一个数据的<strong>高位字节序的内容</strong>存放在<strong>内存低地址处</strong>，把<strong>低位字节序的内容</strong>放在<strong>内存高地址处</strong>，就是大端字节序存储。<br>
+<strong>小端【字节序】存储:</strong>（倒着放）<br>
+把一个<strong>数据的高位字节序的内容</strong>存放在<strong>内存高地址处</strong>，把<strong>低位字节序的内容</strong>放在<strong>内存低地址（放前面）</strong>，这就是小端字节序存储。<br>
+<img src="https://Hurricane-Q7.github.io/post-images/1778333299335.png" alt="" loading="lazy"></li>
+</ul>
+
+              </div>
+              <div class="toc-container">
+                <ul class="markdownIt-TOC">
+<li>
+<ul>
+<li><a href="#%E6%95%B4%E5%9E%8B%E6%95%B0%E6%8D%AEunsigend-signed">整型数据(unsigend / signed)</a></li>
+<li><a href="#%E6%B5%AE%E7%82%B9%E5%9E%8B%E5%AE%B6%E6%97%8F%E5%8F%AA%E8%A6%81%E6%98%AF%E8%A1%A8%E7%A4%BA%E5%B0%8F%E6%95%B0%E5%B0%B1%E5%8F%AF%E4%BB%A5%E4%BD%BF%E7%94%A8%E6%B5%AE%E7%82%B9%E6%95%B0">浮点型家族：只要是表示小数就可以使用浮点数</a></li>
+<li><a href="#%E6%9E%84%E9%80%A0%E7%B1%BB%E5%9E%8B%E8%87%AA%E5%AE%9A%E4%B9%89%E7%B1%BB%E5%9E%8B-%E6%88%91%E4%BB%AC%E5%8F%AF%E4%BB%A5%E5%88%9B%E5%BB%BA%E5%87%BA%E6%96%B0%E7%9A%84%E7%B1%BB%E5%9E%8B">构造类型：自定义类型-我们可以创建出新的类型</a></li>
+<li><a href="#%E6%8C%87%E9%92%88%E7%B1%BB%E5%9E%8B">指针类型</a></li>
+<li><a href="#void%E6%95%B0%E6%8D%AE%E7%B1%BB%E5%9E%8B">void数据类型</a></li>
+</ul>
+</li>
+<li><a href="#%E6%95%B4%E5%9E%8B%E5%9C%A8%E5%86%85%E5%AD%98%E4%B8%AD%E7%9A%84%E5%AD%98%E5%82%A8%E9%87%8D%E7%82%B9">整型在内存中的存储（重点）</a>
+<ul>
+<li><a href="#why">WHY?</a></li>
+<li><a href="#%E5%A4%A7%E5%B0%8F%E7%AB%AF%E7%9A%84%E9%97%AE%E9%A2%98%E5%AD%97%E8%8A%82%E4%B8%BA%E5%8D%95%E4%BD%8D">大小端的问题（字节为单位）</a></li>
+</ul>
+</li>
+</ul>
+
+              </div>
+            </div>
+          </article>
+        </div>
+
+        
+          <div class="next-post">
+            <div class="next">下一篇</div>
+            <a href="https://Hurricane-Q7.github.io/post/310-c-yu-yan-lian-xi/">
+              <h3 class="post-title">
+                3.10-C语言水仙花数-练习
+              </h3>
+            </a>
+          </div>
+        
+
+        
+
+        <div class="site-footer">
+  Powered by <a href="https://github.com/getgridea/gridea" target="_blank">Gridea</a>
+  <a class="rss" href="https://Hurricane-Q7.github.io/atom.xml" target="_blank">
+    <i class="ri-rss-line"></i> RSS
+  </a>
+</div>
+
+      </div>
+    </div>
+
+    <script>
+      hljs.initHighlightingOnLoad()
+
+      let mainNavLinks = document.querySelectorAll(".markdownIt-TOC a");
+
+      // This should probably be throttled.
+      // Especially because it triggers during smooth scrolling.
+      // https://lodash.com/docs/4.17.10#throttle
+      // You could do like...
+      // window.addEventListener("scroll", () => {
+      //    _.throttle(doThatStuff, 100);
+      // });
+      // Only not doing it here to keep this Pen dependency-free.
+
+      window.addEventListener("scroll", event => {
+        let fromTop = window.scrollY;
+
+        mainNavLinks.forEach((link, index) => {
+          let section = document.getElementById(decodeURI(link.hash).substring(1));
+          let nextSection = null
+          if (mainNavLinks[index + 1]) {
+            nextSection = document.getElementById(decodeURI(mainNavLinks[index + 1].hash).substring(1));
+          }
+          if (section.offsetTop <= fromTop) {
+            if (nextSection) {
+              if (nextSection.offsetTop > fromTop) {
+                link.classList.add("current");
+              } else {
+                link.classList.remove("current");    
+              }
+            } else {
+              link.classList.add("current");
+            }
+          } else {
+            link.classList.remove("current");
+          }
+        });
+      });
+
+    </script>
+  </body>
+</html>

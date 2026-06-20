@@ -1,0 +1,211 @@
+<html>
+  <head>
+    <meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>2.21-C语言-二级指针、指针数组（初阶） | Gridea</title>
+<link rel="shortcut icon" href="https://Hurricane-Q7.github.io/favicon.ico?v=1781917751713">
+<link href="https://cdn.jsdelivr.net/npm/remixicon@2.3.0/fonts/remixicon.css" rel="stylesheet">
+<link rel="stylesheet" href="https://Hurricane-Q7.github.io/styles/main.css">
+<link rel="alternate" type="application/atom+xml" title="2.21-C语言-二级指针、指针数组（初阶） | Gridea - Atom Feed" href="https://Hurricane-Q7.github.io/atom.xml">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Droid+Serif:400,700">
+
+
+
+    <meta name="description" content="二级指针
+二级指针变量是用来存放一级指针变量的地址的！
+int a = 10;
+int* pa = &amp;a;
+int** ppa = &amp;pa;
+*(*ppa) = 20;//双重解引用操作
+//*pa = 20;
+printf..." />
+    <meta name="keywords" content="" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.10.0/katex.min.css">
+    <script src="//cdn.jsdelivr.net/gh/highlightjs/cdn-release@11.5.1/build/highlight.min.js"></script>
+  </head>
+  <body>
+    <div class="main">
+      <div class="main-content">
+        <div class="site-header">
+  <a href="https://Hurricane-Q7.github.io">
+  <img class="avatar" src="https://Hurricane-Q7.github.io/images/avatar.png?v=1781917751713" alt="">
+  </a>
+  <h1 class="site-title">
+    Gridea
+  </h1>
+  <p class="site-description">
+    言者所以在意，得意而忘言
+  </p>
+  <div class="menu-container">
+    
+      
+        <a href="/" class="menu">
+          首页
+        </a>
+      
+    
+      
+        <a href="/archives" class="menu">
+          归档
+        </a>
+      
+    
+      
+        <a href="/tags" class="menu">
+          标签
+        </a>
+      
+    
+      
+        <a href="/post/about" class="menu">
+          关于
+        </a>
+      
+    
+  </div>
+  <div class="social-container">
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+  </div>
+</div>
+
+        <div class="post-detail">
+          <article class="post">
+            <h2 class="post-title">
+              2.21-C语言-二级指针、指针数组（初阶）
+            </h2>
+            <div class="post-info">
+              <span>
+                2026-02-21
+              </span>
+              <span>
+                2 min read
+              </span>
+              
+            </div>
+            
+            <div class="post-content-wrapper">
+              <div class="post-content" v-pre>
+                <h1 id="二级指针">二级指针</h1>
+<p>二级指针变量是用来存放<strong>一级指针变量的地址</strong>的！</p>
+<pre><code class="language-c">int a = 10;
+int* pa = &amp;a;
+int** ppa = &amp;pa;
+*(*ppa) = 20;//双重解引用操作
+//*pa = 20;
+printf(&quot;%d\n&quot;,a);
+</code></pre>
+<figure data-type="image" tabindex="1"><img src="https://Hurricane-Q7.github.io/post-images/1771683336843.png" alt="" loading="lazy"></figure>
+<h1 id="指针数组">指针数组</h1>
+<p>指针数组是<strong>数组！</strong><br>
+用来存放指针的数组是<strong>指针数组</strong>。</p>
+<pre><code class="language-c">用指针数组模拟二维数组
+int main()
+{
+	int arr1[4] = { 1,2,3,4 };
+	int arr2[4] = { 2,3,4,5 };
+	int arr3[4] = { 3,4,5,6 };
+	int* parr[3] = { arr1,arr2,arr3 };
+	int i = 0;
+	for (i = 0; i &lt; 3; i++)//行
+	{
+		int j = 0;
+		for (j = 0; j &lt; 4; j++)//列
+		{
+			printf(&quot;%d &quot;,parr[i][j]);//parr[i][j]并不代表parr是一个二维数组，再次验证了[]只是一个运算符而已，自带解引用功能，arr[i]&lt;=&gt;*(arr+i)
+            //parr[0][j]==arr1[0]&lt;=&gt;*(arr1+0)
+            //parr[i][j]   ---&gt;  *(parr[i]+j)  &quot;parr[i]&quot;可以看成指针数组的一个元素
+		}
+		printf(&quot;\n&quot;);
+	}
+	return 0;
+}//parro == arr1
+//arr1[0] 
+</code></pre>
+
+              </div>
+              <div class="toc-container">
+                <ul class="markdownIt-TOC">
+<li><a href="#%E4%BA%8C%E7%BA%A7%E6%8C%87%E9%92%88">二级指针</a></li>
+<li><a href="#%E6%8C%87%E9%92%88%E6%95%B0%E7%BB%84">指针数组</a></li>
+</ul>
+
+              </div>
+            </div>
+          </article>
+        </div>
+
+        
+          <div class="next-post">
+            <div class="next">下一篇</div>
+            <a href="https://Hurricane-Q7.github.io/post/220-ri-c-yu-yan-zhi-zhen-yu-shu-zu-chu-jie/">
+              <h3 class="post-title">
+                2.21日-C语言-指针运算、指针与数组（初阶）
+              </h3>
+            </a>
+          </div>
+        
+
+        
+
+        <div class="site-footer">
+  Powered by <a href="https://github.com/getgridea/gridea" target="_blank">Gridea</a>
+  <a class="rss" href="https://Hurricane-Q7.github.io/atom.xml" target="_blank">
+    <i class="ri-rss-line"></i> RSS
+  </a>
+</div>
+
+      </div>
+    </div>
+
+    <script>
+      hljs.initHighlightingOnLoad()
+
+      let mainNavLinks = document.querySelectorAll(".markdownIt-TOC a");
+
+      // This should probably be throttled.
+      // Especially because it triggers during smooth scrolling.
+      // https://lodash.com/docs/4.17.10#throttle
+      // You could do like...
+      // window.addEventListener("scroll", () => {
+      //    _.throttle(doThatStuff, 100);
+      // });
+      // Only not doing it here to keep this Pen dependency-free.
+
+      window.addEventListener("scroll", event => {
+        let fromTop = window.scrollY;
+
+        mainNavLinks.forEach((link, index) => {
+          let section = document.getElementById(decodeURI(link.hash).substring(1));
+          let nextSection = null
+          if (mainNavLinks[index + 1]) {
+            nextSection = document.getElementById(decodeURI(mainNavLinks[index + 1].hash).substring(1));
+          }
+          if (section.offsetTop <= fromTop) {
+            if (nextSection) {
+              if (nextSection.offsetTop > fromTop) {
+                link.classList.add("current");
+              } else {
+                link.classList.remove("current");    
+              }
+            } else {
+              link.classList.add("current");
+            }
+          } else {
+            link.classList.remove("current");
+          }
+        });
+      });
+
+    </script>
+  </body>
+</html>

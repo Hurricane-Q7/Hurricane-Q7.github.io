@@ -1,0 +1,257 @@
+<html>
+  <head>
+    <meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>4.1日-C语言-数组参数、指针参数（指针） | Gridea</title>
+<link rel="shortcut icon" href="https://Hurricane-Q7.github.io/favicon.ico?v=1781917751713">
+<link href="https://cdn.jsdelivr.net/npm/remixicon@2.3.0/fonts/remixicon.css" rel="stylesheet">
+<link rel="stylesheet" href="https://Hurricane-Q7.github.io/styles/main.css">
+<link rel="alternate" type="application/atom+xml" title="4.1日-C语言-数组参数、指针参数（指针） | Gridea - Atom Feed" href="https://Hurricane-Q7.github.io/atom.xml">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Droid+Serif:400,700">
+
+
+
+    <meta name="description" content="实参与形参类型应该保持一致!
+形参那里如何设计，取决于你函数调用语句里传的参数类型！！！
+数组参数
+数组传参可以通过数组和指针的两种方式来接收！
+一维数组传参
+#include &lt;stdio.h&gt;
+void test(int a..." />
+    <meta name="keywords" content="C语言学习笔记" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.10.0/katex.min.css">
+    <script src="//cdn.jsdelivr.net/gh/highlightjs/cdn-release@11.5.1/build/highlight.min.js"></script>
+  </head>
+  <body>
+    <div class="main">
+      <div class="main-content">
+        <div class="site-header">
+  <a href="https://Hurricane-Q7.github.io">
+  <img class="avatar" src="https://Hurricane-Q7.github.io/images/avatar.png?v=1781917751713" alt="">
+  </a>
+  <h1 class="site-title">
+    Gridea
+  </h1>
+  <p class="site-description">
+    言者所以在意，得意而忘言
+  </p>
+  <div class="menu-container">
+    
+      
+        <a href="/" class="menu">
+          首页
+        </a>
+      
+    
+      
+        <a href="/archives" class="menu">
+          归档
+        </a>
+      
+    
+      
+        <a href="/tags" class="menu">
+          标签
+        </a>
+      
+    
+      
+        <a href="/post/about" class="menu">
+          关于
+        </a>
+      
+    
+  </div>
+  <div class="social-container">
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+  </div>
+</div>
+
+        <div class="post-detail">
+          <article class="post">
+            <h2 class="post-title">
+              4.1日-C语言-数组参数、指针参数（指针）
+            </h2>
+            <div class="post-info">
+              <span>
+                2026-04-01
+              </span>
+              <span>
+                3 min read
+              </span>
+              
+                <a href="https://Hurricane-Q7.github.io/tag/YSaodvhI5R/" class="post-tag">
+                  # C语言学习笔记
+                </a>
+              
+            </div>
+            
+              <img class="post-feature-image" src="https://Hurricane-Q7.github.io/post-images/41-ri-c-yu-yan-shu-zu-can-shu-zhi-zhen-can-shu-zhi-zhen.png" alt="">
+            
+            <div class="post-content-wrapper">
+              <div class="post-content" v-pre>
+                <p><strong>实参与形参类型应该保持一致!</strong><br>
+形参那里如何设计，取决于你函数调用语句里传的参数类型！！！</p>
+<h1 id="数组参数">数组参数</h1>
+<p>数组传参可以通过数组和指针的两种方式来接收！</p>
+<h2 id="一维数组传参">一维数组传参</h2>
+<pre><code class="language-c">#include &lt;stdio.h&gt;
+void test(int arr[])//ok? 可以，通过数组的方式来接收地址
+{}
+void test(int arr[10])//ok?可以，同上
+{}
+void test(int *arr)//ok? 可以，创建一个int* 型指针变量arr，来接收参数
+{}
+void test2(int* arr[20])//ok? 可以，20可以省略
+{}
+void test2(int* *arr)//ok? 可以，创建一个二级指
+{}
+int main()
+{
+    int arr[10]={0};//普通int数组，数组名代表首元素地址，是int*
+    int* arr2[20] = {0};//指针数组，存放int* 型指针
+
+    test(arr);
+    test2(arr2);//arr2是首元素地址（arr2[0]）,首元素是int* 型的数据类型，可以通过二级指针变量（int* * 变量名）来接收
+}
+</code></pre>
+<h2 id="二维数组传参">二维数组传参</h2>
+<pre><code class="language-c">void test(int arr[3][5])//ok？可以
+{}
+void test(int arr[][])//ok？不可以
+{}
+void test(int arr[][5])//ok？可以
+{}
+//总结：二维数组传参，函数形参的设计只能省略第一个[]的数字。
+//因为对一个二维数组，可以不知道有多少行，但是必须知道一行多少元素。
+//这样才方便运算。
+void test(int *arr)//ok？不可以，类型不匹配
+{}
+void test(int* arr[5])//ok？不可以，类型不匹配
+{}
+void test(int (*arr)[5])//ok？可以
+{}
+void test(int **arr)//ok？不可以，类型不匹配
+{}
+int main()
+{
+ int arr[3][5] = {0};
+ test(arr);//所以这里的arr类型是int (*) [5]，5代表一行有5个元素
+ //对于二维数组来说，二维数组把每一行的元素整体化一个一维数组，可以理解为一个二维数组由多个一维数组组成，那么二维数组的首地址就是第一行的地址，也即是一维数组的地址，类型是数组指针类型的，eg:
+ //int (*) [5]这样的
+}
+</code></pre>
+<h1 id="指针传参">指针传参</h1>
+<h2 id="一级指针传参">一级指针传参</h2>
+<h2 id="二级指针传参">二级指针传参</h2>
+<pre><code class="language-c">void test(int* * pp)//二级指针来接收参数，也可以接收指针数组的首地址！
+{
+    ;
+}
+int main()
+{
+    int a = 0;
+    int* p = &amp;a;
+    int* * p1 = &amp;p1;
+    test(p1);
+    test(&amp;p)
+}
+</code></pre>
+
+              </div>
+              <div class="toc-container">
+                <ul class="markdownIt-TOC">
+<li><a href="#%E6%95%B0%E7%BB%84%E5%8F%82%E6%95%B0">数组参数</a>
+<ul>
+<li><a href="#%E4%B8%80%E7%BB%B4%E6%95%B0%E7%BB%84%E4%BC%A0%E5%8F%82">一维数组传参</a></li>
+<li><a href="#%E4%BA%8C%E7%BB%B4%E6%95%B0%E7%BB%84%E4%BC%A0%E5%8F%82">二维数组传参</a></li>
+</ul>
+</li>
+<li><a href="#%E6%8C%87%E9%92%88%E4%BC%A0%E5%8F%82">指针传参</a>
+<ul>
+<li><a href="#%E4%B8%80%E7%BA%A7%E6%8C%87%E9%92%88%E4%BC%A0%E5%8F%82">一级指针传参</a></li>
+<li><a href="#%E4%BA%8C%E7%BA%A7%E6%8C%87%E9%92%88%E4%BC%A0%E5%8F%82">二级指针传参</a></li>
+</ul>
+</li>
+</ul>
+
+              </div>
+            </div>
+          </article>
+        </div>
+
+        
+          <div class="next-post">
+            <div class="next">下一篇</div>
+            <a href="https://Hurricane-Q7.github.io/post/c_and_sorting_algorithm/">
+              <h3 class="post-title">
+                C语言-排序和二分查找程序设计
+              </h3>
+            </a>
+          </div>
+        
+
+        
+
+        <div class="site-footer">
+  Powered by <a href="https://github.com/getgridea/gridea" target="_blank">Gridea</a>
+  <a class="rss" href="https://Hurricane-Q7.github.io/atom.xml" target="_blank">
+    <i class="ri-rss-line"></i> RSS
+  </a>
+</div>
+
+      </div>
+    </div>
+
+    <script>
+      hljs.initHighlightingOnLoad()
+
+      let mainNavLinks = document.querySelectorAll(".markdownIt-TOC a");
+
+      // This should probably be throttled.
+      // Especially because it triggers during smooth scrolling.
+      // https://lodash.com/docs/4.17.10#throttle
+      // You could do like...
+      // window.addEventListener("scroll", () => {
+      //    _.throttle(doThatStuff, 100);
+      // });
+      // Only not doing it here to keep this Pen dependency-free.
+
+      window.addEventListener("scroll", event => {
+        let fromTop = window.scrollY;
+
+        mainNavLinks.forEach((link, index) => {
+          let section = document.getElementById(decodeURI(link.hash).substring(1));
+          let nextSection = null
+          if (mainNavLinks[index + 1]) {
+            nextSection = document.getElementById(decodeURI(mainNavLinks[index + 1].hash).substring(1));
+          }
+          if (section.offsetTop <= fromTop) {
+            if (nextSection) {
+              if (nextSection.offsetTop > fromTop) {
+                link.classList.add("current");
+              } else {
+                link.classList.remove("current");    
+              }
+            } else {
+              link.classList.add("current");
+            }
+          } else {
+            link.classList.remove("current");
+          }
+        });
+      });
+
+    </script>
+  </body>
+</html>

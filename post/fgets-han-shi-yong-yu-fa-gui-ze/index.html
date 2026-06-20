@@ -1,0 +1,203 @@
+<html>
+  <head>
+    <meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>fgets函使用语法规则 | Gridea</title>
+<link rel="shortcut icon" href="https://Hurricane-Q7.github.io/favicon.ico?v=1781917751713">
+<link href="https://cdn.jsdelivr.net/npm/remixicon@2.3.0/fonts/remixicon.css" rel="stylesheet">
+<link rel="stylesheet" href="https://Hurricane-Q7.github.io/styles/main.css">
+<link rel="alternate" type="application/atom+xml" title="fgets函使用语法规则 | Gridea - Atom Feed" href="https://Hurricane-Q7.github.io/atom.xml">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Droid+Serif:400,700">
+
+
+
+    <meta name="description" content="fgets函数
+代码块
+char *fgets(char *str,int n,FILE *stream);
+str:指向字符数组的指针（地址），用于存储读取的字符串。
+n:要读取的最大字符数，实际读取n-1个字符（包括空字符\0）;
+st..." />
+    <meta name="keywords" content="" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.10.0/katex.min.css">
+    <script src="//cdn.jsdelivr.net/gh/highlightjs/cdn-release@11.5.1/build/highlight.min.js"></script>
+  </head>
+  <body>
+    <div class="main">
+      <div class="main-content">
+        <div class="site-header">
+  <a href="https://Hurricane-Q7.github.io">
+  <img class="avatar" src="https://Hurricane-Q7.github.io/images/avatar.png?v=1781917751713" alt="">
+  </a>
+  <h1 class="site-title">
+    Gridea
+  </h1>
+  <p class="site-description">
+    言者所以在意，得意而忘言
+  </p>
+  <div class="menu-container">
+    
+      
+        <a href="/" class="menu">
+          首页
+        </a>
+      
+    
+      
+        <a href="/archives" class="menu">
+          归档
+        </a>
+      
+    
+      
+        <a href="/tags" class="menu">
+          标签
+        </a>
+      
+    
+      
+        <a href="/post/about" class="menu">
+          关于
+        </a>
+      
+    
+  </div>
+  <div class="social-container">
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+  </div>
+</div>
+
+        <div class="post-detail">
+          <article class="post">
+            <h2 class="post-title">
+              fgets函使用语法规则
+            </h2>
+            <div class="post-info">
+              <span>
+                2025-12-28
+              </span>
+              <span>
+                2 min read
+              </span>
+              
+            </div>
+            
+            <div class="post-content-wrapper">
+              <div class="post-content" v-pre>
+                <h3 id="fgets函数">fgets函数</h3>
+<p>代码块</p>
+<pre><code class="language-c">char *fgets(char *str,int n,FILE *stream);
+str:指向字符数组的指针（地址），用于存储读取的字符串。
+n:要读取的最大字符数，实际读取n-1个字符（包括空字符\0）;
+stream: 文件流，通常使用stdin表示标准输入。
+</code></pre>
+<pre><code class="language-c">#include&lt;stdio.h&gt;
+int main(){
+    char str[100];
+    printf(&quot;Enter a string:&quot;);
+    fgets(str,sizeof(str),stdin);
+    printf(&quot;You enntered: %s&quot;,str);
+    return 0;
+}
+</code></pre>
+<h3 id="返回值">返回值</h3>
+<p>返回值：<br>
+成功：返回 str 的首地址；<br>
+失败 / 读到文件末尾（EOF）：返回 NULL；<br>
+若读取过程中遇到换行符 \n，会将 \n 一并读取到 str 中，再补 \0</p>
+<h3 id="核心语法规则">核心语法规则</h3>
+<p>① 读取终止条件（满足其一即停止）：<br>
+读取了 num-1 个字符；<br>
+读到换行符 \n（\n 会被保留在字符串中）；<br>
+读到文件末尾（EOF）。<br>
+② 内存安全：强制最多读取 num-1 个字符，剩余 1 个位置留给 '\0'，彻底避免 gets 的缓冲区溢出问题（gets 无长度限制）。<br>
+③ 参数合法性：<br>
+num 必须 ≥ 1（否则直接返回 NULL）；<br>
+str 必须是有效的内存地址（不能是 NULL，也不能是未分配的野指针）。</p>
+
+              </div>
+              <div class="toc-container">
+                <ul class="markdownIt-TOC">
+<li>
+<ul>
+<li>
+<ul>
+<li><a href="#fgets%E5%87%BD%E6%95%B0">fgets函数</a></li>
+<li><a href="#%E8%BF%94%E5%9B%9E%E5%80%BC">返回值</a></li>
+<li><a href="#%E6%A0%B8%E5%BF%83%E8%AF%AD%E6%B3%95%E8%A7%84%E5%88%99">核心语法规则</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+              </div>
+            </div>
+          </article>
+        </div>
+
+        
+
+        
+
+        <div class="site-footer">
+  Powered by <a href="https://github.com/getgridea/gridea" target="_blank">Gridea</a>
+  <a class="rss" href="https://Hurricane-Q7.github.io/atom.xml" target="_blank">
+    <i class="ri-rss-line"></i> RSS
+  </a>
+</div>
+
+      </div>
+    </div>
+
+    <script>
+      hljs.initHighlightingOnLoad()
+
+      let mainNavLinks = document.querySelectorAll(".markdownIt-TOC a");
+
+      // This should probably be throttled.
+      // Especially because it triggers during smooth scrolling.
+      // https://lodash.com/docs/4.17.10#throttle
+      // You could do like...
+      // window.addEventListener("scroll", () => {
+      //    _.throttle(doThatStuff, 100);
+      // });
+      // Only not doing it here to keep this Pen dependency-free.
+
+      window.addEventListener("scroll", event => {
+        let fromTop = window.scrollY;
+
+        mainNavLinks.forEach((link, index) => {
+          let section = document.getElementById(decodeURI(link.hash).substring(1));
+          let nextSection = null
+          if (mainNavLinks[index + 1]) {
+            nextSection = document.getElementById(decodeURI(mainNavLinks[index + 1].hash).substring(1));
+          }
+          if (section.offsetTop <= fromTop) {
+            if (nextSection) {
+              if (nextSection.offsetTop > fromTop) {
+                link.classList.add("current");
+              } else {
+                link.classList.remove("current");    
+              }
+            } else {
+              link.classList.add("current");
+            }
+          } else {
+            link.classList.remove("current");
+          }
+        });
+      });
+
+    </script>
+  </body>
+</html>

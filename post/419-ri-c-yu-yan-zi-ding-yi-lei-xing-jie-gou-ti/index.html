@@ -1,0 +1,264 @@
+<html>
+  <head>
+    <meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>4.19日-C语言-自定义类型结构体 | Gridea</title>
+<link rel="shortcut icon" href="https://Hurricane-Q7.github.io/favicon.ico?v=1781917751713">
+<link href="https://cdn.jsdelivr.net/npm/remixicon@2.3.0/fonts/remixicon.css" rel="stylesheet">
+<link rel="stylesheet" href="https://Hurricane-Q7.github.io/styles/main.css">
+<link rel="alternate" type="application/atom+xml" title="4.19日-C语言-自定义类型结构体 | Gridea - Atom Feed" href="https://Hurricane-Q7.github.io/atom.xml">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Droid+Serif:400,700">
+
+
+
+    <meta name="description" content="结构体
+struct 类型名
+{
+   member_list;//成员列表
+}variable-list;//变量列表，分号不能丢！
+
+结构是一些值的集合，这些值称为成员变量。结构的每个成员可以是不同类型的变量。
+C语言提供了很多的内置数..." />
+    <meta name="keywords" content="C语言学习笔记" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.10.0/katex.min.css">
+    <script src="//cdn.jsdelivr.net/gh/highlightjs/cdn-release@11.5.1/build/highlight.min.js"></script>
+  </head>
+  <body>
+    <div class="main">
+      <div class="main-content">
+        <div class="site-header">
+  <a href="https://Hurricane-Q7.github.io">
+  <img class="avatar" src="https://Hurricane-Q7.github.io/images/avatar.png?v=1781917751713" alt="">
+  </a>
+  <h1 class="site-title">
+    Gridea
+  </h1>
+  <p class="site-description">
+    言者所以在意，得意而忘言
+  </p>
+  <div class="menu-container">
+    
+      
+        <a href="/" class="menu">
+          首页
+        </a>
+      
+    
+      
+        <a href="/archives" class="menu">
+          归档
+        </a>
+      
+    
+      
+        <a href="/tags" class="menu">
+          标签
+        </a>
+      
+    
+      
+        <a href="/post/about" class="menu">
+          关于
+        </a>
+      
+    
+  </div>
+  <div class="social-container">
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+  </div>
+</div>
+
+        <div class="post-detail">
+          <article class="post">
+            <h2 class="post-title">
+              4.19日-C语言-自定义类型结构体
+            </h2>
+            <div class="post-info">
+              <span>
+                2026-04-19
+              </span>
+              <span>
+                3 min read
+              </span>
+              
+                <a href="https://Hurricane-Q7.github.io/tag/YSaodvhI5R/" class="post-tag">
+                  # C语言学习笔记
+                </a>
+              
+            </div>
+            
+              <img class="post-feature-image" src="https://Hurricane-Q7.github.io/post-images/419-ri-c-yu-yan-zi-ding-yi-lei-xing-jie-gou-ti.png" alt="">
+            
+            <div class="post-content-wrapper">
+              <div class="post-content" v-pre>
+                <h1 id="结构体">结构体</h1>
+<pre><code class="language-c">struct 类型名
+{
+   member_list;//成员列表
+}variable-list;//变量列表，分号不能丢！
+</code></pre>
+<p><strong>结构</strong>是一些值的集合，这些值称为成员变量。结构的每个成员可以是不同类型的变量。<br>
+C语言提供了很多的内置数据类型，比如int、float、char、long 、long long 、double，这些类型足以涵盖日常生活中的数据了，但是在描述一个比较复杂的人或物时，有点麻烦，这时候C语言给我提供了一个自定义数据类型<strong>结构体</strong>，我们可以把一些数据类型整合、打包成一个整体来作为一个结构体类型。<br>
+比如，学生为例，学生有姓名、年龄、身高、得分、学号等等，我们可以通过自定义数据类型结构体来实现对一个学生的描述。</p>
+<pre><code class="language-c">//定义一个数据类型
+ struct student
+ {
+         char name[20];//名字
+         int age;//年龄
+         float height;//身高
+         int score;//得分
+         //通过这种方式，我们就自定义了一个数据类型，类型是struct student，后续也可以通过该类型来创建变量。
+ }s2;//创建struct student类型的变量s2
+ //这两种创建变量的方式是相同的！
+ int main()
+ {
+     struct student s1;//创建struct student类型的变量s1
+     return 0;
+ }
+</code></pre>
+<h2 id="匿名结构体类型">匿名结构体类型</h2>
+<p>只能使用一次！</p>
+<pre><code class="language-c">struct 
+{
+    char name[20];
+    int age;
+}s1;
+</code></pre>
+<h2 id="结构体的自引用">结构体的自引用</h2>
+<p><strong>自引用：</strong> 在结构中包含一个类型为该结构体本身的成员。（形式有点像函数的递归调用，自己调用自己）</p>
+<h3 id="代码一">代码一</h3>
+<pre><code class="language-c">struct Node//声明一个struct Node的数据类型
+{
+    int data1;//4Byte
+    struct Node next;
+}
+这样写是有问题的，就是我们不知道struct Node的字节大小，我们在成员列表中又拿起了struct Node 数据类型创建了一个变量next,next中又有对应的节点和下一个节点，而下一个节点我们同样也不知道大小，因为struct Node这个数据类型我们都不知道！
+</code></pre>
+<p>正确写法</p>
+<pre><code class="language-c">struct Node
+{
+    int data1;
+    struct Node* next;//存放下一个节点的指针，指针的大小是固定的（4/8byte）;
+}
+</code></pre>
+<h3 id="代码二">代码二</h3>
+<pre><code class="language-c">typedef struct
+{
+    int data;
+    Node* next;// 错误：此时编译器还不认识 Node 是什么
+}Node;
+//这里的代码创建了一个匿名结构体类型，又用这个结构体类型创建了一个变量Node，而在结构体内部又调用了Node变量，这里又歧义，到底是先有变量类型，还是先有变量类型的指针（Node* next)。
+</code></pre>
+<p>正确写法</p>
+<pre><code class="language-c">typedef struct Node
+{
+ int data;
+ struct Node* next;//拿起struct Node*这个类型来创建一个 指针变量
+}Node;//这里的Node是struct Node的别名
+
+//typedef是个数据类型起一个别名，在这里typedef struct Node后 struct Node 等价于 Node
+struct Node s1;
+//二者是等价的……
+Node s2;
+</code></pre>
+<h2 id="typedef和结构体">typedef和结构体</h2>
+<figure data-type="image" tabindex="1"><img src="https://Hurricane-Q7.github.io/post-images/1776603424372.png" alt="" loading="lazy"></figure>
+<p>、</p>
+
+              </div>
+              <div class="toc-container">
+                <ul class="markdownIt-TOC">
+<li><a href="#%E7%BB%93%E6%9E%84%E4%BD%93">结构体</a>
+<ul>
+<li><a href="#%E5%8C%BF%E5%90%8D%E7%BB%93%E6%9E%84%E4%BD%93%E7%B1%BB%E5%9E%8B">匿名结构体类型</a></li>
+<li><a href="#%E7%BB%93%E6%9E%84%E4%BD%93%E7%9A%84%E8%87%AA%E5%BC%95%E7%94%A8">结构体的自引用</a>
+<ul>
+<li><a href="#%E4%BB%A3%E7%A0%81%E4%B8%80">代码一</a></li>
+<li><a href="#%E4%BB%A3%E7%A0%81%E4%BA%8C">代码二</a></li>
+</ul>
+</li>
+<li><a href="#typedef%E5%92%8C%E7%BB%93%E6%9E%84%E4%BD%93">typedef和结构体</a></li>
+</ul>
+</li>
+</ul>
+
+              </div>
+            </div>
+          </article>
+        </div>
+
+        
+          <div class="next-post">
+            <div class="next">下一篇</div>
+            <a href="https://Hurricane-Q7.github.io/post/ba-dao-zhi-zhen-bi-shi-ti/">
+              <h3 class="post-title">
+                指针进阶-笔试练习题
+              </h3>
+            </a>
+          </div>
+        
+
+        
+
+        <div class="site-footer">
+  Powered by <a href="https://github.com/getgridea/gridea" target="_blank">Gridea</a>
+  <a class="rss" href="https://Hurricane-Q7.github.io/atom.xml" target="_blank">
+    <i class="ri-rss-line"></i> RSS
+  </a>
+</div>
+
+      </div>
+    </div>
+
+    <script>
+      hljs.initHighlightingOnLoad()
+
+      let mainNavLinks = document.querySelectorAll(".markdownIt-TOC a");
+
+      // This should probably be throttled.
+      // Especially because it triggers during smooth scrolling.
+      // https://lodash.com/docs/4.17.10#throttle
+      // You could do like...
+      // window.addEventListener("scroll", () => {
+      //    _.throttle(doThatStuff, 100);
+      // });
+      // Only not doing it here to keep this Pen dependency-free.
+
+      window.addEventListener("scroll", event => {
+        let fromTop = window.scrollY;
+
+        mainNavLinks.forEach((link, index) => {
+          let section = document.getElementById(decodeURI(link.hash).substring(1));
+          let nextSection = null
+          if (mainNavLinks[index + 1]) {
+            nextSection = document.getElementById(decodeURI(mainNavLinks[index + 1].hash).substring(1));
+          }
+          if (section.offsetTop <= fromTop) {
+            if (nextSection) {
+              if (nextSection.offsetTop > fromTop) {
+                link.classList.add("current");
+              } else {
+                link.classList.remove("current");    
+              }
+            } else {
+              link.classList.add("current");
+            }
+          } else {
+            link.classList.remove("current");
+          }
+        });
+      });
+
+    </script>
+  </body>
+</html>

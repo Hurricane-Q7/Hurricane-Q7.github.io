@@ -1,0 +1,405 @@
+<html>
+  <head>
+    <meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Linux基础内容学习 | Gridea</title>
+<link rel="shortcut icon" href="https://Hurricane-Q7.github.io/favicon.ico?v=1781917751713">
+<link href="https://cdn.jsdelivr.net/npm/remixicon@2.3.0/fonts/remixicon.css" rel="stylesheet">
+<link rel="stylesheet" href="https://Hurricane-Q7.github.io/styles/main.css">
+<link rel="alternate" type="application/atom+xml" title="Linux基础内容学习 | Gridea - Atom Feed" href="https://Hurricane-Q7.github.io/atom.xml">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Droid+Serif:400,700">
+
+
+
+    <meta name="description" content="文件操作 + 权限管理 + 查找搜索 + 网络连接
+= Linux基础
+Linux基础命令
+
+对文件、目录的操作（touch、cd、mkdir、cp、mv、rm）
+查看文件内容(cat、more/less、head/tail(看开头几行或末..." />
+    <meta name="keywords" content="Linux学习" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.10.0/katex.min.css">
+    <script src="//cdn.jsdelivr.net/gh/highlightjs/cdn-release@11.5.1/build/highlight.min.js"></script>
+  </head>
+  <body>
+    <div class="main">
+      <div class="main-content">
+        <div class="site-header">
+  <a href="https://Hurricane-Q7.github.io">
+  <img class="avatar" src="https://Hurricane-Q7.github.io/images/avatar.png?v=1781917751713" alt="">
+  </a>
+  <h1 class="site-title">
+    Gridea
+  </h1>
+  <p class="site-description">
+    言者所以在意，得意而忘言
+  </p>
+  <div class="menu-container">
+    
+      
+        <a href="/" class="menu">
+          首页
+        </a>
+      
+    
+      
+        <a href="/archives" class="menu">
+          归档
+        </a>
+      
+    
+      
+        <a href="/tags" class="menu">
+          标签
+        </a>
+      
+    
+      
+        <a href="/post/about" class="menu">
+          关于
+        </a>
+      
+    
+  </div>
+  <div class="social-container">
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+  </div>
+</div>
+
+        <div class="post-detail">
+          <article class="post">
+            <h2 class="post-title">
+              Linux基础内容学习
+            </h2>
+            <div class="post-info">
+              <span>
+                2026-05-14
+              </span>
+              <span>
+                6 min read
+              </span>
+              
+                <a href="https://Hurricane-Q7.github.io/tag/UT7aNttrfe/" class="post-tag">
+                  # Linux学习
+                </a>
+              
+            </div>
+            
+              <img class="post-feature-image" src="https://Hurricane-Q7.github.io/post-images/linux-ji-chu-ming-ling-xue-xi.png" alt="">
+            
+            <div class="post-content-wrapper">
+              <div class="post-content" v-pre>
+                <p><strong>文件操作 + 权限管理 + 查找搜索 + 网络连接<br>
+= Linux基础</strong></p>
+<h1 id="linux基础命令">Linux基础命令</h1>
+<ol>
+<li>对文件、目录的操作（touch、cd、mkdir、cp、mv、rm）</li>
+<li>查看文件内容(cat、more/less、head/tail(看开头几行或末尾几行))</li>
+<li>Linux安全性：权限和身份(chmod、chown、sudo)</li>
+<li>搜索指令(which、whereis、find、grep、locate)</li>
+<li>系统运行状态相关指令（top、df、free、ps）</li>
+</ol>
+<h1 id="基础命令之系统进程管理">基础命令之系统进程管理</h1>
+<p>指令速查：</p>
+<pre><code class="language-c"></code></pre>
+<h1 id="基础命令之搜索指令">基础命令之搜索指令</h1>
+<h2 id="locate非实时指令查看db">locate（非实时指令，查看DB）</h2>
+<p><strong>指令简介</strong>：locate也是一种搜索指令，<strong>特点是快</strong>，缺点是非实时搜索（比如你刚创建的一个.c文件，然后你一个locate一下这个文件就找不到的，需要及时更新一下数据库，用updatedb指令）</p>
+<p><strong>工作原理</strong>：locate 的速度为什么快？因为它不是像 find 一样实时遍历目录，他会提前建立一个<strong>文件路径数据库</strong>，搜索时直接查数据库，所以特别快，但是数据库可能不是最新的，因此有时候需要更新一下。<br>
+<strong>用法</strong>：locate 文件名/文件名包含的字符串</p>
+<h2 id="find-实时搜索指令查看disk在书架上找书">find (实时搜索指令，查看DISK，在书架上找书)</h2>
+<h3 id="按文件名搜索">按文件名搜索</h3>
+<p><img src="https://Hurricane-Q7.github.io/post-images/1778828918863.png" alt="" loading="lazy"><br>
+<strong>用法</strong>：find 搜索路径 [选项] 搜索内容<br>
+eg: find / -name main.c</p>
+<pre><code class="language-c">1. -iname不看大小写
+2. name 看大小写
+</code></pre>
+<h3 id="按文件大小搜索">按文件大小搜索</h3>
+<p><strong>用法</strong>：find 搜索路径 -size [+|-]大小<br>
+find / -size +1M</p>
+<h3 id="按文件类型找">按文件类型找</h3>
+<p><img src="https://Hurricane-Q7.github.io/post-images/1778830306745.png" alt="" loading="lazy"><br>
+<strong>用法</strong>：find 路径 -type 类型字符(f,d,l,b,c,s,p<br>
+<code>注意：ls -l 中的文件类型标签字符，不代表find -type 的参数，在ls -l里面-表示普通文件，但是在find里面用f来表示</code></p>
+<h2 id="grep最细的搜索指令在书里面找词语">grep(最细的搜索指令，在书里面找词语)</h2>
+<p><strong>用法（命令格式）</strong>：grep [选项] &quot;搜索内容&quot; 文件名<br>
+<strong>作用</strong>：<u>在文件中提取和匹配符合条件的字符串</u><br>
+<strong>选项</strong>：</p>
+<ul>
+<li>-i 忽略大小写</li>
+<li>-n 输出行号（指符合条件的字符串行在文件内的行号）</li>
+<li>-v 反向匹配，搜索不包含匹配内容的行</li>
+<li>--color=auto 搜索出的关键字用颜色表示</li>
+</ul>
+<h1 id="linux基础之软件安装centos-7">Linux基础之软件安装（Centos 7）</h1>
+<p>YUM：CentOS的软件包管理器。<br>
+<strong>核心命令：</strong> yum<br>
+<strong>命令格式：</strong> yum [选项] 命令<br>
+<strong>yum命令的过人之处：</strong></p>
+<ol>
+<li>自动处理依赖（自动查找、自动分析、自动安装、自动下载、自动安装顺序）</li>
+<li>统一的软件安装来源（aliyun等等）</li>
+<li>统一更新。（可以更新单个软件、更新整个系统）</li>
+<li>方便查询（搜索软件、查看软件信息、查看仓库）</li>
+<li>方便卸载（卸载软件、自动处理依赖）</li>
+</ol>
+<h2 id="yum的相关命令">yum的相关命令</h2>
+<p>先熟练使用以下操作：</p>
+<ol>
+<li>搜索</li>
+<li>安装</li>
+<li>卸载</li>
+<li>查询</li>
+<li>仓库</li>
+<li>依赖<br>
+<img src="https://Hurricane-Q7.github.io/post-images/1779630188385.png" alt="" loading="lazy"></li>
+</ol>
+<h2 id="软件安装后的分布情况">软件安装后的分布情况</h2>
+<p>在Linux上面安装软件（用yum安装包管理器）可不像Windows上面一个目录下就把安装的全部内容放一块了，而是把配置文件、可执行程序、帮助文档、日志单独放到对应的目录下。</p>
+<h3 id="可执行的命令-真正的程序">可执行的命令-真正的程序</h3>
+<p>安装目录：/usr/bin</p>
+<h3 id="配置文件">配置文件</h3>
+<p>安装目录：/etc</p>
+<h3 id="动态库文件">动态库文件</h3>
+<p>安装目录：/usr/lib</p>
+<h3 id="与cpu架构无关的数据">与cpu架构无关的数据</h3>
+<p>目录位置：/usr/share</p>
+<ul>
+<li>帮助文档（man）</li>
+<li>图标</li>
+<li>man手册</li>
+<li>语言包</li>
+<li>模板</li>
+</ul>
+<h3 id="经常变化的数据-日志varlog">经常变化的数据-日志(/var/log)</h3>
+<p>目录位置：/var</p>
+<ul>
+<li>日志</li>
+<li>缓存</li>
+<li>数据库</li>
+<li>yum缓存(/var/cache/yum)</li>
+</ul>
+<h1 id="vim编辑器的基本操作必知必会">VIM编辑器的基本操作(必知必会)</h1>
+<p>必知必会清单：</p>
+<pre><code class="language-c">1. 模式切换（插入模式、命令模式、底线命令模式）
+2. 光标移动（高频：基础移动、快速移动、单词级移动）
+3. 删除操作（删除字符、单词、删除到行尾、删除整行、删除多行）
+4. 复制粘贴（复制当前行、复制多行、下面粘贴、上面粘贴）
+5. 撤销和恢复（撤销、反撤销）
+6. 查找
+7. 替换（替换字符、替换整个文件）
+8. 保存退出
+9. 选中（Visual模式：字符选择、行选择、块选择）
+</code></pre>
+<h2 id="模式切换">模式切换</h2>
+<p>掌握不同进入插入模式的方法。<br>
+<img src="https://Hurricane-Q7.github.io/post-images/1781617640004.png" alt="" loading="lazy"></p>
+<h2 id="光标移动">光标移动</h2>
+<p>快速移动</p>
+<pre><code class="language-c">0      行首
+^      行首第一个非空字符
+$      行尾
+gg     文件开头
+G      文件结尾
+nG     跳到第n行(底线命令模式':n')
+</code></pre>
+<p>单词级移动：</p>
+<pre><code class="language-c">w   下一个单词开头
+b   上一个单词开头
+e   当前单词结尾
+</code></pre>
+<h2 id="删除操作重点">删除操作（重点）</h2>
+<pre><code class="language-c">1. x 删除字符
+2. dw 删除单词
+3. D 删除到行尾&lt;=&gt;d$
+4. dd 删除当前一整行
+5. ndd 从当前开始删除n个行
+</code></pre>
+<h2 id="copy-and-paste">copy and paste</h2>
+<p><strong>COPY</strong></p>
+<ol>
+<li>yy 复制当前行</li>
+<li>nyy 复制多行（n为从当前行开始要复制几行）<br>
+<strong>PASTE</strong></li>
+<li>p 当前行下面粘贴</li>
+<li>P 当前行上面粘贴</li>
+</ol>
+<h2 id="撤销与恢复">撤销与恢复</h2>
+<ol>
+<li>u 撤销</li>
+<li>Ctrl+r 反撤销</li>
+</ol>
+<h2 id="查找">查找</h2>
+<ol>
+<li>/关键字<br>
+查找后：n下一个结果，N上一个结果</li>
+<li>
+<ul>
+<li>当前单词搜索</li>
+</ul>
+</li>
+</ol>
+<h2 id="替换重点">替换（重点）</h2>
+<p><strong>注意：这里的替换操作需要提前进入底线命令模式！</strong></p>
+<h3 id="单行替换">单行替换</h3>
+<p>命令格式：<br>
+<code>:ns/old/new/g</code>，第n行的old用new来替换。</p>
+<h3 id="多行替换">多行替换</h3>
+<p>命令格式：<br>
+<code>:n1,n2s/old/new/g</code><br>
+作用：替换n1行到n2行，用new替换old。</p>
+<h3 id="全文替换">全文替换</h3>
+<p>命令格式：<br>
+<code>:%s/old/new/g</code><br>
+把全文的old用new来替换。</p>
+<h2 id="选中visual模式">选中(Visual模式)</h2>
+<ol>
+<li>v 字符选择</li>
+<li>V 行选择</li>
+<li>Ctrl + v 块选择</li>
+</ol>
+<h2 id="vim编辑器底线命令模式下的常用命令">Vim编辑器底线命令模式下的常用命令</h2>
+<pre><code class="language-c">1. 常见的保存退出，wq，wq!,w,,q这些
+2. set nu显示行号，set nonu关闭行号
+3. :f 显示当前文件名
+4. :!Shell命令，在vim编辑器里面可以执行Shell命令
+5. set all显示所有配置信息
+6. syntax on/off 开启/关闭语法高亮
+7. :set list       &quot;显示空白字符
+8. :set nolist     &quot;隐藏空白字符
+</code></pre>
+
+              </div>
+              <div class="toc-container">
+                <ul class="markdownIt-TOC">
+<li><a href="#linux%E5%9F%BA%E7%A1%80%E5%91%BD%E4%BB%A4">Linux基础命令</a></li>
+<li><a href="#%E5%9F%BA%E7%A1%80%E5%91%BD%E4%BB%A4%E4%B9%8B%E7%B3%BB%E7%BB%9F%E8%BF%9B%E7%A8%8B%E7%AE%A1%E7%90%86">基础命令之系统进程管理</a></li>
+<li><a href="#%E5%9F%BA%E7%A1%80%E5%91%BD%E4%BB%A4%E4%B9%8B%E6%90%9C%E7%B4%A2%E6%8C%87%E4%BB%A4">基础命令之搜索指令</a>
+<ul>
+<li><a href="#locate%E9%9D%9E%E5%AE%9E%E6%97%B6%E6%8C%87%E4%BB%A4%E6%9F%A5%E7%9C%8Bdb">locate（非实时指令，查看DB）</a></li>
+<li><a href="#find-%E5%AE%9E%E6%97%B6%E6%90%9C%E7%B4%A2%E6%8C%87%E4%BB%A4%E6%9F%A5%E7%9C%8Bdisk%E5%9C%A8%E4%B9%A6%E6%9E%B6%E4%B8%8A%E6%89%BE%E4%B9%A6">find (实时搜索指令，查看DISK，在书架上找书)</a>
+<ul>
+<li><a href="#%E6%8C%89%E6%96%87%E4%BB%B6%E5%90%8D%E6%90%9C%E7%B4%A2">按文件名搜索</a></li>
+<li><a href="#%E6%8C%89%E6%96%87%E4%BB%B6%E5%A4%A7%E5%B0%8F%E6%90%9C%E7%B4%A2">按文件大小搜索</a></li>
+<li><a href="#%E6%8C%89%E6%96%87%E4%BB%B6%E7%B1%BB%E5%9E%8B%E6%89%BE">按文件类型找</a></li>
+</ul>
+</li>
+<li><a href="#grep%E6%9C%80%E7%BB%86%E7%9A%84%E6%90%9C%E7%B4%A2%E6%8C%87%E4%BB%A4%E5%9C%A8%E4%B9%A6%E9%87%8C%E9%9D%A2%E6%89%BE%E8%AF%8D%E8%AF%AD">grep(最细的搜索指令，在书里面找词语)</a></li>
+</ul>
+</li>
+<li><a href="#linux%E5%9F%BA%E7%A1%80%E4%B9%8B%E8%BD%AF%E4%BB%B6%E5%AE%89%E8%A3%85centos-7">Linux基础之软件安装（Centos 7）</a>
+<ul>
+<li><a href="#yum%E7%9A%84%E7%9B%B8%E5%85%B3%E5%91%BD%E4%BB%A4">yum的相关命令</a></li>
+<li><a href="#%E8%BD%AF%E4%BB%B6%E5%AE%89%E8%A3%85%E5%90%8E%E7%9A%84%E5%88%86%E5%B8%83%E6%83%85%E5%86%B5">软件安装后的分布情况</a>
+<ul>
+<li><a href="#%E5%8F%AF%E6%89%A7%E8%A1%8C%E7%9A%84%E5%91%BD%E4%BB%A4-%E7%9C%9F%E6%AD%A3%E7%9A%84%E7%A8%8B%E5%BA%8F">可执行的命令-真正的程序</a></li>
+<li><a href="#%E9%85%8D%E7%BD%AE%E6%96%87%E4%BB%B6">配置文件</a></li>
+<li><a href="#%E5%8A%A8%E6%80%81%E5%BA%93%E6%96%87%E4%BB%B6">动态库文件</a></li>
+<li><a href="#%E4%B8%8Ecpu%E6%9E%B6%E6%9E%84%E6%97%A0%E5%85%B3%E7%9A%84%E6%95%B0%E6%8D%AE">与cpu架构无关的数据</a></li>
+<li><a href="#%E7%BB%8F%E5%B8%B8%E5%8F%98%E5%8C%96%E7%9A%84%E6%95%B0%E6%8D%AE-%E6%97%A5%E5%BF%97varlog">经常变化的数据-日志(/var/log)</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a href="#vim%E7%BC%96%E8%BE%91%E5%99%A8%E7%9A%84%E5%9F%BA%E6%9C%AC%E6%93%8D%E4%BD%9C%E5%BF%85%E7%9F%A5%E5%BF%85%E4%BC%9A">VIM编辑器的基本操作(必知必会)</a>
+<ul>
+<li><a href="#%E6%A8%A1%E5%BC%8F%E5%88%87%E6%8D%A2">模式切换</a></li>
+<li><a href="#%E5%85%89%E6%A0%87%E7%A7%BB%E5%8A%A8">光标移动</a></li>
+<li><a href="#%E5%88%A0%E9%99%A4%E6%93%8D%E4%BD%9C%E9%87%8D%E7%82%B9">删除操作（重点）</a></li>
+<li><a href="#copy-and-paste">copy and paste</a></li>
+<li><a href="#%E6%92%A4%E9%94%80%E4%B8%8E%E6%81%A2%E5%A4%8D">撤销与恢复</a></li>
+<li><a href="#%E6%9F%A5%E6%89%BE">查找</a></li>
+<li><a href="#%E6%9B%BF%E6%8D%A2%E9%87%8D%E7%82%B9">替换（重点）</a>
+<ul>
+<li><a href="#%E5%8D%95%E8%A1%8C%E6%9B%BF%E6%8D%A2">单行替换</a></li>
+<li><a href="#%E5%A4%9A%E8%A1%8C%E6%9B%BF%E6%8D%A2">多行替换</a></li>
+<li><a href="#%E5%85%A8%E6%96%87%E6%9B%BF%E6%8D%A2">全文替换</a></li>
+</ul>
+</li>
+<li><a href="#%E9%80%89%E4%B8%ADvisual%E6%A8%A1%E5%BC%8F">选中(Visual模式)</a></li>
+<li><a href="#vim%E7%BC%96%E8%BE%91%E5%99%A8%E5%BA%95%E7%BA%BF%E5%91%BD%E4%BB%A4%E6%A8%A1%E5%BC%8F%E4%B8%8B%E7%9A%84%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4">Vim编辑器底线命令模式下的常用命令</a></li>
+</ul>
+</li>
+</ul>
+
+              </div>
+            </div>
+          </article>
+        </div>
+
+        
+          <div class="next-post">
+            <div class="next">下一篇</div>
+            <a href="https://Hurricane-Q7.github.io/post/514-c-yu-yan-nei-cun-zhi-shi-dian/">
+              <h3 class="post-title">
+                C语言进阶-动态内存部分（非常重要）
+              </h3>
+            </a>
+          </div>
+        
+
+        
+
+        <div class="site-footer">
+  Powered by <a href="https://github.com/getgridea/gridea" target="_blank">Gridea</a>
+  <a class="rss" href="https://Hurricane-Q7.github.io/atom.xml" target="_blank">
+    <i class="ri-rss-line"></i> RSS
+  </a>
+</div>
+
+      </div>
+    </div>
+
+    <script>
+      hljs.initHighlightingOnLoad()
+
+      let mainNavLinks = document.querySelectorAll(".markdownIt-TOC a");
+
+      // This should probably be throttled.
+      // Especially because it triggers during smooth scrolling.
+      // https://lodash.com/docs/4.17.10#throttle
+      // You could do like...
+      // window.addEventListener("scroll", () => {
+      //    _.throttle(doThatStuff, 100);
+      // });
+      // Only not doing it here to keep this Pen dependency-free.
+
+      window.addEventListener("scroll", event => {
+        let fromTop = window.scrollY;
+
+        mainNavLinks.forEach((link, index) => {
+          let section = document.getElementById(decodeURI(link.hash).substring(1));
+          let nextSection = null
+          if (mainNavLinks[index + 1]) {
+            nextSection = document.getElementById(decodeURI(mainNavLinks[index + 1].hash).substring(1));
+          }
+          if (section.offsetTop <= fromTop) {
+            if (nextSection) {
+              if (nextSection.offsetTop > fromTop) {
+                link.classList.add("current");
+              } else {
+                link.classList.remove("current");    
+              }
+            } else {
+              link.classList.add("current");
+            }
+          } else {
+            link.classList.remove("current");
+          }
+        });
+      });
+
+    </script>
+  </body>
+</html>

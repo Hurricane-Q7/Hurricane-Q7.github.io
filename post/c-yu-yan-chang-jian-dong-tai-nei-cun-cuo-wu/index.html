@@ -1,0 +1,312 @@
+<html>
+  <head>
+    <meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>C语言-常见动态内存错误与常见笔试题 | Gridea</title>
+<link rel="shortcut icon" href="https://Hurricane-Q7.github.io/favicon.ico?v=1781917751713">
+<link href="https://cdn.jsdelivr.net/npm/remixicon@2.3.0/fonts/remixicon.css" rel="stylesheet">
+<link rel="stylesheet" href="https://Hurricane-Q7.github.io/styles/main.css">
+<link rel="alternate" type="application/atom+xml" title="C语言-常见动态内存错误与常见笔试题 | Gridea - Atom Feed" href="https://Hurricane-Q7.github.io/atom.xml">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Droid+Serif:400,700">
+
+
+
+    <meta name="description" content="核心三步骤：
+malloc 申请 →\rightarrow→ 判 NULL 使用 →\rightarrow→ free 释放
+常见错误
+
+对NULL指针的解引用操作
+对动态开辟空间的越界访问
+对非动态开辟内存使用free释放
+使用free释..." />
+    <meta name="keywords" content="C语言学习笔记" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.10.0/katex.min.css">
+    <script src="//cdn.jsdelivr.net/gh/highlightjs/cdn-release@11.5.1/build/highlight.min.js"></script>
+  </head>
+  <body>
+    <div class="main">
+      <div class="main-content">
+        <div class="site-header">
+  <a href="https://Hurricane-Q7.github.io">
+  <img class="avatar" src="https://Hurricane-Q7.github.io/images/avatar.png?v=1781917751713" alt="">
+  </a>
+  <h1 class="site-title">
+    Gridea
+  </h1>
+  <p class="site-description">
+    言者所以在意，得意而忘言
+  </p>
+  <div class="menu-container">
+    
+      
+        <a href="/" class="menu">
+          首页
+        </a>
+      
+    
+      
+        <a href="/archives" class="menu">
+          归档
+        </a>
+      
+    
+      
+        <a href="/tags" class="menu">
+          标签
+        </a>
+      
+    
+      
+        <a href="/post/about" class="menu">
+          关于
+        </a>
+      
+    
+  </div>
+  <div class="social-container">
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+  </div>
+</div>
+
+        <div class="post-detail">
+          <article class="post">
+            <h2 class="post-title">
+              C语言-常见动态内存错误与常见笔试题
+            </h2>
+            <div class="post-info">
+              <span>
+                2026-05-23
+              </span>
+              <span>
+                2 min read
+              </span>
+              
+                <a href="https://Hurricane-Q7.github.io/tag/YSaodvhI5R/" class="post-tag">
+                  # C语言学习笔记
+                </a>
+              
+            </div>
+            
+              <img class="post-feature-image" src="https://Hurricane-Q7.github.io/post-images/c-yu-yan-chang-jian-dong-tai-nei-cun-cuo-wu.png" alt="">
+            
+            <div class="post-content-wrapper">
+              <div class="post-content" v-pre>
+                <p><strong>核心三步骤：</strong><br>
+<strong>malloc 申请 <span class="katex"><span class="katex-mathml"><math><semantics><mrow><mo>→</mo></mrow><annotation encoding="application/x-tex">\rightarrow</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.36687em;vertical-align:0em;"></span><span class="mrel">→</span></span></span></span> 判 NULL 使用 <span class="katex"><span class="katex-mathml"><math><semantics><mrow><mo>→</mo></mrow><annotation encoding="application/x-tex">\rightarrow</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.36687em;vertical-align:0em;"></span><span class="mrel">→</span></span></span></span> free 释放</strong></p>
+<h1 id="常见错误">常见错误</h1>
+<ol>
+<li>对NULL指针的解引用操作</li>
+<li>对动态开辟空间的越界访问</li>
+<li>对非动态开辟内存使用free释放</li>
+<li>使用free释放一块动态开辟内存的一部分</li>
+<li>对同一块动态内存多次释放</li>
+<li>动态开辟内存忘记释放（内存泄漏）</li>
+</ol>
+<h2 id="错误情况代码">错误情况代码</h2>
+<p>错误情况一：</p>
+<pre><code class="language-c">动态内存有风险，用前必判 NULL。
+ void test()
+ {
+     int *p = (int*)malloc(INT_MAX/4);
+     *p = 20;//如果P的值是NULL，就有问题。
+     free(p);
+ }
+</code></pre>
+<p>错误情况二：</p>
+<pre><code class="language-c">void test()
+{
+    int i = 0;
+    int*p = (int *)malloc(10*sizeof(int));
+    if(NULL == p)
+    {
+        ;
+    }
+    for(i=0;i&lt;=10;i++)
+    {
+        *(p+i ) = i ;
+        free(p);
+    }
+}
+</code></pre>
+<p>错误情况三：</p>
+<pre><code class="language-c">void test()
+{
+    int a = 10;
+    int *p = &amp;a;
+    free(p);
+}
+</code></pre>
+<p>这段代码犯了一个 C 语言内存管理中非常严重的错误：试图去释放（free）一块<strong>局部的、位于栈区（Stack）的内存</strong>。<br>
+<img src="https://Hurricane-Q7.github.io/post-images/1779501452746.png" alt="" loading="lazy"><br>
+错误情况四：</p>
+<pre><code class="language-c">void test()
+{
+    int *p = (int*)malloc(100);
+    p++;
+    free(p);
+}
+</code></pre>
+<p>错误情况五：</p>
+<pre><code class="language-c">void test()
+{
+    int *p = (int *)malloc(100);
+    free(p);
+    free(p);
+}
+</code></pre>
+<p>错误情况六：动态开辟内存忘记释放（内存泄漏）</p>
+<pre><code class="language-c">void Test(void)
+{
+ char *str = (char *) malloc(100);
+ strcpy(str, &quot;hello&quot;);
+ free(str);
+ if(str != NULL)
+ {
+ strcpy(str, &quot;world&quot;);
+ printf(str);
+ }
+}
+</code></pre>
+<h1 id="常见笔试题">常见笔试题</h1>
+<h2 id="第一题">第一题：</h2>
+<pre><code class="language-c">    
+</code></pre>
+<h2 id="第二题">第二题：</h2>
+<pre><code class="language-c">char* GetMemory()
+{
+	char p[] = &quot;hello world&quot;;
+    //栈区上的一个局部变量，栈区上的内存由操作系统自动管理，是临时的
+    //所以，当函数调用完之后，p就成了一个野指针！！！
+	return p;
+}
+void Test()
+{
+	char* str = NULL;
+	str = GetMemory();
+	printf(str);
+}
+int main()
+{
+	Test();
+	return 0;
+}
+</code></pre>
+<figure data-type="image" tabindex="1"><img src="https://Hurricane-Q7.github.io/post-images/1779527613193.png" alt="" loading="lazy"></figure>
+<h2 id="第三题">第三题：</h2>
+<pre><code class="language-c">void Test(void)
+{
+	char* str = (char*)malloc(100);
+	strcpy(str, &quot;hello&quot;);
+	free(str);
+    //free函数只是释放内存空间，不会修改指针变量的值
+	if (str != NULL)
+	{
+		strcpy(str, &quot;world&quot;);
+		printf(str);
+	}
+}
+int main()
+{
+	Test();
+	return 0;
+}
+</code></pre>
+<figure data-type="image" tabindex="2"><img src="https://Hurricane-Q7.github.io/post-images/1779542871691.png" alt="" loading="lazy"></figure>
+
+              </div>
+              <div class="toc-container">
+                <ul class="markdownIt-TOC">
+<li><a href="#%E5%B8%B8%E8%A7%81%E9%94%99%E8%AF%AF">常见错误</a>
+<ul>
+<li><a href="#%E9%94%99%E8%AF%AF%E6%83%85%E5%86%B5%E4%BB%A3%E7%A0%81">错误情况代码</a></li>
+</ul>
+</li>
+<li><a href="#%E5%B8%B8%E8%A7%81%E7%AC%94%E8%AF%95%E9%A2%98">常见笔试题</a>
+<ul>
+<li><a href="#%E7%AC%AC%E4%B8%80%E9%A2%98">第一题：</a></li>
+<li><a href="#%E7%AC%AC%E4%BA%8C%E9%A2%98">第二题：</a></li>
+<li><a href="#%E7%AC%AC%E4%B8%89%E9%A2%98">第三题：</a></li>
+</ul>
+</li>
+</ul>
+
+              </div>
+            </div>
+          </article>
+        </div>
+
+        
+          <div class="next-post">
+            <div class="next">下一篇</div>
+            <a href="https://Hurricane-Q7.github.io/post/xu-ni-nei-cun-kong-jian-heap-he-stackdong-tai-nei-cun-kong-jian/">
+              <h3 class="post-title">
+                虚拟内存空间-Heap和Stack（动态内存空间）
+              </h3>
+            </a>
+          </div>
+        
+
+        
+
+        <div class="site-footer">
+  Powered by <a href="https://github.com/getgridea/gridea" target="_blank">Gridea</a>
+  <a class="rss" href="https://Hurricane-Q7.github.io/atom.xml" target="_blank">
+    <i class="ri-rss-line"></i> RSS
+  </a>
+</div>
+
+      </div>
+    </div>
+
+    <script>
+      hljs.initHighlightingOnLoad()
+
+      let mainNavLinks = document.querySelectorAll(".markdownIt-TOC a");
+
+      // This should probably be throttled.
+      // Especially because it triggers during smooth scrolling.
+      // https://lodash.com/docs/4.17.10#throttle
+      // You could do like...
+      // window.addEventListener("scroll", () => {
+      //    _.throttle(doThatStuff, 100);
+      // });
+      // Only not doing it here to keep this Pen dependency-free.
+
+      window.addEventListener("scroll", event => {
+        let fromTop = window.scrollY;
+
+        mainNavLinks.forEach((link, index) => {
+          let section = document.getElementById(decodeURI(link.hash).substring(1));
+          let nextSection = null
+          if (mainNavLinks[index + 1]) {
+            nextSection = document.getElementById(decodeURI(mainNavLinks[index + 1].hash).substring(1));
+          }
+          if (section.offsetTop <= fromTop) {
+            if (nextSection) {
+              if (nextSection.offsetTop > fromTop) {
+                link.classList.add("current");
+              } else {
+                link.classList.remove("current");    
+              }
+            } else {
+              link.classList.add("current");
+            }
+          } else {
+            link.classList.remove("current");
+          }
+        });
+      });
+
+    </script>
+  </body>
+</html>

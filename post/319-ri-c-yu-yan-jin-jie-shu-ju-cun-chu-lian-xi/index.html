@@ -1,0 +1,263 @@
+<html>
+  <head>
+    <meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>3.19日-C语言进阶-数据存储练习 | Gridea</title>
+<link rel="shortcut icon" href="https://Hurricane-Q7.github.io/favicon.ico?v=1781917751713">
+<link href="https://cdn.jsdelivr.net/npm/remixicon@2.3.0/fonts/remixicon.css" rel="stylesheet">
+<link rel="stylesheet" href="https://Hurricane-Q7.github.io/styles/main.css">
+<link rel="alternate" type="application/atom+xml" title="3.19日-C语言进阶-数据存储练习 | Gridea - Atom Feed" href="https://Hurricane-Q7.github.io/atom.xml">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Droid+Serif:400,700">
+
+
+
+    <meta name="description" content="关于整型提升的练习
+位权展开法，天生就是给原码用的。
+补码是给计算机存、算用的，不是给你手动按权展开用的。
+二进制转十进制，用位权求和时：
+无符号数：直接算
+有符号正数：直接算
+有符号负数：必须先变回原码，再用原码算
+整型提升的规则：
+有符..." />
+    <meta name="keywords" content="C语言学习笔记" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.10.0/katex.min.css">
+    <script src="//cdn.jsdelivr.net/gh/highlightjs/cdn-release@11.5.1/build/highlight.min.js"></script>
+  </head>
+  <body>
+    <div class="main">
+      <div class="main-content">
+        <div class="site-header">
+  <a href="https://Hurricane-Q7.github.io">
+  <img class="avatar" src="https://Hurricane-Q7.github.io/images/avatar.png?v=1781917751713" alt="">
+  </a>
+  <h1 class="site-title">
+    Gridea
+  </h1>
+  <p class="site-description">
+    言者所以在意，得意而忘言
+  </p>
+  <div class="menu-container">
+    
+      
+        <a href="/" class="menu">
+          首页
+        </a>
+      
+    
+      
+        <a href="/archives" class="menu">
+          归档
+        </a>
+      
+    
+      
+        <a href="/tags" class="menu">
+          标签
+        </a>
+      
+    
+      
+        <a href="/post/about" class="menu">
+          关于
+        </a>
+      
+    
+  </div>
+  <div class="social-container">
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+  </div>
+</div>
+
+        <div class="post-detail">
+          <article class="post">
+            <h2 class="post-title">
+              3.19日-C语言进阶-数据存储练习
+            </h2>
+            <div class="post-info">
+              <span>
+                2026-03-19
+              </span>
+              <span>
+                4 min read
+              </span>
+              
+                <a href="https://Hurricane-Q7.github.io/tag/YSaodvhI5R/" class="post-tag">
+                  # C语言学习笔记
+                </a>
+              
+            </div>
+            
+              <img class="post-feature-image" src="https://Hurricane-Q7.github.io/post-images/319-ri-c-yu-yan-jin-jie-shu-ju-cun-chu-lian-xi.png" alt="">
+            
+            <div class="post-content-wrapper">
+              <div class="post-content" v-pre>
+                <h1 id="关于整型提升的练习">关于整型提升的练习</h1>
+<p>位权展开法，天生就是给原码用的。<br>
+补码是给计算机存、算用的，不是给你手动按权展开用的。<br>
+二进制转十进制，用位权求和时：<br>
+无符号数：直接算<br>
+有符号正数：直接算<br>
+有符号负数：必须先变回原码，再用原码算<br>
+<strong>整型提升的规则：</strong><br>
+有符号的类型，看符号位，是0就补0，是1就补1。<br>
+无符号的类型，直接补零就完了！！！</p>
+<pre><code class="language-c">参与运算的数据达不到一个整型大小要整型提升！！！
+int main()
+{
+    char a = -1;
+    //将整型数据存放到char类型里面，32bit放到8bit里面，显然放不下，因此要先截断补码，截断后再去存放！
+    //-1的原码
+    //10000000 00000000 00000000 00000001
+    //反码：（原码符号位不变，其余取反）
+    //11111111 11111111 11111111 11111110
+    //补码：（反码加1）
+    //11111111 11111111 11111111 11111111
+    //截断补码（内存中存放的是补码）：1111 1111
+    signed char b = -1;
+    unsigned char c = -1;
+    printf(&quot;%d %d %d&quot;,a,b,c);// 结果是-1 -1 255
+    //原因分析：%d是打印有符号的整型数据，一个整型的数据大小是4byte,而char类型只有1byte，所以在输出的时候要进行整型提升！
+    //比如unsigned char c = -1;无符号整型数据类型，没有负数的概念，
+    //这里-1的补码1111 1111的符号位失效了，变成表示值得二进制位了，编译器把它认为是个正数
+    //-1的原码：
+//10000000 00000000 00000000 00000001
+//-1的反码：
+//11111111 11111111 11111111 11111110
+//-1的补码：
+//11111111 11111111 11111111 11111111
+//截断补码后：
+// 11111111
+// 整型提升补零
+// 00000000 00000000 00000000 11111111   //正数三码相同，255
+}
+</code></pre>
+<p><strong>%d既可以打印有符号和无符号，但是%u只能打印无符号</strong>;</p>
+<pre><code class="language-c">int main()
+{
+    char a =-128 ;//有没有符号不是看数字面前带不带符号，而是看数据类型定义标识符，char实际上就是有符号的
+    printf(&quot;%u\n&quot;,a);//只打印无符号的数据
+    printf(&quot;%d\n&quot;,a);//可以打印无符号类型数据也可以有符号类型数据
+    return 0;
+
+}
+</code></pre>
+<pre><code class="language-c">int main()
+{
+	char a[10000];//char类型的数据范围是-128~127
+	//
+	int i;
+	for (i = 0; i &lt; 1000; i++)
+	{
+		a[i] = -1 - i;
+
+	}
+	//-1 -2 -3 -4 ……-128 127 126 ……1 0
+	printf(&quot;%d&quot;, strlen(a));//结果是255，strlen统计\0之前的字符个数，\0就是0
+	return 0;
+}
+</code></pre>
+<figure data-type="image" tabindex="1"><img src="https://Hurricane-Q7.github.io/post-images/1773986019445.png" alt="" loading="lazy"></figure>
+<h1 id="学习总结">学习总结</h1>
+<pre><code class="language-c">最近主要学习了整型数据在内存中是如何存放的（大小端的存放方法，字节为单位），大端存放就是正序，小端存放就是倒序存放，又复习了原码、反码、补码三者的关系，正数的三码相同，负数的原码、反码、补码各不相同，需要进行转换，一个负数原码变成补码需要取反加1，而一个负数的补码变成原码也可以直接取反再加1！
+//-1原码
+//1000 0001
+//反码
+//1111 1110
+//补码：反码加一
+//1111 1111
+//取反加一变原码
+//1000 0001
+又深化了自己对原码与补码的理解，数据在内存中存放的是补码，而原码是给人看的，补码是给计算机算的
+，如果想要按照权位求和的话，是需要一个数据的原码的（正数除外，三码相同）。
+又复习了整型提升的知识，当有些数据参与运算时达不到一个最小int型的运算精度，此时就会发生整型提升，对数据的高位补（0/1），无符号数据直接补0，有符号数据看高位是什么，是0补零，是1补1！
+还有整型提升时不是看数据带不带符号，而是看数据类型是有符号的还是无符号的，也不是看格式控制符号（signed/unsigned）!
+</code></pre>
+
+              </div>
+              <div class="toc-container">
+                <ul class="markdownIt-TOC">
+<li><a href="#%E5%85%B3%E4%BA%8E%E6%95%B4%E5%9E%8B%E6%8F%90%E5%8D%87%E7%9A%84%E7%BB%83%E4%B9%A0">关于整型提升的练习</a></li>
+<li><a href="#%E5%AD%A6%E4%B9%A0%E6%80%BB%E7%BB%93">学习总结</a></li>
+</ul>
+
+              </div>
+            </div>
+          </article>
+        </div>
+
+        
+          <div class="next-post">
+            <div class="next">下一篇</div>
+            <a href="https://Hurricane-Q7.github.io/post/317-ri-c-yu-yan-shu-ju-cun-chu/">
+              <h3 class="post-title">
+                3.17日-C进阶-数据在内存中的存储
+              </h3>
+            </a>
+          </div>
+        
+
+        
+
+        <div class="site-footer">
+  Powered by <a href="https://github.com/getgridea/gridea" target="_blank">Gridea</a>
+  <a class="rss" href="https://Hurricane-Q7.github.io/atom.xml" target="_blank">
+    <i class="ri-rss-line"></i> RSS
+  </a>
+</div>
+
+      </div>
+    </div>
+
+    <script>
+      hljs.initHighlightingOnLoad()
+
+      let mainNavLinks = document.querySelectorAll(".markdownIt-TOC a");
+
+      // This should probably be throttled.
+      // Especially because it triggers during smooth scrolling.
+      // https://lodash.com/docs/4.17.10#throttle
+      // You could do like...
+      // window.addEventListener("scroll", () => {
+      //    _.throttle(doThatStuff, 100);
+      // });
+      // Only not doing it here to keep this Pen dependency-free.
+
+      window.addEventListener("scroll", event => {
+        let fromTop = window.scrollY;
+
+        mainNavLinks.forEach((link, index) => {
+          let section = document.getElementById(decodeURI(link.hash).substring(1));
+          let nextSection = null
+          if (mainNavLinks[index + 1]) {
+            nextSection = document.getElementById(decodeURI(mainNavLinks[index + 1].hash).substring(1));
+          }
+          if (section.offsetTop <= fromTop) {
+            if (nextSection) {
+              if (nextSection.offsetTop > fromTop) {
+                link.classList.add("current");
+              } else {
+                link.classList.remove("current");    
+              }
+            } else {
+              link.classList.add("current");
+            }
+          } else {
+            link.classList.remove("current");
+          }
+        });
+      });
+
+    </script>
+  </body>
+</html>

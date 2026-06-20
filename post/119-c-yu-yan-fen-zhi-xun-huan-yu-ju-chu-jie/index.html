@@ -1,0 +1,344 @@
+<html>
+  <head>
+    <meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>1.19-C语言分支、循环语句（初阶） | Gridea</title>
+<link rel="shortcut icon" href="https://Hurricane-Q7.github.io/favicon.ico?v=1781917751713">
+<link href="https://cdn.jsdelivr.net/npm/remixicon@2.3.0/fonts/remixicon.css" rel="stylesheet">
+<link rel="stylesheet" href="https://Hurricane-Q7.github.io/styles/main.css">
+<link rel="alternate" type="application/atom+xml" title="1.19-C语言分支、循环语句（初阶） | Gridea - Atom Feed" href="https://Hurricane-Q7.github.io/atom.xml">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Droid+Serif:400,700">
+
+
+
+    <meta name="description" content="C语句
+
+表达式语句
+函数调用语句
+控制语句
+复合语句
+空语句
+控制语句 用于控制程序的执行流程，以实现程序的各种结构方式。
+C程序的三种基本结构，顺序、分支、循环，因此C被称为一门结构化语言。
+控制语句
+
+条件判断（分支）if /swit..." />
+    <meta name="keywords" content="" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.10.0/katex.min.css">
+    <script src="//cdn.jsdelivr.net/gh/highlightjs/cdn-release@11.5.1/build/highlight.min.js"></script>
+  </head>
+  <body>
+    <div class="main">
+      <div class="main-content">
+        <div class="site-header">
+  <a href="https://Hurricane-Q7.github.io">
+  <img class="avatar" src="https://Hurricane-Q7.github.io/images/avatar.png?v=1781917751713" alt="">
+  </a>
+  <h1 class="site-title">
+    Gridea
+  </h1>
+  <p class="site-description">
+    言者所以在意，得意而忘言
+  </p>
+  <div class="menu-container">
+    
+      
+        <a href="/" class="menu">
+          首页
+        </a>
+      
+    
+      
+        <a href="/archives" class="menu">
+          归档
+        </a>
+      
+    
+      
+        <a href="/tags" class="menu">
+          标签
+        </a>
+      
+    
+      
+        <a href="/post/about" class="menu">
+          关于
+        </a>
+      
+    
+  </div>
+  <div class="social-container">
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+  </div>
+</div>
+
+        <div class="post-detail">
+          <article class="post">
+            <h2 class="post-title">
+              1.19-C语言分支、循环语句（初阶）
+            </h2>
+            <div class="post-info">
+              <span>
+                2026-01-19
+              </span>
+              <span>
+                4 min read
+              </span>
+              
+            </div>
+            
+            <div class="post-content-wrapper">
+              <div class="post-content" v-pre>
+                <h1 id="c语句">C语句</h1>
+<ul>
+<li>表达式语句</li>
+<li>函数调用语句</li>
+<li>控制语句</li>
+<li>复合语句</li>
+<li>空语句<br>
+<strong>控制语句</strong> 用于控制程序的执行流程，以实现程序的各种结构方式。<br>
+C程序的三种基本结构，顺序、分支、循环，因此C被称为一门结构化语言。
+<h2 id="控制语句">控制语句</h2>
+<ol>
+<li>条件判断（分支）if /switch</li>
+<li>循环语句</li>
+<li>转向语句：break goto continue return 语句。</li>
+</ol>
+</li>
+</ul>
+<h3 id="分支语句">分支语句</h3>
+<p>C语言里非零表示真，零表示假!<br>
+基本形式:</p>
+<pre><code class="language-c">第一种：
+if (表达式)//表达式真执行
+{ 语句  }//当语句&gt;一条语句时，也就是复合语句，必须加，else也是如此。
+else {语句}
+if 与else 合起来是一条语句。
+当然也可以好几个if语句并排。
+第二种：
+if
+else if
+else if
+else if
+......
+else 
+</code></pre>
+<pre><code class="language-c">int main()
+{
+    int a=0;
+    int b=2;
+    if(a==1)
+         if(b==2)
+        printf(&quot;hehe\n&quot;);
+    else printf(&quot;haha\n&quot;);//else 与他最近且还没有配对的if配对
+    return 0;
+}
+</code></pre>
+<pre><code class="language-c">int test()
+{
+   int a=4;
+   if(a==3)
+       return 1;
+   return 0;// 条件成立则执行return 1,则不会执行return 0,提前退出函数内部，条件不成立，执行return 0语句，不执行return 1；
+}
+这样写好一点：
+int test ()
+{
+    int a=4;
+    if(a==3)
+      return 1;
+    else 
+     return 0;
+}//这样写更容易理解
+int main()
+{
+    int num1=3;
+    if(5==num)//这样写与num==5等价，但是前者不容易有潜在风险，后者易于少一个'='。赋值操作左值不能是常数。
+      printf(&quot;hehe\n&quot;);
+}
+</code></pre>
+<h1 id="switch语句">switch语句</h1>
+<p>switch语句也是一种分支语句，常常用于多分支的情况!</p>
+<pre><code class="language-c">switch(整形表达式,整形数值)
+{
+    case 整形常量表达式: 语句；（可以是字符，字符以ASCII值存储）break;
+    eg: case 1:printf(&quot;Monday&quot;);break;//break;就是中止，截断的意思，没有break的话，程序会从当前case项，向下穿透，执行后面的case项对应的语句直到遇到break
+    default子句，用来处理上面多种case都没有包含的情况，一般为异常情况。
+}
+</code></pre>
+<pre><code class="language-c">一个简单的例子：
+#include &lt;stdio.h&gt;
+int main()
+{
+    int day = 0;
+    scanf(&quot;%d&quot;,&amp;day);
+    switch(day)
+    {
+        case 1:printf(&quot;1&quot;);break;
+        case 2:printf(&quot;2&quot;);break;
+        case 3:printf(&quot;3&quot;);break;
+        default :printf(&quot;error!&quot;);break;
+    }
+    return 0;
+}
+</code></pre>
+<pre><code class="language-c">#include&lt;stdio.h&gt;
+int main()
+{
+	int n = 1;
+	int m = 2;
+	switch(n)
+	{
+		case 1:m++;
+		case 2:n++;
+		case 3:
+			switch (n) 
+			{
+				case 1:n++;
+				case 2:m++;n++;
+				break;		
+			}
+		case 4:m++;break;
+		default:break;
+	}
+	printf(&quot;m = %d,n = %d\n&quot;,m,n);
+	return 0;
+}
+</code></pre>
+<pre><code class="language-c">int func(int a)
+{
+	int b;
+	switch (a)
+	{
+	case 1:b = 30;
+	case 2:b = 20;
+	case 3:b = 16;//无break，也会穿透到default
+	default:b = 0;
+	}
+	return b;
+}
+int main()
+{
+	int ret = func(1);
+	printf(&quot;%d&quot;, ret);
+	return 0;
+}
+</code></pre>
+<p>总结：switch语句是可嵌套的，break语句只能跳出当前switch语句的范围</p>
+<h1 id="循环语句">循环语句</h1>
+<p>循环语句中的<strong>break</strong>与<strong>continue</strong>!<br>
+break是彻底停止整个循环（永久性）。<br>
+continue是跳过本次循环，直接执行下一次循环，continue一旦执行，跳过continue后面的代码，直接去判断部分，进行下一次循环的判断。</p>
+<pre><code class="language-c">#include&lt;stdio.h&gt; 
+int main()
+{
+    int i=1;
+    while (i&lt;=10)
+    {
+        if(5==i)
+        {
+            continue;
+        }
+        printf(&quot;%d &quot;,i);
+        i=i+1;
+    }
+    return 0;
+}//输出结果:
+</code></pre>
+
+              </div>
+              <div class="toc-container">
+                <ul class="markdownIt-TOC">
+<li><a href="#c%E8%AF%AD%E5%8F%A5">C语句</a>
+<ul>
+<li><a href="#%E6%8E%A7%E5%88%B6%E8%AF%AD%E5%8F%A5">控制语句</a>
+<ul>
+<li><a href="#%E5%88%86%E6%94%AF%E8%AF%AD%E5%8F%A5">分支语句</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a href="#switch%E8%AF%AD%E5%8F%A5">switch语句</a></li>
+<li><a href="#%E5%BE%AA%E7%8E%AF%E8%AF%AD%E5%8F%A5">循环语句</a></li>
+</ul>
+
+              </div>
+            </div>
+          </article>
+        </div>
+
+        
+          <div class="next-post">
+            <div class="next">下一篇</div>
+            <a href="https://Hurricane-Q7.github.io/post/117-ri-c-yu-yan-zhi-zhen-yu-jie-gou-ti-chu-shi/">
+              <h3 class="post-title">
+                1.17日-C语言指针与结构体（初识）
+              </h3>
+            </a>
+          </div>
+        
+
+        
+
+        <div class="site-footer">
+  Powered by <a href="https://github.com/getgridea/gridea" target="_blank">Gridea</a>
+  <a class="rss" href="https://Hurricane-Q7.github.io/atom.xml" target="_blank">
+    <i class="ri-rss-line"></i> RSS
+  </a>
+</div>
+
+      </div>
+    </div>
+
+    <script>
+      hljs.initHighlightingOnLoad()
+
+      let mainNavLinks = document.querySelectorAll(".markdownIt-TOC a");
+
+      // This should probably be throttled.
+      // Especially because it triggers during smooth scrolling.
+      // https://lodash.com/docs/4.17.10#throttle
+      // You could do like...
+      // window.addEventListener("scroll", () => {
+      //    _.throttle(doThatStuff, 100);
+      // });
+      // Only not doing it here to keep this Pen dependency-free.
+
+      window.addEventListener("scroll", event => {
+        let fromTop = window.scrollY;
+
+        mainNavLinks.forEach((link, index) => {
+          let section = document.getElementById(decodeURI(link.hash).substring(1));
+          let nextSection = null
+          if (mainNavLinks[index + 1]) {
+            nextSection = document.getElementById(decodeURI(mainNavLinks[index + 1].hash).substring(1));
+          }
+          if (section.offsetTop <= fromTop) {
+            if (nextSection) {
+              if (nextSection.offsetTop > fromTop) {
+                link.classList.add("current");
+              } else {
+                link.classList.remove("current");    
+              }
+            } else {
+              link.classList.add("current");
+            }
+          } else {
+            link.classList.remove("current");
+          }
+        });
+      });
+
+    </script>
+  </body>
+</html>

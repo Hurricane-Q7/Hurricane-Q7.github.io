@@ -1,0 +1,276 @@
+<html>
+  <head>
+    <meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>2.9日-C语言-操作符（初阶） | Gridea</title>
+<link rel="shortcut icon" href="https://Hurricane-Q7.github.io/favicon.ico?v=1781917751713">
+<link href="https://cdn.jsdelivr.net/npm/remixicon@2.3.0/fonts/remixicon.css" rel="stylesheet">
+<link rel="stylesheet" href="https://Hurricane-Q7.github.io/styles/main.css">
+<link rel="alternate" type="application/atom+xml" title="2.9日-C语言-操作符（初阶） | Gridea - Atom Feed" href="https://Hurricane-Q7.github.io/atom.xml">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Droid+Serif:400,700">
+
+
+
+    <meta name="description" content="逻辑操作符
+逻辑与 逻辑或
+逻辑或（||）：一真即真，全假才假。
+逻辑与（&amp;&amp;）：一假即假，全真才真。
+逻辑或就是或者，逻辑与就是并且的意思！
+int main()
+{
+	int i = 0, a = 0, b = 2, c..." />
+    <meta name="keywords" content="" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.10.0/katex.min.css">
+    <script src="//cdn.jsdelivr.net/gh/highlightjs/cdn-release@11.5.1/build/highlight.min.js"></script>
+  </head>
+  <body>
+    <div class="main">
+      <div class="main-content">
+        <div class="site-header">
+  <a href="https://Hurricane-Q7.github.io">
+  <img class="avatar" src="https://Hurricane-Q7.github.io/images/avatar.png?v=1781917751713" alt="">
+  </a>
+  <h1 class="site-title">
+    Gridea
+  </h1>
+  <p class="site-description">
+    言者所以在意，得意而忘言
+  </p>
+  <div class="menu-container">
+    
+      
+        <a href="/" class="menu">
+          首页
+        </a>
+      
+    
+      
+        <a href="/archives" class="menu">
+          归档
+        </a>
+      
+    
+      
+        <a href="/tags" class="menu">
+          标签
+        </a>
+      
+    
+      
+        <a href="/post/about" class="menu">
+          关于
+        </a>
+      
+    
+  </div>
+  <div class="social-container">
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+  </div>
+</div>
+
+        <div class="post-detail">
+          <article class="post">
+            <h2 class="post-title">
+              2.9日-C语言-操作符（初阶）
+            </h2>
+            <div class="post-info">
+              <span>
+                2026-02-09
+              </span>
+              <span>
+                3 min read
+              </span>
+              
+            </div>
+            
+            <div class="post-content-wrapper">
+              <div class="post-content" v-pre>
+                <h1 id="逻辑操作符">逻辑操作符</h1>
+<h2 id="逻辑与-逻辑或">逻辑与 逻辑或</h2>
+<p><strong>逻辑或</strong>（||）：一真即真，全假才假。<br>
+<strong>逻辑与</strong>（&amp;&amp;）：一假即假，全真才真。<br>
+逻辑或就是或者，逻辑与就是并且的意思！</p>
+<pre><code class="language-c">int main()
+{
+	int i = 0, a = 0, b = 2, c = 3, d = 4;
+	i = a++ &amp;&amp; ++b &amp;&amp; d++;
+	printf(&quot;a = %d\nb = %d\nc = %d\nd = %d\n&quot;, a, b, c, d);
+	return 0;
+}
+//运算规则：
+//&amp;&amp; 左边为假，右边就不计算了
+//  ||  左边为真，右边就不计算了
+//只要逻辑操作符两边的一个式子能够得出整个式子结果就不计算另一个式子。
+</code></pre>
+<p>#条件操作符（三目操作符）<br>
+<code> exp1?exp2:exp3</code></p>
+<h1 id="逗号表达式">逗号表达式</h1>
+<p>逗号表达式，就是用逗号隔开的多个表达式。<br>
+逗号表达式，从左向右依次执行。整个表达式的结果是最后一个表达式的结果。<br>
+(exp1,exp2,exp3);</p>
+<pre><code class="language-c">//代码一
+int a = 1;
+int b = 2;
+int c = (a&gt;b, a=b+10,a,b=a+1);
+//代码二
+a = get_val();
+count_val(a);
+while(a&gt;0)
+{
+    a = get_val();
+    count_val(a);
+}
+改写为逗号表达式
+while(a = get_val()，count_val(a)，a&gt;0)
+{
+    a = get_val();
+    count_val(a);
+}
+</code></pre>
+<h1 id="下标引用-函数调用与结构体成员">下标引用、函数调用与结构体成员</h1>
+<h2 id="下标引用">下标引用</h2>
+<p><code>[]</code></p>
+<pre><code class="language-c">arr[7]-&gt;*(arr+7)-&gt;*(7+arr)-&gt;7[arr]
+[]就是一个下标引用操作符，当指向单个数组元素的时候，可以写成上述式子，初始化的时候不可以。
+</code></pre>
+<h2 id="函数调用操作符">函数调用操作符</h2>
+<p><code>()</code><br>
+操作数：函数名与参数</p>
+<h2 id="结构体成员操作符">结构体成员操作符</h2>
+<p><code>  .  -&gt;</code><br>
+用法：</p>
+<ol>
+<li>结构体类型变量名.结构体类型成员名字</li>
+</ol>
+<pre><code class="language-c">struct stu
+{//定义stu结构体类型名，仅仅是定义一种类型名字，没有变量，不可以在里面对成员进行初始化
+	char name[20];
+	int age;
+	float sint main();
+    };
+    int main()
+{
+	struct stu s = { &quot;lichaoxiang&quot;,18,100.0 };//创建struct stu 型变量
+	printf(&quot;%s %d,%.2f&quot;, s.name, s.age, s.score);
+	return 0;
+};
+
+</code></pre>
+<ol start="2">
+<li>结构体指针-&gt;成员名字</li>
+</ol>
+<pre><code class="language-c">struct stu
+{
+	char name[20];
+	int age;
+	float score;
+};
+int main()
+{
+	struct stu s = { &quot;lichaoxiang&quot;,20,100.0 };//创建stu型变量s并完成初始化
+	struct stu* ps = &amp;s;
+	printf(&quot;%s %d %lf&quot;, ps-&gt;name, ps-&gt;age, ps-&gt;score);
+	return 0;
+}
+ps-&gt;age完全等价于
+(*ps).age
+</code></pre>
+
+              </div>
+              <div class="toc-container">
+                <ul class="markdownIt-TOC">
+<li><a href="#%E9%80%BB%E8%BE%91%E6%93%8D%E4%BD%9C%E7%AC%A6">逻辑操作符</a>
+<ul>
+<li><a href="#%E9%80%BB%E8%BE%91%E4%B8%8E-%E9%80%BB%E8%BE%91%E6%88%96">逻辑与 逻辑或</a></li>
+</ul>
+</li>
+<li><a href="#%E9%80%97%E5%8F%B7%E8%A1%A8%E8%BE%BE%E5%BC%8F">逗号表达式</a></li>
+<li><a href="#%E4%B8%8B%E6%A0%87%E5%BC%95%E7%94%A8-%E5%87%BD%E6%95%B0%E8%B0%83%E7%94%A8%E4%B8%8E%E7%BB%93%E6%9E%84%E4%BD%93%E6%88%90%E5%91%98">下标引用、函数调用与结构体成员</a>
+<ul>
+<li><a href="#%E4%B8%8B%E6%A0%87%E5%BC%95%E7%94%A8">下标引用</a></li>
+<li><a href="#%E5%87%BD%E6%95%B0%E8%B0%83%E7%94%A8%E6%93%8D%E4%BD%9C%E7%AC%A6">函数调用操作符</a></li>
+<li><a href="#%E7%BB%93%E6%9E%84%E4%BD%93%E6%88%90%E5%91%98%E6%93%8D%E4%BD%9C%E7%AC%A6">结构体成员操作符</a></li>
+</ul>
+</li>
+</ul>
+
+              </div>
+            </div>
+          </article>
+        </div>
+
+        
+          <div class="next-post">
+            <div class="next">下一篇</div>
+            <a href="https://Hurricane-Q7.github.io/post/26-ri-c-yu-yan-cao-zuo-fu-chu-jie/">
+              <h3 class="post-title">
+                2.6日-C语言操作符（初阶）
+              </h3>
+            </a>
+          </div>
+        
+
+        
+
+        <div class="site-footer">
+  Powered by <a href="https://github.com/getgridea/gridea" target="_blank">Gridea</a>
+  <a class="rss" href="https://Hurricane-Q7.github.io/atom.xml" target="_blank">
+    <i class="ri-rss-line"></i> RSS
+  </a>
+</div>
+
+      </div>
+    </div>
+
+    <script>
+      hljs.initHighlightingOnLoad()
+
+      let mainNavLinks = document.querySelectorAll(".markdownIt-TOC a");
+
+      // This should probably be throttled.
+      // Especially because it triggers during smooth scrolling.
+      // https://lodash.com/docs/4.17.10#throttle
+      // You could do like...
+      // window.addEventListener("scroll", () => {
+      //    _.throttle(doThatStuff, 100);
+      // });
+      // Only not doing it here to keep this Pen dependency-free.
+
+      window.addEventListener("scroll", event => {
+        let fromTop = window.scrollY;
+
+        mainNavLinks.forEach((link, index) => {
+          let section = document.getElementById(decodeURI(link.hash).substring(1));
+          let nextSection = null
+          if (mainNavLinks[index + 1]) {
+            nextSection = document.getElementById(decodeURI(mainNavLinks[index + 1].hash).substring(1));
+          }
+          if (section.offsetTop <= fromTop) {
+            if (nextSection) {
+              if (nextSection.offsetTop > fromTop) {
+                link.classList.add("current");
+              } else {
+                link.classList.remove("current");    
+              }
+            } else {
+              link.classList.add("current");
+            }
+          } else {
+            link.classList.remove("current");
+          }
+        });
+      });
+
+    </script>
+  </body>
+</html>

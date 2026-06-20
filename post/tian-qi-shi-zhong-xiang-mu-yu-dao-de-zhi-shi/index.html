@@ -1,0 +1,267 @@
+<html>
+  <head>
+    <meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>ESP32-天气时钟项目-知识汇总 | Gridea</title>
+<link rel="shortcut icon" href="https://Hurricane-Q7.github.io/favicon.ico?v=1781917751713">
+<link href="https://cdn.jsdelivr.net/npm/remixicon@2.3.0/fonts/remixicon.css" rel="stylesheet">
+<link rel="stylesheet" href="https://Hurricane-Q7.github.io/styles/main.css">
+<link rel="alternate" type="application/atom+xml" title="ESP32-天气时钟项目-知识汇总 | Gridea - Atom Feed" href="https://Hurricane-Q7.github.io/atom.xml">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Droid+Serif:400,700">
+
+
+
+    <meta name="description" content="WiFi模块
+这部分主要是用esp32连接本地wifi，连接前需要知道wifi名称和密码，还需要用过WiFi.mode()这个函数来把esp32设置为 WIFI_STA模式，也就是连接wifi模式，然后用WiFi.begin()函数来连接w..." />
+    <meta name="keywords" content="" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.10.0/katex.min.css">
+    <script src="//cdn.jsdelivr.net/gh/highlightjs/cdn-release@11.5.1/build/highlight.min.js"></script>
+  </head>
+  <body>
+    <div class="main">
+      <div class="main-content">
+        <div class="site-header">
+  <a href="https://Hurricane-Q7.github.io">
+  <img class="avatar" src="https://Hurricane-Q7.github.io/images/avatar.png?v=1781917751713" alt="">
+  </a>
+  <h1 class="site-title">
+    Gridea
+  </h1>
+  <p class="site-description">
+    言者所以在意，得意而忘言
+  </p>
+  <div class="menu-container">
+    
+      
+        <a href="/" class="menu">
+          首页
+        </a>
+      
+    
+      
+        <a href="/archives" class="menu">
+          归档
+        </a>
+      
+    
+      
+        <a href="/tags" class="menu">
+          标签
+        </a>
+      
+    
+      
+        <a href="/post/about" class="menu">
+          关于
+        </a>
+      
+    
+  </div>
+  <div class="social-container">
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+  </div>
+</div>
+
+        <div class="post-detail">
+          <article class="post">
+            <h2 class="post-title">
+              ESP32-天气时钟项目-知识汇总
+            </h2>
+            <div class="post-info">
+              <span>
+                2026-04-20
+              </span>
+              <span>
+                4 min read
+              </span>
+              
+            </div>
+            
+            <div class="post-content-wrapper">
+              <div class="post-content" v-pre>
+                <h1 id="wifi模块">WiFi模块</h1>
+<p>这部分主要是用esp32连接本地wifi，连接前需要知道wifi名称和密码，还需要用过<code>WiFi.mode()</code>这个函数来把esp32设置为<code> WIFI_STA</code>模式，也就是连接wifi模式，然后用<code>WiFi.begin()</code>函数来连接wifi，也可以用wifi.status()来查看wifi状态。</p>
+<h2 id="wifi连接时用到的一些基本函数in-the-wifih">wifi连接时用到的一些基本函数(in the &lt;WiFi.h&gt;)</h2>
+<ul>
+<li>WiFi.mode() 设置一个esp32wifi模式</li>
+<li>WiFi.begin() 开始连接wifi，需要SSID,PASSWORD</li>
+<li>WiFi.status() 查看esp32是否连接上wifi，有两个返回值，WL_CONNECTED 和 WL_DISCONNECTED，看名字就知道意思了。</li>
+<li><code>WiFi.localIP()</code>: 获取设备的本地IP地址</li>
+</ul>
+<h1 id="oled屏幕模块">oled屏幕模块</h1>
+<p>这部分功能需要一个外设oled屏幕来连接的esp32开发板上。</p>
+<h2 id="u8g2库">U8g2库</h2>
+<p><code>U8g2</code>库是一个强大的图形库，专为小型显示器（如OLED和LCD）设计，支持多种显示器类型和接口。<br>
+我们可以用这个库来点亮屏幕。</p>
+<h2 id="点亮oled屏幕的大致思路采用i2c通信协议-使用u8g2库函数">点亮oled屏幕的大致思路(采用I2C通信协议、使用u8g2库函数)</h2>
+<ol>
+<li>确认OLED屏幕的具体型号</li>
+</ol>
+<pre><code class="language-c">在使用OLED屏幕前，我们必须要知道自己的oled屏幕的具体型号，因为后面调用u8g2库函数的时候，需要知道这些信息来创建一个对象。
+</code></pre>
+<ol start="2">
+<li>用杜邦线连接单片机（ESP32为例）</li>
+</ol>
+<pre><code class="language-c">oled屏幕的时钟线连哪一个引脚，数据线又连接哪一个引脚。
+</code></pre>
+<ol start="3">
+<li>写代码控制OLED屏幕<br>
+<strong>怎么写？</strong></li>
+</ol>
+<h1 id="预处理指令与宏">预处理指令与宏</h1>
+<h2 id="预处理指令">预处理指令</h2>
+<p>以#开头的指令被称为 <u>C/C++</u>  <strong>预处理器指令 (Preprocessor Directives)。</strong> 在代码真正编译之前，预处理器会先处理这些行。<br>
+<img src="https://Hurricane-Q7.github.io/post-images/1776691345281.png" alt="" loading="lazy"><br>
+<img src="https://Hurricane-Q7.github.io/post-images/1776691813824.png" alt="" loading="lazy"></p>
+<h3 id="我的代码">我的代码</h3>
+<figure data-type="image" tabindex="1"><img src="https://Hurricane-Q7.github.io/post-images/1776692167596.png" alt="" loading="lazy"></figure>
+<pre><code class="language-c">这样写的作用是什么？这样写是为了防止编译器重复编译这部分代码，这样的写法通常在头文件当中，在大型项目中，一个头文件可能会被多个源文件引用，或者被其他头文件间接引用。如果没有这些指令，同一个头文件的内容可能会在同一个编译单元中出现多次，导致编译器报错（例如“重复定义变量”或“重复定义类”）。
+</code></pre>
+<figure data-type="image" tabindex="2"><img src="https://Hurricane-Q7.github.io/post-images/1776692384452.png" alt="" loading="lazy"></figure>
+<h2 id="宏">宏</h2>
+<figure data-type="image" tabindex="3"><img src="https://Hurricane-Q7.github.io/post-images/1776692599541.png" alt="" loading="lazy"></figure>
+<h1 id="json轻量级数据交换格式">JSON轻量级数据交换格式</h1>
+<p>JSON 的本质是<strong>字符串</strong>。它通过特定的文本格式来描述数据结构，使得人类容易阅读和编写，同时也易于机器解析和生成。</p>
+<p>Json数据格式的两个优点：</p>
+<ul>
+<li>方便人类阅读（键值对）</li>
+<li>方便计算机阅读（符号标识符系统）</li>
+</ul>
+<pre><code class="language-c">当计算机看到 ：就知道左边是KEY右边是value，当计算机看到{}时，它就知道这是一个Json对象，看到[]的时候，它就知道这是一个数组。
+每一个键值对要用 , 符号（英文）隔开。
+</code></pre>
+<p>Json是一种数据格式，它的基本单元是<strong>键值对</strong>。<br>
+<code> &quot;KEY&quot; : Value</code><br>
+<code>&quot;String&quot;:&quot;I love Json&quot;</code></p>
+<pre><code class="language-Javascript">{
+  &quot;city&quot;: &quot;Shanghai&quot;,
+  &quot;temperature&quot;: 25.5,
+  &quot;is_rainy&quot;: false,
+  &quot;sensors&quot;: [&quot;DHT11&quot;, &quot;BMP280&quot;]
+}
+</code></pre>
+<pre><code class="language-Javascript">{
+    &quot;name&quot;: &quot;张三&quot;,
+    &quot;age&quot;: 30,
+    &quot;isStudent&quot;: false,
+    &quot;courses&quot;: [&quot;数学&quot;, &quot;物理&quot;],
+    &quot;address&quot;: {
+        &quot;city&quot;: &quot;北京&quot;,
+        &quot;postalCode&quot;: &quot;100000&quot;
+    }
+}
+</code></pre>
+<h2 id="json中的可包含的数据类型">Json中的可包含的数据类型</h2>
+<figure data-type="image" tabindex="4"><img src="https://Hurricane-Q7.github.io/post-images/1777174580828.png" alt="" loading="lazy"></figure>
+
+              </div>
+              <div class="toc-container">
+                <ul class="markdownIt-TOC">
+<li><a href="#wifi%E6%A8%A1%E5%9D%97">WiFi模块</a>
+<ul>
+<li><a href="#wifi%E8%BF%9E%E6%8E%A5%E6%97%B6%E7%94%A8%E5%88%B0%E7%9A%84%E4%B8%80%E4%BA%9B%E5%9F%BA%E6%9C%AC%E5%87%BD%E6%95%B0in-the-wifih">wifi连接时用到的一些基本函数(in the &lt;WiFi.h&gt;)</a></li>
+</ul>
+</li>
+<li><a href="#oled%E5%B1%8F%E5%B9%95%E6%A8%A1%E5%9D%97">oled屏幕模块</a>
+<ul>
+<li><a href="#u8g2%E5%BA%93">U8g2库</a></li>
+<li><a href="#%E7%82%B9%E4%BA%AEoled%E5%B1%8F%E5%B9%95%E7%9A%84%E5%A4%A7%E8%87%B4%E6%80%9D%E8%B7%AF%E9%87%87%E7%94%A8i2c%E9%80%9A%E4%BF%A1%E5%8D%8F%E8%AE%AE-%E4%BD%BF%E7%94%A8u8g2%E5%BA%93%E5%87%BD%E6%95%B0">点亮oled屏幕的大致思路(采用I2C通信协议、使用u8g2库函数)</a></li>
+</ul>
+</li>
+<li><a href="#%E9%A2%84%E5%A4%84%E7%90%86%E6%8C%87%E4%BB%A4%E4%B8%8E%E5%AE%8F">预处理指令与宏</a>
+<ul>
+<li><a href="#%E9%A2%84%E5%A4%84%E7%90%86%E6%8C%87%E4%BB%A4">预处理指令</a>
+<ul>
+<li><a href="#%E6%88%91%E7%9A%84%E4%BB%A3%E7%A0%81">我的代码</a></li>
+</ul>
+</li>
+<li><a href="#%E5%AE%8F">宏</a></li>
+</ul>
+</li>
+<li><a href="#json%E8%BD%BB%E9%87%8F%E7%BA%A7%E6%95%B0%E6%8D%AE%E4%BA%A4%E6%8D%A2%E6%A0%BC%E5%BC%8F">JSON轻量级数据交换格式</a>
+<ul>
+<li><a href="#json%E4%B8%AD%E7%9A%84%E5%8F%AF%E5%8C%85%E5%90%AB%E7%9A%84%E6%95%B0%E6%8D%AE%E7%B1%BB%E5%9E%8B">Json中的可包含的数据类型</a></li>
+</ul>
+</li>
+</ul>
+
+              </div>
+            </div>
+          </article>
+        </div>
+
+        
+          <div class="next-post">
+            <div class="next">下一篇</div>
+            <a href="https://Hurricane-Q7.github.io/post/419-ri-c-yu-yan-zi-ding-yi-lei-xing-jie-gou-ti/">
+              <h3 class="post-title">
+                4.19日-C语言-自定义类型结构体
+              </h3>
+            </a>
+          </div>
+        
+
+        
+
+        <div class="site-footer">
+  Powered by <a href="https://github.com/getgridea/gridea" target="_blank">Gridea</a>
+  <a class="rss" href="https://Hurricane-Q7.github.io/atom.xml" target="_blank">
+    <i class="ri-rss-line"></i> RSS
+  </a>
+</div>
+
+      </div>
+    </div>
+
+    <script>
+      hljs.initHighlightingOnLoad()
+
+      let mainNavLinks = document.querySelectorAll(".markdownIt-TOC a");
+
+      // This should probably be throttled.
+      // Especially because it triggers during smooth scrolling.
+      // https://lodash.com/docs/4.17.10#throttle
+      // You could do like...
+      // window.addEventListener("scroll", () => {
+      //    _.throttle(doThatStuff, 100);
+      // });
+      // Only not doing it here to keep this Pen dependency-free.
+
+      window.addEventListener("scroll", event => {
+        let fromTop = window.scrollY;
+
+        mainNavLinks.forEach((link, index) => {
+          let section = document.getElementById(decodeURI(link.hash).substring(1));
+          let nextSection = null
+          if (mainNavLinks[index + 1]) {
+            nextSection = document.getElementById(decodeURI(mainNavLinks[index + 1].hash).substring(1));
+          }
+          if (section.offsetTop <= fromTop) {
+            if (nextSection) {
+              if (nextSection.offsetTop > fromTop) {
+                link.classList.add("current");
+              } else {
+                link.classList.remove("current");    
+              }
+            } else {
+              link.classList.add("current");
+            }
+          } else {
+            link.classList.remove("current");
+          }
+        });
+      });
+
+    </script>
+  </body>
+</html>

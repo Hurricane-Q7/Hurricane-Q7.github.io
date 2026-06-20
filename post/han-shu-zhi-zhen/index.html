@@ -1,0 +1,325 @@
+<html>
+  <head>
+    <meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>4.3-C语言-函数指针、函数指针数组、指向函数指针数组的指针 | Gridea</title>
+<link rel="shortcut icon" href="https://Hurricane-Q7.github.io/favicon.ico?v=1781917751713">
+<link href="https://cdn.jsdelivr.net/npm/remixicon@2.3.0/fonts/remixicon.css" rel="stylesheet">
+<link rel="stylesheet" href="https://Hurricane-Q7.github.io/styles/main.css">
+<link rel="alternate" type="application/atom+xml" title="4.3-C语言-函数指针、函数指针数组、指向函数指针数组的指针 | Gridea - Atom Feed" href="https://Hurricane-Q7.github.io/atom.xml">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Droid+Serif:400,700">
+
+
+
+    <meta name="description" content="函数指针
+函数指针是一种指针，是指向函数的指针，就像数组指针是指向数组的指针！
+函数名就是函数的地址， 也可以通过&amp;函数名来得到函数的地址！
+int test(const char* str)
+{
+    return 0;
+}
+i..." />
+    <meta name="keywords" content="C语言学习笔记" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.10.0/katex.min.css">
+    <script src="//cdn.jsdelivr.net/gh/highlightjs/cdn-release@11.5.1/build/highlight.min.js"></script>
+  </head>
+  <body>
+    <div class="main">
+      <div class="main-content">
+        <div class="site-header">
+  <a href="https://Hurricane-Q7.github.io">
+  <img class="avatar" src="https://Hurricane-Q7.github.io/images/avatar.png?v=1781917751713" alt="">
+  </a>
+  <h1 class="site-title">
+    Gridea
+  </h1>
+  <p class="site-description">
+    言者所以在意，得意而忘言
+  </p>
+  <div class="menu-container">
+    
+      
+        <a href="/" class="menu">
+          首页
+        </a>
+      
+    
+      
+        <a href="/archives" class="menu">
+          归档
+        </a>
+      
+    
+      
+        <a href="/tags" class="menu">
+          标签
+        </a>
+      
+    
+      
+        <a href="/post/about" class="menu">
+          关于
+        </a>
+      
+    
+  </div>
+  <div class="social-container">
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+  </div>
+</div>
+
+        <div class="post-detail">
+          <article class="post">
+            <h2 class="post-title">
+              4.3-C语言-函数指针、函数指针数组、指向函数指针数组的指针
+            </h2>
+            <div class="post-info">
+              <span>
+                2026-04-02
+              </span>
+              <span>
+                4 min read
+              </span>
+              
+                <a href="https://Hurricane-Q7.github.io/tag/YSaodvhI5R/" class="post-tag">
+                  # C语言学习笔记
+                </a>
+              
+            </div>
+            
+              <img class="post-feature-image" src="https://Hurricane-Q7.github.io/post-images/han-shu-zhi-zhen.png" alt="">
+            
+            <div class="post-content-wrapper">
+              <div class="post-content" v-pre>
+                <h1 id="函数指针">函数指针</h1>
+<p>函数指针是一种<strong>指针</strong>，是指向函数的指针，就像数组指针是指向数组的指针！<br>
+<strong>函数名就是函数的地址，</strong> 也可以通过<u>&amp;函数名</u>来得到函数的地址！</p>
+<pre><code class="language-c">int test(const char* str)
+{
+    return 0;
+}
+int main()
+{
+    //创建函数指针变量！
+   int (*pf)(const char*) = test//or &amp;test
+}
+</code></pre>
+<pre><code class="language-c">函数指针的用法；
+得到函数的地址后，我们可以通过该地址来间接调用函数！
+int test(const char* str)
+{
+	printf(&quot;test()\n&quot;);
+	return 0;
+}
+int main()
+{
+	printf(&quot;%p\n&quot;, test);
+	printf(&quot;%p\n&quot;, &amp;test);//test和&amp;test是等效的，都表示函数的地址
+	int (*pf)(const char*) = test;//定义指向test函数的指针变量pf，pf存放函数test的地址
+	(*pf)(&quot;abc&quot;);
+	pf(&quot;abc&quot;);//pf 与 *pf两个是一样的，里面都是函数的地址，因为函数的函数名就是函数的地址
+	test(&quot;abc&quot;);
+	return 0;
+}
+
+</code></pre>
+<h1 id="函数指针的用法简易计算器">函数指针的用法（简易计算器）</h1>
+<pre><code class="language-c">//计算器第二版，用函数指针的知识来简化代码
+#define _CRT_SECURE_NO_WARNINGS
+#include&lt;stdio.h&gt;
+//先实现一个简易版计算器（支持整数的加减乘除运算）
+void menu()
+{
+	printf(&quot;*************************\n&quot;);
+	printf(&quot;****1. add 2. sub *******\n&quot;);
+	printf(&quot;****3. mul 4. div *******\n&quot;);
+	printf(&quot;****0.  exit      *******\n&quot;);
+}
+int add(int x, int y)
+{
+	return x + y;
+}
+int sub(int x, int y)
+{
+	return x - y;
+}
+int mul(int x, int y)
+{
+	return x * y;
+}
+int div(int x, int y)
+{
+	return x / y;
+}
+int cal(int (*pf)(int, int))
+{
+	int x = 0;
+	int y = 0;
+	int ret = 0;
+	printf(&quot;请输入两个数字：&quot;);
+	scanf(&quot;%d %d&quot;, &amp;x, &amp;y);
+	ret = (*pf)(x, y);
+	printf(&quot;结果是：%d&quot;, ret);
+}
+int main()
+{
+	int cal(int (*pf)(int, int));
+	int input = 0;
+	menu();
+	printf(&quot;请输入你的选项:&gt;&quot;);
+	scanf(&quot;%d&quot;, &amp;input);
+	switch (input)
+	{
+	case 1:
+		cal(add);//把函数的地址给传过去，来实现对add函数的间接调用
+		break;
+	case 2:
+		cal(sub);//同上
+		break;
+	case 3:
+		cal(mul);//同上
+		break;
+	case 4:
+		cal(div);//同上
+		break;
+	case 0:
+		printf(&quot;程序退出！\n&quot;);
+		break;//这个break是用来跳出switch语句的
+		break;//这个break是用来当作case语句的终点的，来阻止case语句往下穿透！
+	default:
+		printf(&quot;输入错误！&quot;); 
+		break;
+	}
+	return 0;
+}
+</code></pre>
+<h1 id="函数指针数组">函数指针数组</h1>
+<p>函数指针是一种<strong>指针</strong>，是指向一个函数的，就像<strong>数组指针</strong>是指向一个数组的指针！<br>
+指针可以被数组存放起来，也就是指针数组，那么函数指针被数组存放起来，也就是<strong>函数指针数组</strong>！</p>
+<pre><code class="language-c">#define _CRT_SECURE_NO_WARNINGS
+#include&lt;stdio.h&gt;
+int add(int x, int y)
+{
+	return x + y;
+}
+int sub(int x, int y)
+{
+	return x - y;
+}
+int mul(int x, int y)
+{
+	return x * y;
+}
+int div(int x, int y)
+{
+	return x / y;
+}
+int main()
+{
+	int (*arr[4])(int, int) = {add,sub,mul,div};//函数指针数组，用来存放函数指针的一个数组
+	int i = 0;
+	for (i = 0; i &lt; 4; i++)
+	{
+		int ret = arr[i](8, 4);
+		printf(&quot;%d \n&quot;, ret);
+	}
+	return 0;
+}
+</code></pre>
+<h1 id="指向-函数指针数组-的指针">指向 函数指针数组 的指针</h1>
+<pre><code class="language-c">int main()
+{
+    int (*pfarr[])(int ,int)={0,add,sub,mul,div};
+    int (*(*ppfarr)[5])(int,int) = &amp;pfarr;
+}
+</code></pre>
+
+              </div>
+              <div class="toc-container">
+                <ul class="markdownIt-TOC">
+<li><a href="#%E5%87%BD%E6%95%B0%E6%8C%87%E9%92%88">函数指针</a></li>
+<li><a href="#%E5%87%BD%E6%95%B0%E6%8C%87%E9%92%88%E7%9A%84%E7%94%A8%E6%B3%95%E7%AE%80%E6%98%93%E8%AE%A1%E7%AE%97%E5%99%A8">函数指针的用法（简易计算器）</a></li>
+<li><a href="#%E5%87%BD%E6%95%B0%E6%8C%87%E9%92%88%E6%95%B0%E7%BB%84">函数指针数组</a></li>
+<li><a href="#%E6%8C%87%E5%90%91-%E5%87%BD%E6%95%B0%E6%8C%87%E9%92%88%E6%95%B0%E7%BB%84-%E7%9A%84%E6%8C%87%E9%92%88">指向 函数指针数组 的指针</a></li>
+</ul>
+
+              </div>
+            </div>
+          </article>
+        </div>
+
+        
+          <div class="next-post">
+            <div class="next">下一篇</div>
+            <a href="https://Hurricane-Q7.github.io/post/41-ri-c-yu-yan-shu-zu-can-shu-zhi-zhen-can-shu-zhi-zhen/">
+              <h3 class="post-title">
+                4.1日-C语言-数组参数、指针参数（指针）
+              </h3>
+            </a>
+          </div>
+        
+
+        
+
+        <div class="site-footer">
+  Powered by <a href="https://github.com/getgridea/gridea" target="_blank">Gridea</a>
+  <a class="rss" href="https://Hurricane-Q7.github.io/atom.xml" target="_blank">
+    <i class="ri-rss-line"></i> RSS
+  </a>
+</div>
+
+      </div>
+    </div>
+
+    <script>
+      hljs.initHighlightingOnLoad()
+
+      let mainNavLinks = document.querySelectorAll(".markdownIt-TOC a");
+
+      // This should probably be throttled.
+      // Especially because it triggers during smooth scrolling.
+      // https://lodash.com/docs/4.17.10#throttle
+      // You could do like...
+      // window.addEventListener("scroll", () => {
+      //    _.throttle(doThatStuff, 100);
+      // });
+      // Only not doing it here to keep this Pen dependency-free.
+
+      window.addEventListener("scroll", event => {
+        let fromTop = window.scrollY;
+
+        mainNavLinks.forEach((link, index) => {
+          let section = document.getElementById(decodeURI(link.hash).substring(1));
+          let nextSection = null
+          if (mainNavLinks[index + 1]) {
+            nextSection = document.getElementById(decodeURI(mainNavLinks[index + 1].hash).substring(1));
+          }
+          if (section.offsetTop <= fromTop) {
+            if (nextSection) {
+              if (nextSection.offsetTop > fromTop) {
+                link.classList.add("current");
+              } else {
+                link.classList.remove("current");    
+              }
+            } else {
+              link.classList.add("current");
+            }
+          } else {
+            link.classList.remove("current");
+          }
+        });
+      });
+
+    </script>
+  </body>
+</html>

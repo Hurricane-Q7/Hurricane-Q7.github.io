@@ -1,0 +1,234 @@
+<html>
+  <head>
+    <meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>1.16日-C语言-关键词与宏（初识） | Gridea</title>
+<link rel="shortcut icon" href="https://Hurricane-Q7.github.io/favicon.ico?v=1781917751713">
+<link href="https://cdn.jsdelivr.net/npm/remixicon@2.3.0/fonts/remixicon.css" rel="stylesheet">
+<link rel="stylesheet" href="https://Hurricane-Q7.github.io/styles/main.css">
+<link rel="alternate" type="application/atom+xml" title="1.16日-C语言-关键词与宏（初识） | Gridea - Atom Feed" href="https://Hurricane-Q7.github.io/atom.xml">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Droid+Serif:400,700">
+
+
+
+    <meta name="description" content="关键词
+typedef
+typedef 顾名思义就是对类型定义，也就是对类型重命名，再起个名字。
+typedef unsigned int uint;//定义完成后用uint再定义变量时和用unsigned int定义是一样的
+int ma..." />
+    <meta name="keywords" content="" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.10.0/katex.min.css">
+    <script src="//cdn.jsdelivr.net/gh/highlightjs/cdn-release@11.5.1/build/highlight.min.js"></script>
+  </head>
+  <body>
+    <div class="main">
+      <div class="main-content">
+        <div class="site-header">
+  <a href="https://Hurricane-Q7.github.io">
+  <img class="avatar" src="https://Hurricane-Q7.github.io/images/avatar.png?v=1781917751713" alt="">
+  </a>
+  <h1 class="site-title">
+    Gridea
+  </h1>
+  <p class="site-description">
+    言者所以在意，得意而忘言
+  </p>
+  <div class="menu-container">
+    
+      
+        <a href="/" class="menu">
+          首页
+        </a>
+      
+    
+      
+        <a href="/archives" class="menu">
+          归档
+        </a>
+      
+    
+      
+        <a href="/tags" class="menu">
+          标签
+        </a>
+      
+    
+      
+        <a href="/post/about" class="menu">
+          关于
+        </a>
+      
+    
+  </div>
+  <div class="social-container">
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+  </div>
+</div>
+
+        <div class="post-detail">
+          <article class="post">
+            <h2 class="post-title">
+              1.16日-C语言-关键词与宏（初识）
+            </h2>
+            <div class="post-info">
+              <span>
+                2026-01-16
+              </span>
+              <span>
+                3 min read
+              </span>
+              
+            </div>
+            
+            <div class="post-content-wrapper">
+              <div class="post-content" v-pre>
+                <h1 id="关键词">关键词</h1>
+<h2 id="typedef">typedef</h2>
+<p>typedef 顾名思义就是对类型定义，也就是对类型重命名，再起个名字。</p>
+<pre><code class="language-c">typedef unsigned int uint;//定义完成后用uint再定义变量时和用unsigned int定义是一样的
+int main()
+{
+    unsigned int num1=0;
+    uint_32 num2=0;
+    return 0;
+}
+</code></pre>
+<h2 id="static静止的-不变的">static(静止的、不变的)</h2>
+<p>C语言中用来修饰变量和函数的</p>
+<ol>
+<li>修饰局部变量-称为静态局部变量</li>
+<li>修饰全局变量-称为静态全局变量</li>
+<li>修饰函数-称为静态函数<br>
+内存中存储变量时有三块空间，栈区、堆区、静态区，static修饰局部变量时将变量从栈区挪到静态区</li>
+</ol>
+<pre><code class="language-c">void test()
+{
+	static int a = 1;//static修饰局部变量时，局部变量出了作用域，是不会销毁的。本质上，static修饰局部变量时，改变了变量的存储位置的。影响局部变量的生命周期，生命周期变长，和程序的生命周期一样，程序结束，这个变量占用的空间才销毁（还给操作系统）。
+	a++;
+	printf(&quot;%d &quot;, a);
+}
+int main()
+{
+	int i = 0;
+	while (i &lt; 10)
+	{
+		test();
+		i++;
+	}
+	return 0;
+}运行结果是：2~11
+</code></pre>
+<p>全局变量（大括号外部）具有链接性，举个例子，我在111.c文件中定义了一个全局变量，如果我想在222.c中引用它，要用extern进行链接声明。<br>
+static 修饰全局变量的时候，全局变量量的外部链接属性就变成了内部链接属性。其他源文件就不能再使用这个全局变量了。被static修饰的全局变量作用域只变成当前.c的源文件。<br>
+<strong>函数</strong>：也具有链接属性。一个函数本来是具有外部链接属性的，但是被static修饰的时候，外部链接属性就变成了内部链接属性，其他源文件（.c）就无法使用了。<br>
+<strong>register</strong></p>
+<pre><code class="language-c">int main()
+{
+    register int num = 3;//建议：3存放在寄存器中，寄存器是一种非常访问速度非常快的存储设备。
+    return 0;
+}
+</code></pre>
+<p><strong>宏</strong><br>
+宏名+宏的参数+宏体</p>
+<pre><code class="language-c">#define Add(x,y) ((x)+(y))
+int main()
+{
+    int a=10;
+    int b=20;
+    int c=Add(a,b);
+    printf(&quot;%d\n&quot;,c);
+    return 0;
+}
+</code></pre>
+
+              </div>
+              <div class="toc-container">
+                <ul class="markdownIt-TOC">
+<li><a href="#%E5%85%B3%E9%94%AE%E8%AF%8D">关键词</a>
+<ul>
+<li><a href="#typedef">typedef</a></li>
+<li><a href="#static%E9%9D%99%E6%AD%A2%E7%9A%84-%E4%B8%8D%E5%8F%98%E7%9A%84">static(静止的、不变的)</a></li>
+</ul>
+</li>
+</ul>
+
+              </div>
+            </div>
+          </article>
+        </div>
+
+        
+          <div class="next-post">
+            <div class="next">下一篇</div>
+            <a href="https://Hurricane-Q7.github.io/post/115-hao-c-yu-yan-xue-xi-chu-shi/">
+              <h3 class="post-title">
+                1.15号-C语言-操作符(初识)
+              </h3>
+            </a>
+          </div>
+        
+
+        
+
+        <div class="site-footer">
+  Powered by <a href="https://github.com/getgridea/gridea" target="_blank">Gridea</a>
+  <a class="rss" href="https://Hurricane-Q7.github.io/atom.xml" target="_blank">
+    <i class="ri-rss-line"></i> RSS
+  </a>
+</div>
+
+      </div>
+    </div>
+
+    <script>
+      hljs.initHighlightingOnLoad()
+
+      let mainNavLinks = document.querySelectorAll(".markdownIt-TOC a");
+
+      // This should probably be throttled.
+      // Especially because it triggers during smooth scrolling.
+      // https://lodash.com/docs/4.17.10#throttle
+      // You could do like...
+      // window.addEventListener("scroll", () => {
+      //    _.throttle(doThatStuff, 100);
+      // });
+      // Only not doing it here to keep this Pen dependency-free.
+
+      window.addEventListener("scroll", event => {
+        let fromTop = window.scrollY;
+
+        mainNavLinks.forEach((link, index) => {
+          let section = document.getElementById(decodeURI(link.hash).substring(1));
+          let nextSection = null
+          if (mainNavLinks[index + 1]) {
+            nextSection = document.getElementById(decodeURI(mainNavLinks[index + 1].hash).substring(1));
+          }
+          if (section.offsetTop <= fromTop) {
+            if (nextSection) {
+              if (nextSection.offsetTop > fromTop) {
+                link.classList.add("current");
+              } else {
+                link.classList.remove("current");    
+              }
+            } else {
+              link.classList.add("current");
+            }
+          } else {
+            link.classList.remove("current");
+          }
+        });
+      });
+
+    </script>
+  </body>
+</html>

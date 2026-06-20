@@ -1,0 +1,245 @@
+<html>
+  <head>
+    <meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>1.17日-C语言指针与结构体（初识） | Gridea</title>
+<link rel="shortcut icon" href="https://Hurricane-Q7.github.io/favicon.ico?v=1781917751713">
+<link href="https://cdn.jsdelivr.net/npm/remixicon@2.3.0/fonts/remixicon.css" rel="stylesheet">
+<link rel="stylesheet" href="https://Hurricane-Q7.github.io/styles/main.css">
+<link rel="alternate" type="application/atom+xml" title="1.17日-C语言指针与结构体（初识） | Gridea - Atom Feed" href="https://Hurricane-Q7.github.io/atom.xml">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Droid+Serif:400,700">
+
+
+
+    <meta name="description" content="内存
+内存 是电脑上特别重要的存储器，计算机中程序的运行都是在内存中进行的。
+内存会划分为一个个的内存单元，每个内存单元的大小是1byte，为了能够有效访问到内存的每个单元，就给内存单元进行了编号，这些编号被称为该内存单元的地址。
+beli..." />
+    <meta name="keywords" content="" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.10.0/katex.min.css">
+    <script src="//cdn.jsdelivr.net/gh/highlightjs/cdn-release@11.5.1/build/highlight.min.js"></script>
+  </head>
+  <body>
+    <div class="main">
+      <div class="main-content">
+        <div class="site-header">
+  <a href="https://Hurricane-Q7.github.io">
+  <img class="avatar" src="https://Hurricane-Q7.github.io/images/avatar.png?v=1781917751713" alt="">
+  </a>
+  <h1 class="site-title">
+    Gridea
+  </h1>
+  <p class="site-description">
+    言者所以在意，得意而忘言
+  </p>
+  <div class="menu-container">
+    
+      
+        <a href="/" class="menu">
+          首页
+        </a>
+      
+    
+      
+        <a href="/archives" class="menu">
+          归档
+        </a>
+      
+    
+      
+        <a href="/tags" class="menu">
+          标签
+        </a>
+      
+    
+      
+        <a href="/post/about" class="menu">
+          关于
+        </a>
+      
+    
+  </div>
+  <div class="social-container">
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+  </div>
+</div>
+
+        <div class="post-detail">
+          <article class="post">
+            <h2 class="post-title">
+              1.17日-C语言指针与结构体（初识）
+            </h2>
+            <div class="post-info">
+              <span>
+                2026-01-17
+              </span>
+              <span>
+                3 min read
+              </span>
+              
+            </div>
+            
+            <div class="post-content-wrapper">
+              <div class="post-content" v-pre>
+                <h2 id="内存">内存</h2>
+<p><em><strong>内存</strong></em> 是电脑上特别重要的存储器，计算机中程序的运行都是在内存中进行的。<br>
+内存会划分为一个个的内存单元，每个内存单元的大小是1byte，为了能够有效访问到内存的每个单元，就给内存单元进行了编号，这些编号被称为该<strong>内存单元的地址</strong>。<br>
+belike:这些编号类似于每个房间的门牌号，方便查找。</p>
+<pre><code class="language-c">int main()
+{
+    int a=10;//向内存申请4byte的内存空间。
+    &amp;a;
+    printf(&quot;%p\n&quot;,&amp;a);//以十六进制的表现形式打印a的地址,内存单元中第一个字节单元的地址。
+    return 0;
+}
+</code></pre>
+<h1 id="指针">指针</h1>
+<p>C语言中指针就是地址，地址就是指针。</p>
+<h2 id="指针变量">指针变量</h2>
+<p><strong>指针变量</strong>就是用来存储地址（指针）的一个变量而已。</p>
+<pre><code class="language-c">int main()
+{
+    int a=10;
+    int* p=&amp;a;//'&amp;'是一个取地址操作符，取出a的地址放到p里面。'*'这里表示变量p是一个指针变量，int说明p指向的int类型的数据。
+    *p=20;//*是一个解引用操作符，通过p里面的存放的地址来找到该地址指向的对象。
+    printf(&quot;%d\n&quot;,a);
+    return 0;
+}
+</code></pre>
+<h3 id="指针变量的大小">指针变量的大小</h3>
+<p>指针变量的大小取决于一个地址存放的时候需要多大的空间，取决于系统是32位还是64位。<br>
+32位机器上的地址：32bit位-4byte，所以指针变量的大小是4byte。--&gt;32个0与1组成的地址长度。<br>
+64位机器上的地址：64bit位-8byte，所以指针变量的大小是8byte。--&gt;64个0与1组成的地址长度。</p>
+<h1 id="结构体">结构体</h1>
+<p>C语言允许用户自己建立由不同的类型数据组成的组合型数据结构，它被称为<strong>结构体</strong>。<br>
+表现形式:<br>
+struct 结构体名字<br>
+{成员表列}；//成员表列也称为域表。<br>
+成员运算符：</p>
+<ol>
+<li>.运算符</li>
+<li>-&gt;运算符<br>
+C语言的结构体可以用来描述复杂的数据对象。<br>
+C语言就给了自定义类型的能力，自定义类型有一种叫:结构体（struct）</li>
+</ol>
+<pre><code class="language-c">struct Stu//结构体也遵循先定义在使用的规则
+{
+    char name[20];
+    int age;
+    char sex[10];
+    char tele[12];
+};
+void print(struct Stu* ps)
+{
+    printf(&quot;%s %d %s %s\n&quot;, (*ps).name, (*ps).age, (*ps).sex, (*ps).tele);
+    printf(&quot;%s %d %s %s\n&quot;, ps-&gt;name, ps-&gt;age, ps-&gt;sex, ps-&gt;tele);
+}
+int main()
+{
+    struct Stu s = {&quot;zhangsan&quot;,20,&quot;nan&quot;,&quot;15596668862&quot;};//创建结构体变量s,对他进行初始化。
+    printf(&quot;%s %d %s %s\n&quot;,s.name,s.age,s.sex,s.tele);//结构体对象.成员名
+    print(&amp;s);
+    return 0;
+}
+</code></pre>
+
+              </div>
+              <div class="toc-container">
+                <ul class="markdownIt-TOC">
+<li>
+<ul>
+<li><a href="#%E5%86%85%E5%AD%98">内存</a></li>
+</ul>
+</li>
+<li><a href="#%E6%8C%87%E9%92%88">指针</a>
+<ul>
+<li><a href="#%E6%8C%87%E9%92%88%E5%8F%98%E9%87%8F">指针变量</a>
+<ul>
+<li><a href="#%E6%8C%87%E9%92%88%E5%8F%98%E9%87%8F%E7%9A%84%E5%A4%A7%E5%B0%8F">指针变量的大小</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a href="#%E7%BB%93%E6%9E%84%E4%BD%93">结构体</a></li>
+</ul>
+
+              </div>
+            </div>
+          </article>
+        </div>
+
+        
+          <div class="next-post">
+            <div class="next">下一篇</div>
+            <a href="https://Hurricane-Q7.github.io/post/116-ri-c-yu-yan-chu-shi-guan-jian-ci-yu-zhi-zhen/">
+              <h3 class="post-title">
+                1.16日-C语言-关键词与宏（初识）
+              </h3>
+            </a>
+          </div>
+        
+
+        
+
+        <div class="site-footer">
+  Powered by <a href="https://github.com/getgridea/gridea" target="_blank">Gridea</a>
+  <a class="rss" href="https://Hurricane-Q7.github.io/atom.xml" target="_blank">
+    <i class="ri-rss-line"></i> RSS
+  </a>
+</div>
+
+      </div>
+    </div>
+
+    <script>
+      hljs.initHighlightingOnLoad()
+
+      let mainNavLinks = document.querySelectorAll(".markdownIt-TOC a");
+
+      // This should probably be throttled.
+      // Especially because it triggers during smooth scrolling.
+      // https://lodash.com/docs/4.17.10#throttle
+      // You could do like...
+      // window.addEventListener("scroll", () => {
+      //    _.throttle(doThatStuff, 100);
+      // });
+      // Only not doing it here to keep this Pen dependency-free.
+
+      window.addEventListener("scroll", event => {
+        let fromTop = window.scrollY;
+
+        mainNavLinks.forEach((link, index) => {
+          let section = document.getElementById(decodeURI(link.hash).substring(1));
+          let nextSection = null
+          if (mainNavLinks[index + 1]) {
+            nextSection = document.getElementById(decodeURI(mainNavLinks[index + 1].hash).substring(1));
+          }
+          if (section.offsetTop <= fromTop) {
+            if (nextSection) {
+              if (nextSection.offsetTop > fromTop) {
+                link.classList.add("current");
+              } else {
+                link.classList.remove("current");    
+              }
+            } else {
+              link.classList.add("current");
+            }
+          } else {
+            link.classList.remove("current");
+          }
+        });
+      });
+
+    </script>
+  </body>
+</html>

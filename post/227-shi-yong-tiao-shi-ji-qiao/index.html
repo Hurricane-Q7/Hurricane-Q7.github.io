@@ -1,0 +1,229 @@
+<html>
+  <head>
+    <meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>2.27-实用调试技巧 | Gridea</title>
+<link rel="shortcut icon" href="https://Hurricane-Q7.github.io/favicon.ico?v=1781917751713">
+<link href="https://cdn.jsdelivr.net/npm/remixicon@2.3.0/fonts/remixicon.css" rel="stylesheet">
+<link rel="stylesheet" href="https://Hurricane-Q7.github.io/styles/main.css">
+<link rel="alternate" type="application/atom+xml" title="2.27-实用调试技巧 | Gridea - Atom Feed" href="https://Hurricane-Q7.github.io/atom.xml">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Droid+Serif:400,700">
+
+
+
+    <meta name="description" content="调试
+调试（英语：Debugging / Debug），又称除错，是发现和减少计算机程序或电子仪器设备中程序
+错误的一个过程。
+基本步骤
+
+发现程序错误的存在
+以隔离、消除等方式对错误进行定位
+确定错误产生的原因
+提出纠正错误的解决办法
+对..." />
+    <meta name="keywords" content="C语言学习笔记" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.10.0/katex.min.css">
+    <script src="//cdn.jsdelivr.net/gh/highlightjs/cdn-release@11.5.1/build/highlight.min.js"></script>
+  </head>
+  <body>
+    <div class="main">
+      <div class="main-content">
+        <div class="site-header">
+  <a href="https://Hurricane-Q7.github.io">
+  <img class="avatar" src="https://Hurricane-Q7.github.io/images/avatar.png?v=1781917751713" alt="">
+  </a>
+  <h1 class="site-title">
+    Gridea
+  </h1>
+  <p class="site-description">
+    言者所以在意，得意而忘言
+  </p>
+  <div class="menu-container">
+    
+      
+        <a href="/" class="menu">
+          首页
+        </a>
+      
+    
+      
+        <a href="/archives" class="menu">
+          归档
+        </a>
+      
+    
+      
+        <a href="/tags" class="menu">
+          标签
+        </a>
+      
+    
+      
+        <a href="/post/about" class="menu">
+          关于
+        </a>
+      
+    
+  </div>
+  <div class="social-container">
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+  </div>
+</div>
+
+        <div class="post-detail">
+          <article class="post">
+            <h2 class="post-title">
+              2.27-实用调试技巧
+            </h2>
+            <div class="post-info">
+              <span>
+                2026-02-27
+              </span>
+              <span>
+                3 min read
+              </span>
+              
+                <a href="https://Hurricane-Q7.github.io/tag/YSaodvhI5R/" class="post-tag">
+                  # C语言学习笔记
+                </a>
+              
+            </div>
+            
+            <div class="post-content-wrapper">
+              <div class="post-content" v-pre>
+                <h1 id="调试">调试</h1>
+<p><strong>调试</strong>（英语：Debugging / Debug），又称除错，是发现和减少计算机程序或电子仪器设备中程序<br>
+错误的一个过程。</p>
+<h2 id="基本步骤">基本步骤</h2>
+<ul>
+<li>发现程序错误的存在</li>
+<li>以隔离、消除等方式对错误进行定位</li>
+<li>确定错误产生的原因</li>
+<li>提出纠正错误的解决办法</li>
+<li>对程序错误予以改正，重新测试<br>
+<strong>拒绝迷信式调试（不动脑去思考错误缘由，仅仅对着代码瞎胡改）</strong></li>
+</ul>
+<h2 id="debug-与-release">debug 与 release</h2>
+<p><strong>Debug</strong> 通常称为调试版本，它包含调试信息，并且不作任何优化，便于程序员调试程序。<br>
+<strong>Release</strong> 称为发布版本，它往往是进行了各种优化，使得程序在代码大小和运行速度上都是最优的。<br>
+简单来说，一个是给程序员看的（debug版本），方便调试代码，一个是让用户用的（release版本），让用户用着舒服！</p>
+<h2 id="关于调试的一些知识-快捷键与调试技巧">关于调试的一些知识、快捷键与调试技巧</h2>
+<p><strong>断点</strong>：断点是 C 语言调试中给程序设置的执行暂停点，运行到断点行程序暂停，方便查看实时状态！</p>
+<pre><code class="language-c">可以把断点理解为一个飞雷神标记，我们在一行代码中留下飞雷神标记（断点），发动忍术（按下F5）直接来到标记位置（断点位置），以此来查看此时程序的情况！
+也可以添加触发条件（i==3）
+水门到标记处后，能立刻发起攻击、救人，完成操作后再离开 → 程序停在断点（标记）处时，你能查看变量 / 指针值、修改数据、单步执行，完成调试操作后，再让程序继续运行（相当于 “离开标记处”）。
+
+</code></pre>
+<h3 id="快捷键">快捷键</h3>
+<ul>
+<li>F5<br>
+启动调试，经常用来直接跳到下一个断点处。</li>
+<li>F9<br>
+创建断点和取消断点<br>
+断点的重要作用，可以在程序的任意位置设置断点。<br>
+这样就可以使得程序在想要的位置随意停止执行，继而一步步执行下去。</li>
+<li>F10（开启调试功能）<br>
+逐过程，通常用来处理一个过程，一个过程可以是一次函数调用，或者是一条语句，F10会把函数调用语句直接执行完，没有进入函数内部，也没有识别函数的变量。</li>
+<li>F11<br>
+逐语句，就是每次都执行一条语句，但是这个快捷键可以使我们的执行逻辑进入函数内部（这是最<br>
+长用的）。</li>
+<li>CTRL + F5（开启运行代码）<br>
+开始执行不调试，如果你想让程序直接运行起来而不调试就可以直接使用。</li>
+</ul>
+
+              </div>
+              <div class="toc-container">
+                <ul class="markdownIt-TOC">
+<li><a href="#%E8%B0%83%E8%AF%95">调试</a>
+<ul>
+<li><a href="#%E5%9F%BA%E6%9C%AC%E6%AD%A5%E9%AA%A4">基本步骤</a></li>
+<li><a href="#debug-%E4%B8%8E-release">debug 与 release</a></li>
+<li><a href="#%E5%85%B3%E4%BA%8E%E8%B0%83%E8%AF%95%E7%9A%84%E4%B8%80%E4%BA%9B%E7%9F%A5%E8%AF%86-%E5%BF%AB%E6%8D%B7%E9%94%AE%E4%B8%8E%E8%B0%83%E8%AF%95%E6%8A%80%E5%B7%A7">关于调试的一些知识、快捷键与调试技巧</a>
+<ul>
+<li><a href="#%E5%BF%AB%E6%8D%B7%E9%94%AE">快捷键</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+              </div>
+            </div>
+          </article>
+        </div>
+
+        
+          <div class="next-post">
+            <div class="next">下一篇</div>
+            <a href="https://Hurricane-Q7.github.io/post/yu-bian-cheng-xiang-guan-de-words/">
+              <h3 class="post-title">
+                学习计算机遇到的陌生单词
+              </h3>
+            </a>
+          </div>
+        
+
+        
+
+        <div class="site-footer">
+  Powered by <a href="https://github.com/getgridea/gridea" target="_blank">Gridea</a>
+  <a class="rss" href="https://Hurricane-Q7.github.io/atom.xml" target="_blank">
+    <i class="ri-rss-line"></i> RSS
+  </a>
+</div>
+
+      </div>
+    </div>
+
+    <script>
+      hljs.initHighlightingOnLoad()
+
+      let mainNavLinks = document.querySelectorAll(".markdownIt-TOC a");
+
+      // This should probably be throttled.
+      // Especially because it triggers during smooth scrolling.
+      // https://lodash.com/docs/4.17.10#throttle
+      // You could do like...
+      // window.addEventListener("scroll", () => {
+      //    _.throttle(doThatStuff, 100);
+      // });
+      // Only not doing it here to keep this Pen dependency-free.
+
+      window.addEventListener("scroll", event => {
+        let fromTop = window.scrollY;
+
+        mainNavLinks.forEach((link, index) => {
+          let section = document.getElementById(decodeURI(link.hash).substring(1));
+          let nextSection = null
+          if (mainNavLinks[index + 1]) {
+            nextSection = document.getElementById(decodeURI(mainNavLinks[index + 1].hash).substring(1));
+          }
+          if (section.offsetTop <= fromTop) {
+            if (nextSection) {
+              if (nextSection.offsetTop > fromTop) {
+                link.classList.add("current");
+              } else {
+                link.classList.remove("current");    
+              }
+            } else {
+              link.classList.add("current");
+            }
+          } else {
+            link.classList.remove("current");
+          }
+        });
+      });
+
+    </script>
+  </body>
+</html>

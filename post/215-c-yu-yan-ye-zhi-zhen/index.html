@@ -1,0 +1,233 @@
+<html>
+  <head>
+    <meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>2.19-C语言-Void型指针、野指针（初阶） | Gridea</title>
+<link rel="shortcut icon" href="https://Hurricane-Q7.github.io/favicon.ico?v=1781917751713">
+<link href="https://cdn.jsdelivr.net/npm/remixicon@2.3.0/fonts/remixicon.css" rel="stylesheet">
+<link rel="stylesheet" href="https://Hurricane-Q7.github.io/styles/main.css">
+<link rel="alternate" type="application/atom+xml" title="2.19-C语言-Void型指针、野指针（初阶） | Gridea - Atom Feed" href="https://Hurricane-Q7.github.io/atom.xml">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Droid+Serif:400,700">
+
+
+
+    <meta name="description" content="野指针
+概念 ：野指针就是指针指向的位置是不可知的(随机的、不正确的、没有明确限制的)
+
+没有初始化，不知道指向谁；
+指针越界访问
+指针指向的空间已经被释放
+
+#include&lt;stdio.h&gt;
+int* test()
+{
+	i..." />
+    <meta name="keywords" content="" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.10.0/katex.min.css">
+    <script src="//cdn.jsdelivr.net/gh/highlightjs/cdn-release@11.5.1/build/highlight.min.js"></script>
+  </head>
+  <body>
+    <div class="main">
+      <div class="main-content">
+        <div class="site-header">
+  <a href="https://Hurricane-Q7.github.io">
+  <img class="avatar" src="https://Hurricane-Q7.github.io/images/avatar.png?v=1781917751713" alt="">
+  </a>
+  <h1 class="site-title">
+    Gridea
+  </h1>
+  <p class="site-description">
+    言者所以在意，得意而忘言
+  </p>
+  <div class="menu-container">
+    
+      
+        <a href="/" class="menu">
+          首页
+        </a>
+      
+    
+      
+        <a href="/archives" class="menu">
+          归档
+        </a>
+      
+    
+      
+        <a href="/tags" class="menu">
+          标签
+        </a>
+      
+    
+      
+        <a href="/post/about" class="menu">
+          关于
+        </a>
+      
+    
+  </div>
+  <div class="social-container">
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+  </div>
+</div>
+
+        <div class="post-detail">
+          <article class="post">
+            <h2 class="post-title">
+              2.19-C语言-Void型指针、野指针（初阶）
+            </h2>
+            <div class="post-info">
+              <span>
+                2026-02-15
+              </span>
+              <span>
+                2 min read
+              </span>
+              
+            </div>
+            
+            <div class="post-content-wrapper">
+              <div class="post-content" v-pre>
+                <h1 id="野指针">野指针</h1>
+<p><strong>概念</strong> ：野指针就是指针指向的位置是不可知的(随机的、不正确的、没有明确限制的)</p>
+<ol>
+<li>没有初始化，不知道指向谁；</li>
+<li>指针越界访问</li>
+<li>指针指向的空间已经被释放</li>
+</ol>
+<pre><code class="language-c">#include&lt;stdio.h&gt;
+int* test()
+{
+	int a = 10;//局部变量a，作用域在函数每次调用完后，销毁内存空间使用权限，还给OS,但是该空间在内存中还是存在的！
+	return &amp;a;
+}
+int main()
+{
+	int* p = test();//定义p来接收test的返回值（局部变量的地址），调用完后该地址失效，所以p是野指针！
+    //printf(&quot;haha\n&quot;);
+	printf(&quot;%d&quot;, *p);//打印结果是10，但是不代表永远是10,可能被上一次函数栈帧覆盖！
+	return 0;
+}
+</code></pre>
+<h2 id="避免野指针的一些coding-habits">避免野指针的一些coding habits</h2>
+<pre><code class="language-c">1. 指针变量创建即初始化，不确定就用NULL;
+//int * p = NULL;
+if(p!=NULL)
+{
+    *P = 10;
+}
+2. 小心指针越界
+3. 指针指向空间释放即使变成NULL
+4. 避免返回局部变量的地址
+5. 指针使用之前检查有效性
+</code></pre>
+<h1 id="指针运算">指针运算</h1>
+<ul>
+<li>指针+-整数</li>
+<li>指针-指针</li>
+<li>关系运算</li>
+</ul>
+<h1 id="void型指针">Void型指针</h1>
+<p>void 型指针可以用来接收任意类型的指针！<br>
+但是不可以解引用操作和+-整数操作！</p>
+<pre><code class="language-c">int main()
+{
+    int  a = 0;
+    char* ca = &amp;a//❌
+    void* pa = &amp;a;//√
+    return 0;
+}
+</code></pre>
+
+              </div>
+              <div class="toc-container">
+                <ul class="markdownIt-TOC">
+<li><a href="#%E9%87%8E%E6%8C%87%E9%92%88">野指针</a>
+<ul>
+<li><a href="#%E9%81%BF%E5%85%8D%E9%87%8E%E6%8C%87%E9%92%88%E7%9A%84%E4%B8%80%E4%BA%9Bcoding-habits">避免野指针的一些coding habits</a></li>
+</ul>
+</li>
+<li><a href="#%E6%8C%87%E9%92%88%E8%BF%90%E7%AE%97">指针运算</a></li>
+<li><a href="#void%E5%9E%8B%E6%8C%87%E9%92%88">Void型指针</a></li>
+</ul>
+
+              </div>
+            </div>
+          </article>
+        </div>
+
+        
+          <div class="next-post">
+            <div class="next">下一篇</div>
+            <a href="https://Hurricane-Q7.github.io/post/213-ri-c-yu-yan-zhi-zhen/">
+              <h3 class="post-title">
+                2.15日-C语言-指针基础、指针类型的意义
+              </h3>
+            </a>
+          </div>
+        
+
+        
+
+        <div class="site-footer">
+  Powered by <a href="https://github.com/getgridea/gridea" target="_blank">Gridea</a>
+  <a class="rss" href="https://Hurricane-Q7.github.io/atom.xml" target="_blank">
+    <i class="ri-rss-line"></i> RSS
+  </a>
+</div>
+
+      </div>
+    </div>
+
+    <script>
+      hljs.initHighlightingOnLoad()
+
+      let mainNavLinks = document.querySelectorAll(".markdownIt-TOC a");
+
+      // This should probably be throttled.
+      // Especially because it triggers during smooth scrolling.
+      // https://lodash.com/docs/4.17.10#throttle
+      // You could do like...
+      // window.addEventListener("scroll", () => {
+      //    _.throttle(doThatStuff, 100);
+      // });
+      // Only not doing it here to keep this Pen dependency-free.
+
+      window.addEventListener("scroll", event => {
+        let fromTop = window.scrollY;
+
+        mainNavLinks.forEach((link, index) => {
+          let section = document.getElementById(decodeURI(link.hash).substring(1));
+          let nextSection = null
+          if (mainNavLinks[index + 1]) {
+            nextSection = document.getElementById(decodeURI(mainNavLinks[index + 1].hash).substring(1));
+          }
+          if (section.offsetTop <= fromTop) {
+            if (nextSection) {
+              if (nextSection.offsetTop > fromTop) {
+                link.classList.add("current");
+              } else {
+                link.classList.remove("current");    
+              }
+            } else {
+              link.classList.add("current");
+            }
+          } else {
+            link.classList.remove("current");
+          }
+        });
+      });
+
+    </script>
+  </body>
+</html>
