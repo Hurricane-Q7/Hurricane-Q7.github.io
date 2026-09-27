@@ -1,0 +1,374 @@
+<html>
+  <head>
+    <meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>C++-类和对象-继承 | Gridea</title>
+<link rel="shortcut icon" href="https://Hurricane-Q7.github.io/favicon.ico?v=1790478975961">
+<link href="https://cdn.jsdelivr.net/npm/remixicon@2.3.0/fonts/remixicon.css" rel="stylesheet">
+<link rel="stylesheet" href="https://Hurricane-Q7.github.io/styles/main.css">
+<link rel="alternate" type="application/atom+xml" title="C++-类和对象-继承 | Gridea - Atom Feed" href="https://Hurricane-Q7.github.io/atom.xml">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Droid+Serif:400,700">
+
+
+
+    <meta name="description" content="继承（inheritance）
+继承：
+继承是类与类之间的一种关系。继承关系中，继承者称为子类（派生类），被继承的类称为父类（基类）。
+子类继承父类后，子类对象中会包含一个父类的基类部分，因此子类可以复用父类的成员和功能，从而减少重复代码。..." />
+    <meta name="keywords" content="" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.10.0/katex.min.css">
+    <script src="//cdn.jsdelivr.net/gh/highlightjs/cdn-release@11.5.1/build/highlight.min.js"></script>
+  </head>
+  <body>
+    <div class="main">
+      <div class="main-content">
+        <div class="site-header">
+  <a href="https://Hurricane-Q7.github.io">
+  <img class="avatar" src="https://Hurricane-Q7.github.io/images/avatar.png?v=1790478975961" alt="">
+  </a>
+  <h1 class="site-title">
+    Gridea
+  </h1>
+  <p class="site-description">
+    言者所以在意，得意而忘言
+  </p>
+  <div class="menu-container">
+    
+      
+        <a href="/" class="menu">
+          首页
+        </a>
+      
+    
+      
+        <a href="/archives" class="menu">
+          归档
+        </a>
+      
+    
+      
+        <a href="/tags" class="menu">
+          标签
+        </a>
+      
+    
+      
+        <a href="/post/about" class="menu">
+          关于
+        </a>
+      
+    
+  </div>
+  <div class="social-container">
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+  </div>
+</div>
+
+        <div class="post-detail">
+          <article class="post">
+            <h2 class="post-title">
+              C++-类和对象-继承
+            </h2>
+            <div class="post-info">
+              <span>
+                2026-09-20
+              </span>
+              <span>
+                6 min read
+              </span>
+              
+            </div>
+            
+            <div class="post-content-wrapper">
+              <div class="post-content" v-pre>
+                <h1 id="继承inheritance">继承（inheritance）</h1>
+<p><strong>继承：</strong><br>
+继承是类与类之间的一种<strong>关系。<strong>继承关系中，<strong>继承者称为子类（派生类），被继承的类称为父类（基类）。</strong><br>
+子类继承父类后，子类对象中会包含一个父类的基类部分，因此</strong>子类可以复用父类的成员和功能，从而减少重复代码。</strong></p>
+<h2 id="关于继承的注意事项">关于继承的注意事项</h2>
+<ul>
+<li>子类对象中的父类成员，属于这个子类对象自己的一份数据。</li>
+<li>不同对象之间不共享成员变量。</li>
+<li>Base b1 和 Son s1 是两个不同的对象，因此 s1.m_a 和 b1.m_a 是两份独立的数据。</li>
+<li>成员函数并不是简单地“复制一份到每个对象中”，而是子类可以通过继承关系使用父类的成员函数。<br>
+<strong>关键：继承不是让父类对象和子类对象共享同一份内存，而是建立一种类之间的复用关系。</strong></li>
+</ul>
+<h2 id="继承相关的英文单词">继承相关的英文单词</h2>
+<pre><code class="language-c++">inheritance 继承
+inherit 继承（verb）
+base class ——基类、父类
+derived class ——派生类、子类
+parent class ——父类
+child class ——子类
+</code></pre>
+<p><strong>继承的好处</strong>：<strong>减少重复代码的书写</strong><br>
+<strong>子类对象 = 父类子对象 + 子类自己的成员</strong><br>
+派生类中的成员，包含两大部分：<br>
+一类是从基类继承过来的，一类是自己增加的成员。<br>
+从基类继承过过来的表现其共性，而新增的成员体现了其个性。</p>
+<h2 id="继承的基本方式">继承的基本方式</h2>
+<ul>
+<li>公共继承</li>
+<li>保护继承</li>
+<li>私有继承<br>
+<img src="https://Hurricane-Q7.github.io/post-images/1789996910366.png" alt="" loading="lazy"><br>
+<strong>无论采用何种继承方式，父类的 private 成员对子类都是不可直接访问的。它仍属于父类子对象的一部分，但子类只能通过父类提供的 public/protected 成员函数间接操作。</strong></li>
+</ul>
+<pre><code class="language-c++">继承模型图：
+Son对象
+┌─────────────────┐
+│ Father子对象     │
+│ ├─ private a    │ ← 存在，但Son不能直接访问
+│ └─ protected b  │ ← 孙Son可以直接访问
+│ └─ public c     │ ← Son可以直接访问
+├─────────────────┤
+│ Son自己的成员    │
+│ └─ d            │
+└─────────────────┘
+继承不是父类和子类“共享同一个成员”，而是子类对象中包含了一份父类子对象，
+</code></pre>
+<h2 id="继承中的对象模型">继承中的对象模型</h2>
+<p><strong>结论：父类中私有成员也是被子类继承下去了，只是由编译器给隐藏后访问不到了。</strong></p>
+<h2 id="继承中构造和析构顺序">继承中构造和析构顺序</h2>
+<p><strong>结论</strong>：</p>
+<ol>
+<li>即使没有创建父类对象，子类在继承父类时，也会创建一个父类对象（先有父亲，再有儿子）</li>
+<li>继承中，先调用父类构造函数，在调用子类构造函数，析构顺序与构造相反</li>
+</ol>
+<pre><code class="language-c++">class Father
+{
+public:
+	Father()
+	{
+		cout &lt;&lt; &quot;Father默认构造函数调用。&quot; &lt;&lt; endl;
+	}
+	~Father()
+	{
+		cout &lt;&lt; &quot;Father析构函数调用。&quot; &lt;&lt; endl;
+	}
+};
+class Son : public Father
+{
+public:
+	Son()
+	{
+		cout &lt;&lt; &quot;Son默认构造函数调用。&quot; &lt;&lt; endl;
+	}
+	~Son()
+	{
+		cout &lt;&lt; &quot;Son析构函数调用。&quot; &lt;&lt; endl;
+	}
+};
+void test01()
+{
+	Son s1;
+}
+int main()
+{
+	test01();
+	system(&quot;pause&quot;);
+	return 0;
+}
+</code></pre>
+<h2 id="继承同名成员处理方式">继承同名成员处理方式</h2>
+<p>问题：当子类与父类出现同名的成员，如何通过子类对象，访问到子类活父类中同名的数据呢？</p>
+<ul>
+<li>访问子类同名成员，直接访问即可</li>
+<li>访问父类同名成员，需要加作用域</li>
+</ul>
+<pre><code class="language-c++">class Base
+{
+public:
+	Base()
+	{
+		this-&gt;m_a = 100;
+	}
+	void func()
+	{
+		cout &lt;&lt; &quot;Base 类 中func函数调用。&quot; &lt;&lt; endl;
+	}
+	int m_a;
+};
+class Son:public Base
+{
+public:
+	Son()
+	{
+		this-&gt;m_a = 200;
+	}
+	void func()
+	{
+		cout &lt;&lt; &quot;Son 类中func函数调用。&quot; &lt;&lt; endl;
+	}
+	int m_a;
+};
+void test01()
+{
+	//同名成员变量情况处理
+	Son s1;
+	cout &lt;&lt; &quot;Son  中的m_a = &quot; &lt;&lt; s1.m_a &lt;&lt; endl;
+	cout &lt;&lt; &quot;Base 中的m_a = &quot; &lt;&lt; s1.Base::m_a &lt;&lt; endl;//子类对象访问父类同名成员需要添加作用域
+}
+void test02()
+{
+	//同名成员函数情况处理
+	Son s2; 
+	s2.func();
+	s2.Base::func();//子类对象调用父类的成员函数要加作用域，因为子类会隐藏父类中同名成员函数
+
+}
+int main()
+{
+	test02();
+	system(&quot;pause&quot;);
+	return 0;
+}
+</code></pre>
+<p><strong>总结：</strong></p>
+<ol>
+<li>子类对象可以直接访问到子类中同名成员</li>
+<li>子类对象加作用域（父类的）可以访问到父类同名成员。</li>
+<li>当子类与父类拥有同名的成员函数，子类会隐藏父类中同名成员函数，加作用域可以访问到父类中同名函数。</li>
+</ol>
+<h2 id="同名静态成员处理">同名静态成员处理</h2>
+<p>`总结:同名静态成员处理方式和非静态处理方式一样，只不过有两种访问方式（通过对象 和 通过类名·）</p>
+<pre><code class="language-c++">class Base
+{
+public:
+	static int m_a;
+};
+int Base::m_a = 100;
+
+class Son : public Base
+{
+public:
+	static int m_a;
+};
+int Son::m_a = 200;
+void test01()
+{
+	Son s1;
+	cout &lt;&lt; &quot;### 通过对象访问静态成员变量：###&quot; &lt;&lt; endl;
+	cout &lt;&lt; &quot;Son s1.m_a = &quot; &lt;&lt; s1.m_a &lt;&lt; endl;//200,子类对象直接访问子类静态成员变量
+	cout &lt;&lt; &quot;Base s1.m_a = &quot; &lt;&lt; s1.Base::m_a &lt;&lt; endl;//100
+	cout &lt;&lt; &quot;### 通过类名来访问静态成员变量：###&quot; &lt;&lt; endl;
+	cout &lt;&lt; &quot;Son m_a = &quot; &lt;&lt; Son::m_a &lt;&lt; endl;
+	cout &lt;&lt; &quot;Base m_a = &quot; &lt;&lt; Son::Base::m_a &lt;&lt; endl;
+	//Son:: 表示通过Son这个类名来访问Base作用域下面的m_a成员变量。
+}
+//静态成员函数也是一样的道理
+int main()
+{
+	test01();
+	system(&quot;pause&quot;);
+	return 0;
+}
+</code></pre>
+<h2 id="多继承语法">多继承语法</h2>
+<p>C++允许一个<strong>类继承多个类</strong></p>
+<h2 id="菱形继承继承多类的情况很少见">菱形继承（继承多类的情况，很少见）</h2>
+<p><img src="https://Hurricane-Q7.github.io/post-images/1790390994862.png" alt="" loading="lazy"><br>
+一个羊驼类继承了两个类的数据。</p>
+<ul>
+<li>菱形继承带来的主要问题是子类继承两份相同的数据，导致资源浪费以及毫无意义</li>
+<li>利用虚继承可以解决菱形继承问题。</li>
+</ul>
+
+              </div>
+              <div class="toc-container">
+                <ul class="markdownIt-TOC">
+<li><a href="#%E7%BB%A7%E6%89%BFinheritance">继承（inheritance）</a>
+<ul>
+<li><a href="#%E5%85%B3%E4%BA%8E%E7%BB%A7%E6%89%BF%E7%9A%84%E6%B3%A8%E6%84%8F%E4%BA%8B%E9%A1%B9">关于继承的注意事项</a></li>
+<li><a href="#%E7%BB%A7%E6%89%BF%E7%9B%B8%E5%85%B3%E7%9A%84%E8%8B%B1%E6%96%87%E5%8D%95%E8%AF%8D">继承相关的英文单词</a></li>
+<li><a href="#%E7%BB%A7%E6%89%BF%E7%9A%84%E5%9F%BA%E6%9C%AC%E6%96%B9%E5%BC%8F">继承的基本方式</a></li>
+<li><a href="#%E7%BB%A7%E6%89%BF%E4%B8%AD%E7%9A%84%E5%AF%B9%E8%B1%A1%E6%A8%A1%E5%9E%8B">继承中的对象模型</a></li>
+<li><a href="#%E7%BB%A7%E6%89%BF%E4%B8%AD%E6%9E%84%E9%80%A0%E5%92%8C%E6%9E%90%E6%9E%84%E9%A1%BA%E5%BA%8F">继承中构造和析构顺序</a></li>
+<li><a href="#%E7%BB%A7%E6%89%BF%E5%90%8C%E5%90%8D%E6%88%90%E5%91%98%E5%A4%84%E7%90%86%E6%96%B9%E5%BC%8F">继承同名成员处理方式</a></li>
+<li><a href="#%E5%90%8C%E5%90%8D%E9%9D%99%E6%80%81%E6%88%90%E5%91%98%E5%A4%84%E7%90%86">同名静态成员处理</a></li>
+<li><a href="#%E5%A4%9A%E7%BB%A7%E6%89%BF%E8%AF%AD%E6%B3%95">多继承语法</a></li>
+<li><a href="#%E8%8F%B1%E5%BD%A2%E7%BB%A7%E6%89%BF%E7%BB%A7%E6%89%BF%E5%A4%9A%E7%B1%BB%E7%9A%84%E6%83%85%E5%86%B5%E5%BE%88%E5%B0%91%E8%A7%81">菱形继承（继承多类的情况，很少见）</a></li>
+</ul>
+</li>
+</ul>
+
+              </div>
+            </div>
+          </article>
+        </div>
+
+        
+          <div class="next-post">
+            <div class="next">下一篇</div>
+            <a href="https://Hurricane-Q7.github.io/post/yun-suan-fu-chong-zai-di-zeng-fu-zhi-guan-xi-han-shu-diao-yong-chong-zai/">
+              <h3 class="post-title">
+                运算符重载：递增、赋值、关系、函数调用重载
+              </h3>
+            </a>
+          </div>
+        
+
+        
+
+        <div class="site-footer">
+  Powered by <a href="https://github.com/getgridea/gridea" target="_blank">Gridea</a>
+  <a class="rss" href="https://Hurricane-Q7.github.io/atom.xml" target="_blank">
+    <i class="ri-rss-line"></i> RSS
+  </a>
+</div>
+
+      </div>
+    </div>
+
+    <script>
+      hljs.initHighlightingOnLoad()
+
+      let mainNavLinks = document.querySelectorAll(".markdownIt-TOC a");
+
+      // This should probably be throttled.
+      // Especially because it triggers during smooth scrolling.
+      // https://lodash.com/docs/4.17.10#throttle
+      // You could do like...
+      // window.addEventListener("scroll", () => {
+      //    _.throttle(doThatStuff, 100);
+      // });
+      // Only not doing it here to keep this Pen dependency-free.
+
+      window.addEventListener("scroll", event => {
+        let fromTop = window.scrollY;
+
+        mainNavLinks.forEach((link, index) => {
+          let section = document.getElementById(decodeURI(link.hash).substring(1));
+          let nextSection = null
+          if (mainNavLinks[index + 1]) {
+            nextSection = document.getElementById(decodeURI(mainNavLinks[index + 1].hash).substring(1));
+          }
+          if (section.offsetTop <= fromTop) {
+            if (nextSection) {
+              if (nextSection.offsetTop > fromTop) {
+                link.classList.add("current");
+              } else {
+                link.classList.remove("current");    
+              }
+            } else {
+              link.classList.add("current");
+            }
+          } else {
+            link.classList.remove("current");
+          }
+        });
+      });
+
+    </script>
+  </body>
+</html>

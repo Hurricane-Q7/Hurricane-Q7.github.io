@@ -1,0 +1,363 @@
+<html>
+  <head>
+    <meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>C++学习-友元-类和对象（2） | Gridea</title>
+<link rel="shortcut icon" href="https://Hurricane-Q7.github.io/favicon.ico?v=1790478975961">
+<link href="https://cdn.jsdelivr.net/npm/remixicon@2.3.0/fonts/remixicon.css" rel="stylesheet">
+<link rel="stylesheet" href="https://Hurricane-Q7.github.io/styles/main.css">
+<link rel="alternate" type="application/atom+xml" title="C++学习-友元-类和对象（2） | Gridea - Atom Feed" href="https://Hurricane-Q7.github.io/atom.xml">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Droid+Serif:400,700">
+
+
+
+    <meta name="description" content="友元
+友元（friend）本质上是在解决“类外部代码想访问类的私有成员”这个问题。
+全局函数作友元
+class Building
+{
+	friend void bestFriends(Building&amp; B1);
+	//核心语法关键..." />
+    <meta name="keywords" content="C++学习笔记" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.10.0/katex.min.css">
+    <script src="//cdn.jsdelivr.net/gh/highlightjs/cdn-release@11.5.1/build/highlight.min.js"></script>
+  </head>
+  <body>
+    <div class="main">
+      <div class="main-content">
+        <div class="site-header">
+  <a href="https://Hurricane-Q7.github.io">
+  <img class="avatar" src="https://Hurricane-Q7.github.io/images/avatar.png?v=1790478975961" alt="">
+  </a>
+  <h1 class="site-title">
+    Gridea
+  </h1>
+  <p class="site-description">
+    言者所以在意，得意而忘言
+  </p>
+  <div class="menu-container">
+    
+      
+        <a href="/" class="menu">
+          首页
+        </a>
+      
+    
+      
+        <a href="/archives" class="menu">
+          归档
+        </a>
+      
+    
+      
+        <a href="/tags" class="menu">
+          标签
+        </a>
+      
+    
+      
+        <a href="/post/about" class="menu">
+          关于
+        </a>
+      
+    
+  </div>
+  <div class="social-container">
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+  </div>
+</div>
+
+        <div class="post-detail">
+          <article class="post">
+            <h2 class="post-title">
+              C++学习-友元-类和对象（2）
+            </h2>
+            <div class="post-info">
+              <span>
+                2026-09-04
+              </span>
+              <span>
+                5 min read
+              </span>
+              
+                <a href="https://Hurricane-Q7.github.io/tag/bygWfwBJxy/" class="post-tag">
+                  # C++学习笔记
+                </a>
+              
+            </div>
+            
+            <div class="post-content-wrapper">
+              <div class="post-content" v-pre>
+                <h1 id="友元">友元</h1>
+<p>友元（friend）本质上是在解决“类外部代码想访问类的私有成员”这个问题。</p>
+<h2 id="全局函数作友元">全局函数作友元</h2>
+<pre><code class="language-cpp">class Building
+{
+	friend void bestFriends(Building&amp; B1);
+	//核心语法关键字：friend，
+	//作用：告诉编译器某一个全局函数可以访问类内的成员变量。
+public:
+	Building()
+	{
+		this-&gt;m_bedroom = &quot;卧室&quot;;
+		this-&gt;m_settingroom = &quot;客厅&quot;;
+	}
+	string m_settingroom;
+private:
+	string m_bedroom;
+};
+//全局函数：
+void bestFriends(Building &amp;B1)
+{
+	cout &lt;&lt; &quot;好朋友正在访问：&quot; &lt;&lt; B1.m_settingroom &lt;&lt; endl;
+	cout &lt;&lt; &quot;好朋友正在访问：&quot; &lt;&lt; B1.m_bedroom &lt;&lt; endl;
+}
+int main()
+{
+	Building B1;
+	bestFriends(B1);
+	system(&quot;pause&quot;);
+	return 0;
+}
+</code></pre>
+<h2 id="友元类">友元类</h2>
+<p>语法书写：</p>
+<pre><code class="language-cpp">class Myhome
+{
+    friend class BestFriend;//我允许我最好的朋友可以访问我家，BestFriend类可以访问Myhome类中的成员
+    //BestFriend:友元类
+    //Myhome：被友元类访问的类，权限的授予者
+}
+</code></pre>
+<pre><code class="language-cpp">class Building
+{
+	friend class myBestFriend;
+	//声明：myBestFriend这个类向Building类提供了访问权限，此时myBestFriend这个类可以访问Building类中的成员
+public:
+	Building()
+	{
+		SettingRoom = &quot;我的客厅！&quot;;
+		BedRoom = &quot;我的卧室！&quot;;
+	}
+private:
+	string SettingRoom;
+	string BedRoom;
+};
+class myBestFriend
+{
+public:
+	void visitBuilding(Building &amp;B1)
+	{
+		cout &lt;&lt; &quot;我最好的朋友正在参观&quot; &lt;&lt; B1.BedRoom &lt;&lt; endl;
+		cout &lt;&lt; &quot;我最好的朋友正在参观&quot; &lt;&lt; B1.SettingRoom &lt;&lt; endl;
+	}
+};
+int main()
+{
+	Building B1;
+	myBestFriend F1;
+	F1.visitBuilding(B1);
+	system(&quot;pause&quot;);
+	return 0;
+}
+注意事项：
+1. 友元关系是单向的（你允许我访问，不代表我也允许你访问）
+2. 友元关系不具备传递性。   
+3. 友元不能继承。
+</code></pre>
+<h2 id="成员函数作友元">成员函数作友元</h2>
+<h3 id="友元类和成员函数作友元的区别如下">友元类和成员函数作友元的区别如下：</h3>
+<p>**友元类：**友元类中的所有成员函数，都可以访问被授予权限的那个类的 private 和 protected 成员。<br>
+**成员函数作友元：**让另一个类中的某一个成员函数，获得访问当前类 private 和 protected 成员的权限。<br>
+<strong>正确代码示例：</strong></p>
+<pre><code class="language-cpp">#include&lt;iostream&gt;
+#include&lt;string&gt;
+using namespace std;
+//成员函数作友元
+class Building;//单写一个class Building只能上编译器知道有这个类，但是类里面具体有什么是不知道的
+class GoodGay
+{
+public:
+	    void visit1(Building&amp; B1);
+		void visit2(Building&amp; B1);
+};
+class Building
+{
+public:
+	friend void GoodGay::visit1(Building&amp; B1);
+	Building()
+	{
+		this-&gt;m_SettingRoom = &quot;我的客厅&quot;;
+		this-&gt;m_BedRoom = &quot;我的卧室&quot;;
+	}
+	string m_SettingRoom;
+private:
+	string m_BedRoom;
+};
+void GoodGay::visit1(Building&amp; B1)
+{
+	cout &lt;&lt; &quot;好朋友v1正在访问：&quot; &lt;&lt; B1.m_SettingRoom &lt;&lt; endl;
+	cout &lt;&lt; &quot;好朋友v1正在访问：&quot; &lt;&lt; B1.m_BedRoom &lt;&lt; endl;
+}
+void GoodGay::visit2(Building&amp; B1)
+{
+	cout &lt;&lt; &quot;好朋友v2正在访问：&quot; &lt;&lt; B1.m_SettingRoom &lt;&lt; endl;
+	//cout &lt;&lt; &quot;好朋友v2正在访问：&quot; &lt;&lt; B1.m_BedRoom &lt;&lt; endl;
+}
+int main()
+{
+	Building B1;
+	GoodGay gg;
+	gg.visit1(B1);
+	gg.visit2(B1);
+	system(&quot;pause&quot;);
+	return 0;
+}
+</code></pre>
+<h3 id="关于友元类我踩的坑">关于友元类我踩的坑</h3>
+<ol>
+<li>混淆了编译器的编译和运行流程；</li>
+</ol>
+<pre><code class="language-cpp">编译是编译，运行是运行。
+编译：编译器大体按照源代码顺序从上往下分析代码。（从第一行读到最后一行）
+运行：程序运行时从 main() 开始执行。
+虽然 main() 里面第一句创建了 B1，
+但这并不意味着编译器会先处理 main()。
+编译器必须先把前面的类、函数等代码分析清楚，最后才能生成可执行程序。
+而我以为编译是从main函数开始的，遇到函数或类在向main去找对应的定义，而实际上是从上到下开始分析代码的，这也是为什么我的vs26报错“Building类未定义”，因为编译器只知道有这个类，但是不知道类的定义（不知道类里面有什么）。
+</code></pre>
+<pre><code class="language-cpp">class Building;
+class GoodGay
+{
+public:
+	void visit1(Building &amp;B1)
+	{
+		cout &lt;&lt; &quot;好朋友v1正在访问：&quot; &lt;&lt; B1.m_SettingRoom &lt;&lt; endl;
+		//cout &lt;&lt; &quot;好朋友v1正在访问：&quot; &lt;&lt; B1.m_BedRoom &lt;&lt; endl;
+	}
+	void vist2(Building &amp;B1)
+	{
+		cout &lt;&lt; &quot;好朋友v2正在访问：&quot; &lt;&lt; B1.m_SettingRoom &lt;&lt; endl;
+		//cout &lt;&lt; &quot;好朋友v2正在访问：&quot; &lt;&lt; B1.m_BedRoom &lt;&lt; endl;
+	}
+};
+class Building
+{
+public:
+	//friend void GoodGay::visit1(Building&amp; B1);
+	Building()
+	{
+		this-&gt;m_SettingRoom = &quot;我的客厅&quot;;
+		this-&gt;m_BedRoom = &quot;我的卧室&quot;;
+	}
+	string m_SettingRoom;
+private:
+	string m_BedRoom;
+};
+int main()
+{
+	Building B1;
+	GoodGay gg;
+	gg.visit1(B1);
+	system(&quot;pause&quot;);
+	return 0;
+}
+</code></pre>
+
+              </div>
+              <div class="toc-container">
+                <ul class="markdownIt-TOC">
+<li><a href="#%E5%8F%8B%E5%85%83">友元</a>
+<ul>
+<li><a href="#%E5%85%A8%E5%B1%80%E5%87%BD%E6%95%B0%E4%BD%9C%E5%8F%8B%E5%85%83">全局函数作友元</a></li>
+<li><a href="#%E5%8F%8B%E5%85%83%E7%B1%BB">友元类</a></li>
+<li><a href="#%E6%88%90%E5%91%98%E5%87%BD%E6%95%B0%E4%BD%9C%E5%8F%8B%E5%85%83">成员函数作友元</a>
+<ul>
+<li><a href="#%E5%8F%8B%E5%85%83%E7%B1%BB%E5%92%8C%E6%88%90%E5%91%98%E5%87%BD%E6%95%B0%E4%BD%9C%E5%8F%8B%E5%85%83%E7%9A%84%E5%8C%BA%E5%88%AB%E5%A6%82%E4%B8%8B">友元类和成员函数作友元的区别如下：</a></li>
+<li><a href="#%E5%85%B3%E4%BA%8E%E5%8F%8B%E5%85%83%E7%B1%BB%E6%88%91%E8%B8%A9%E7%9A%84%E5%9D%91">关于友元类我踩的坑</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+              </div>
+            </div>
+          </article>
+        </div>
+
+        
+          <div class="next-post">
+            <div class="next">下一篇</div>
+            <a href="https://Hurricane-Q7.github.io/post/da-er-shang-xue-qi-di-yi-tian/">
+              <h3 class="post-title">
+                大二（上）学期目标
+              </h3>
+            </a>
+          </div>
+        
+
+        
+
+        <div class="site-footer">
+  Powered by <a href="https://github.com/getgridea/gridea" target="_blank">Gridea</a>
+  <a class="rss" href="https://Hurricane-Q7.github.io/atom.xml" target="_blank">
+    <i class="ri-rss-line"></i> RSS
+  </a>
+</div>
+
+      </div>
+    </div>
+
+    <script>
+      hljs.initHighlightingOnLoad()
+
+      let mainNavLinks = document.querySelectorAll(".markdownIt-TOC a");
+
+      // This should probably be throttled.
+      // Especially because it triggers during smooth scrolling.
+      // https://lodash.com/docs/4.17.10#throttle
+      // You could do like...
+      // window.addEventListener("scroll", () => {
+      //    _.throttle(doThatStuff, 100);
+      // });
+      // Only not doing it here to keep this Pen dependency-free.
+
+      window.addEventListener("scroll", event => {
+        let fromTop = window.scrollY;
+
+        mainNavLinks.forEach((link, index) => {
+          let section = document.getElementById(decodeURI(link.hash).substring(1));
+          let nextSection = null
+          if (mainNavLinks[index + 1]) {
+            nextSection = document.getElementById(decodeURI(mainNavLinks[index + 1].hash).substring(1));
+          }
+          if (section.offsetTop <= fromTop) {
+            if (nextSection) {
+              if (nextSection.offsetTop > fromTop) {
+                link.classList.add("current");
+              } else {
+                link.classList.remove("current");    
+              }
+            } else {
+              link.classList.add("current");
+            }
+          } else {
+            link.classList.remove("current");
+          }
+        });
+      });
+
+    </script>
+  </body>
+</html>

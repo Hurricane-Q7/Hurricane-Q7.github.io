@@ -1,0 +1,339 @@
+<html>
+  <head>
+    <meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>运算符重载：递增、赋值、关系、函数调用重载 | Gridea</title>
+<link rel="shortcut icon" href="https://Hurricane-Q7.github.io/favicon.ico?v=1790478975961">
+<link href="https://cdn.jsdelivr.net/npm/remixicon@2.3.0/fonts/remixicon.css" rel="stylesheet">
+<link rel="stylesheet" href="https://Hurricane-Q7.github.io/styles/main.css">
+<link rel="alternate" type="application/atom+xml" title="运算符重载：递增、赋值、关系、函数调用重载 | Gridea - Atom Feed" href="https://Hurricane-Q7.github.io/atom.xml">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Droid+Serif:400,700">
+
+
+
+    <meta name="description" content="递增运算符重载
+//# 重载自增运算符++ --
+// 自增运算符的两种使用场景
+// 1. 前置++ （先自增一遍，增完后，再返回结果）
+// 2. 后置++  （先返回当前值，返回后再作自增）
+class MyInteger
+{
+	fr..." />
+    <meta name="keywords" content="C++学习笔记" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.10.0/katex.min.css">
+    <script src="//cdn.jsdelivr.net/gh/highlightjs/cdn-release@11.5.1/build/highlight.min.js"></script>
+  </head>
+  <body>
+    <div class="main">
+      <div class="main-content">
+        <div class="site-header">
+  <a href="https://Hurricane-Q7.github.io">
+  <img class="avatar" src="https://Hurricane-Q7.github.io/images/avatar.png?v=1790478975961" alt="">
+  </a>
+  <h1 class="site-title">
+    Gridea
+  </h1>
+  <p class="site-description">
+    言者所以在意，得意而忘言
+  </p>
+  <div class="menu-container">
+    
+      
+        <a href="/" class="menu">
+          首页
+        </a>
+      
+    
+      
+        <a href="/archives" class="menu">
+          归档
+        </a>
+      
+    
+      
+        <a href="/tags" class="menu">
+          标签
+        </a>
+      
+    
+      
+        <a href="/post/about" class="menu">
+          关于
+        </a>
+      
+    
+  </div>
+  <div class="social-container">
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+  </div>
+</div>
+
+        <div class="post-detail">
+          <article class="post">
+            <h2 class="post-title">
+              运算符重载：递增、赋值、关系、函数调用重载
+            </h2>
+            <div class="post-info">
+              <span>
+                2026-09-17
+              </span>
+              <span>
+                5 min read
+              </span>
+              
+                <a href="https://Hurricane-Q7.github.io/tag/bygWfwBJxy/" class="post-tag">
+                  # C++学习笔记
+                </a>
+              
+            </div>
+            
+            <div class="post-content-wrapper">
+              <div class="post-content" v-pre>
+                <h1 id="递增运算符重载">递增运算符重载</h1>
+<pre><code class="language-c++">//# 重载自增运算符++ --
+// 自增运算符的两种使用场景
+// 1. 前置++ （先自增一遍，增完后，再返回结果）
+// 2. 后置++  （先返回当前值，返回后再作自增）
+class MyInteger
+{
+	friend ostream&amp; operator&lt;&lt;(ostream&amp; cout, MyInteger&amp; myInt);
+public:
+	MyInteger(int a)
+	{
+		this-&gt;my_Int = a;
+	}
+	//重载自增运算符-前置++
+	//返回引用，返回对象本身，用于连续操作
+	MyInteger&amp; operator++()
+	{
+		this-&gt;my_Int++;
+		return *this;
+	}
+	//重载后置自增++
+	//后置先返回临时值，创建一个新的副本，随后再++
+	MyInteger operator++(int)
+	{
+		//创建一个临时对象，用于记录当前自增对象的值，便于返回
+		MyInteger tmp(0);
+		tmp = this-&gt;my_Int;
+		this-&gt;my_Int++;
+		return tmp;
+
+	}
+private:
+	int my_Int;
+};
+//重载左移运算符，操作对象必须是引用
+ostream&amp; operator&lt;&lt;(ostream &amp;cout,MyInteger &amp;myInt)
+{
+	cout &lt;&lt; myInt.my_Int;
+	return cout;
+}
+//前置++ 测试
+void test01()
+{
+	MyInteger M1(1);
+	cout &lt;&lt; &quot;M1自增前：&quot; &lt;&lt; M1 &lt;&lt; endl;
+	cout &lt;&lt;&quot;自增后：&quot;&lt;&lt; M1 &lt;&lt; endl;
+	//如果返回MyInteger的话，MyInteger operator++() 本身是合法的；真正的问题是它返回的临时对象无法绑定到 operator&lt;&lt; 的 MyInteger&amp; 参数。
+
+}
+//后置++ 测试
+void test02()
+{
+	MyInteger  M1(1);
+	MyInteger tmp2(0);
+	cout &lt;&lt; &quot;M1自增前：&quot; &lt;&lt; M1 &lt;&lt; endl;//1
+	tmp2 = M1++;
+	cout &lt;&lt; &quot;M1++ 临时值&quot; &lt;&lt;tmp2 &lt;&lt; endl;
+	cout &lt;&lt; &quot;M1 = &quot; &lt;&lt; M1 &lt;&lt; endl;;
+}
+</code></pre>
+<h1 id="赋值运算符重载">赋值运算符重载</h1>
+<p>C++编译器至少给一个类添加4个函数</p>
+<ol>
+<li>默认构造函数(无参，函数体为空)</li>
+<li>默认析构函数（无参，函数体为空）</li>
+<li>默认拷贝构造函数，对属性进行值拷贝</li>
+<li>赋值运算符 <code>operator=</code>，对属性进行值拷贝<br>
+<strong>如果类中有属性指向堆区，做赋值操作时也会出现深浅拷贝问题。</strong></li>
+</ol>
+<pre><code class="language-c++">class Person
+{
+public:
+	Person(int age)
+	{
+		this-&gt;my_Age = new int(age);
+		//在堆区动态申请一块 int 类型的内存，并且用 age 初始化它，然后把这块int类型的地址放到this-&gt;my_Age中
+		//堆区的内存由程序员手动申请，并且还要手动释放
+	}
+	Person&amp; operator=(Person&amp; p1)
+	{
+		//先判断调用该函数的对象的成员属性是否为空，如果不为空，要先释放
+		if (this-&gt;my_Age != NULL)
+		{
+			delete this-&gt;my_Age;
+			this-&gt;my_Age = NULL;
+		}
+		//深拷贝，就是重新开辟一块内存空间来存储
+		this-&gt;my_Age = new int(*p1.my_Age);
+		return *this;
+	}
+	~Person()
+	{
+		if (my_Age != NULL)
+		{
+			delete my_Age;
+			my_Age = NULL;
+	    }
+	}
+	int* my_Age;
+};
+int main()
+{
+	Person p1(18);
+	Person p2(20);
+	Person p3(30);
+	p1 = p2 = p3;
+	//这里用的拷贝函数是编译器默认给的，执行的是浅拷贝操作，此时p1.my_Age 和 p2.my_Age指向的是同一块内存空间
+	//彼此在结束时都会执行一遍析构函数，因此会发生对同一快内存空间重复释放的问题
+	cout &lt;&lt; &quot;p1的年龄是：&quot; &lt;&lt; *p1.my_Age &lt;&lt; endl;
+	cout &lt;&lt; &quot;p2的年龄是：&quot; &lt;&lt; *p2.my_Age &lt;&lt; endl;
+	cout &lt;&lt; &quot;p3的年龄是：&quot; &lt;&lt; *p3.my_Age &lt;&lt; endl;
+	system(&quot;pause&quot;);
+	return 0;
+}
+</code></pre>
+<h1 id="关系运算符">关系运算符</h1>
+<pre><code class="language-c++">class Number
+{
+public:
+	Number(int a,int b)
+	{
+		this-&gt;n_a = a;
+		this-&gt;n_b = b;
+	}
+	bool operator==(Number&amp; N1)
+	{
+		if (this-&gt;n_a == N1.n_a &amp;&amp; this-&gt;n_b == N1.n_b)
+		{
+			//相等
+			return true;
+		}
+		return false;
+	}
+	int n_a;
+	int n_b;
+};
+int main()
+{
+	Number N1(10, 20);
+	Number N2(10, 20);
+	if (N1 == N2)
+	{
+		cout &lt;&lt; &quot;相等！&quot; &lt;&lt; endl;
+	}
+	else
+	{
+		cout &lt;&lt; &quot;不相等!&quot; &lt;&lt; endl;
+	}
+	system(&quot;pause&quot;);
+	return 0;
+}
+</code></pre>
+<h1 id="函数调用运算符重载">函数调用运算符重载</h1>
+<ul>
+<li>函数调用运算符（）也可以重载</li>
+<li>由于重载后使用的方式非常像函数的调用，因此称为仿函数</li>
+<li>仿函数没有固定的写法，非常灵活</li>
+</ul>
+
+              </div>
+              <div class="toc-container">
+                <ul class="markdownIt-TOC">
+<li><a href="#%E9%80%92%E5%A2%9E%E8%BF%90%E7%AE%97%E7%AC%A6%E9%87%8D%E8%BD%BD">递增运算符重载</a></li>
+<li><a href="#%E8%B5%8B%E5%80%BC%E8%BF%90%E7%AE%97%E7%AC%A6%E9%87%8D%E8%BD%BD">赋值运算符重载</a></li>
+<li><a href="#%E5%85%B3%E7%B3%BB%E8%BF%90%E7%AE%97%E7%AC%A6">关系运算符</a></li>
+<li><a href="#%E5%87%BD%E6%95%B0%E8%B0%83%E7%94%A8%E8%BF%90%E7%AE%97%E7%AC%A6%E9%87%8D%E8%BD%BD">函数调用运算符重载</a></li>
+</ul>
+
+              </div>
+            </div>
+          </article>
+        </div>
+
+        
+          <div class="next-post">
+            <div class="next">下一篇</div>
+            <a href="https://Hurricane-Q7.github.io/post/95-ri-git-fen-zhi-xue-xi/">
+              <h3 class="post-title">
+                9.5日-Git分支学习
+              </h3>
+            </a>
+          </div>
+        
+
+        
+
+        <div class="site-footer">
+  Powered by <a href="https://github.com/getgridea/gridea" target="_blank">Gridea</a>
+  <a class="rss" href="https://Hurricane-Q7.github.io/atom.xml" target="_blank">
+    <i class="ri-rss-line"></i> RSS
+  </a>
+</div>
+
+      </div>
+    </div>
+
+    <script>
+      hljs.initHighlightingOnLoad()
+
+      let mainNavLinks = document.querySelectorAll(".markdownIt-TOC a");
+
+      // This should probably be throttled.
+      // Especially because it triggers during smooth scrolling.
+      // https://lodash.com/docs/4.17.10#throttle
+      // You could do like...
+      // window.addEventListener("scroll", () => {
+      //    _.throttle(doThatStuff, 100);
+      // });
+      // Only not doing it here to keep this Pen dependency-free.
+
+      window.addEventListener("scroll", event => {
+        let fromTop = window.scrollY;
+
+        mainNavLinks.forEach((link, index) => {
+          let section = document.getElementById(decodeURI(link.hash).substring(1));
+          let nextSection = null
+          if (mainNavLinks[index + 1]) {
+            nextSection = document.getElementById(decodeURI(mainNavLinks[index + 1].hash).substring(1));
+          }
+          if (section.offsetTop <= fromTop) {
+            if (nextSection) {
+              if (nextSection.offsetTop > fromTop) {
+                link.classList.add("current");
+              } else {
+                link.classList.remove("current");    
+              }
+            } else {
+              link.classList.add("current");
+            }
+          } else {
+            link.classList.remove("current");
+          }
+        });
+      });
+
+    </script>
+  </body>
+</html>

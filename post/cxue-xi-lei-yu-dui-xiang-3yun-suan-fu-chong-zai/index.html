@@ -1,0 +1,321 @@
+<html>
+  <head>
+    <meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>C++学习-类与对象（3）运算符重载 | Gridea</title>
+<link rel="shortcut icon" href="https://Hurricane-Q7.github.io/favicon.ico?v=1790478975961">
+<link href="https://cdn.jsdelivr.net/npm/remixicon@2.3.0/fonts/remixicon.css" rel="stylesheet">
+<link rel="stylesheet" href="https://Hurricane-Q7.github.io/styles/main.css">
+<link rel="alternate" type="application/atom+xml" title="C++学习-类与对象（3）运算符重载 | Gridea - Atom Feed" href="https://Hurricane-Q7.github.io/atom.xml">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Droid+Serif:400,700">
+
+
+
+    <meta name="description" content="运算符重载
+概念：对已有的运算符重新进行定义，赋予其另一种功能，以适应不同的数据类型。
+因为我没不能对自定义对象进行运算操作，所以运算符重载其实就是给一些我们定义的复杂对象提供的一种全新的运算操作符，其实本质上就是函数的一个调用。
+oper..." />
+    <meta name="keywords" content="C++学习笔记" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.10.0/katex.min.css">
+    <script src="//cdn.jsdelivr.net/gh/highlightjs/cdn-release@11.5.1/build/highlight.min.js"></script>
+  </head>
+  <body>
+    <div class="main">
+      <div class="main-content">
+        <div class="site-header">
+  <a href="https://Hurricane-Q7.github.io">
+  <img class="avatar" src="https://Hurricane-Q7.github.io/images/avatar.png?v=1790478975961" alt="">
+  </a>
+  <h1 class="site-title">
+    Gridea
+  </h1>
+  <p class="site-description">
+    言者所以在意，得意而忘言
+  </p>
+  <div class="menu-container">
+    
+      
+        <a href="/" class="menu">
+          首页
+        </a>
+      
+    
+      
+        <a href="/archives" class="menu">
+          归档
+        </a>
+      
+    
+      
+        <a href="/tags" class="menu">
+          标签
+        </a>
+      
+    
+      
+        <a href="/post/about" class="menu">
+          关于
+        </a>
+      
+    
+  </div>
+  <div class="social-container">
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+  </div>
+</div>
+
+        <div class="post-detail">
+          <article class="post">
+            <h2 class="post-title">
+              C++学习-类与对象（3）运算符重载
+            </h2>
+            <div class="post-info">
+              <span>
+                2026-09-05
+              </span>
+              <span>
+                6 min read
+              </span>
+              
+                <a href="https://Hurricane-Q7.github.io/tag/bygWfwBJxy/" class="post-tag">
+                  # C++学习笔记
+                </a>
+              
+            </div>
+            
+            <div class="post-content-wrapper">
+              <div class="post-content" v-pre>
+                <h1 id="运算符重载">运算符重载</h1>
+<p>概念：对已有的运算符重新进行定义，赋予其另一种功能，以适应不同的数据类型。<br>
+<strong>因为我没不能对自定义对象进行运算操作，所以运算符重载其实就是给一些我们定义的复杂对象提供的一种全新的运算操作符，其实本质上就是函数的一个调用。</strong><br>
+<code>operator 是关键字，operator+ 是用来定义 + 运算符重载的特殊函数名。</code>;</p>
+<pre><code class="language-c++">总结1：对于内置的数据类型的表达式的运算符是不可能改变的。(只面向自定义数据类型)
+总结2：不要滥用运算符。
+</code></pre>
+<h2 id="加号运算符重载">加号运算符重载</h2>
+<pre><code class="language-c++">class Person
+{
+public:
+	Person()
+	{
+		this-&gt;m_A = 10;
+		this-&gt;m_B = 20;
+	}
+	//类内运算符重载：
+	//Person operator+(Person &amp;p)
+	//{
+	//	Person tmp;
+	//	tmp.m_A = this-&gt;m_A + p.m_A;
+	//	tmp.m_B = this-&gt;m_B + p.m_B;
+	//	return tmp;
+	//}
+	int m_A;
+	int m_B;
+};
+//全局函数重载+运算符
+Person operator+(Person&amp; p1, Person&amp; p2)
+{
+	Person tmp;
+	tmp.m_A = p1.m_A + p2.m_A;
+	tmp.m_B = p1.m_B + p2.m_B;
+	return tmp;
+}
+void test01()
+{
+	Person p1;
+	Person p2;
+	//Person p3 = p1 + p2;
+	//类中内置运算符重载运算，本质写法Person p3 = p1.operator+(p2)
+	Person p3 = p1 + p2;
+	//全局函数重载运算符本质是函数调用：
+	//本质写法：Person p3 = operator+(p1,p2)
+	cout &lt;&lt; &quot;p1的m_A和m_B的值是：&quot; &lt;&lt; p1.m_A &lt;&lt; &quot;和&quot; &lt;&lt; p1.m_B &lt;&lt; endl;
+	cout &lt;&lt; &quot;p2的m_A和m_B的值是：&quot; &lt;&lt; p2.m_A &lt;&lt; &quot;和&quot; &lt;&lt; p2.m_B &lt;&lt; endl;
+	cout &lt;&lt; &quot;p3的m_A和m_B的值是：&quot; &lt;&lt; p3.m_A &lt;&lt; &quot;和&quot; &lt;&lt; p3.m_B &lt;&lt; endl;//30 40
+}
+int main()
+{
+	test01();
+	system(&quot;pause&quot;);
+	return 0;
+}
+//运算符重载也可以发生函数重载
+class Person
+{
+public:
+	Person()
+	{
+		this-&gt;m_A = 10;
+		this-&gt;m_B = 20;
+	}
+	//类内运算符重载：
+	//实现对象与对象之间的加法运算
+	Person operator+(Person&amp; p)
+	{
+		Person tmp;
+		tmp.m_A = this-&gt;m_A + p.m_A;
+		tmp.m_B = this-&gt;m_B + p.m_B;
+		return tmp;
+	}
+	int m_A;
+	int m_B;
+};
+//类外运算符重载：
+//实现对象和int类型之间的加法运算
+Person operator+(Person&amp; p, int num)
+{
+	Person tmp;
+	tmp.m_A = p.m_A + num;
+	tmp.m_B = p.m_B + num;
+	return tmp;
+}
+int main()
+{
+	Person p1;
+	Person p2;
+	Person p3 = p1 + p2;
+	cout &lt;&lt; &quot;类内运算符重载：对象与对象之间的加法结果：&quot; &lt;&lt; endl;
+	cout &lt;&lt; &quot;p3.m_A = &quot; &lt;&lt; p3.m_A &lt;&lt; &quot; p3.m_B = &quot; &lt;&lt; p3.m_B &lt;&lt; endl;
+	cout &lt;&lt; &quot;类外运算符重载：对象和整数之间的加法：&quot; &lt;&lt; endl;
+	Person p4 = p1 + 100;
+	cout &lt;&lt; &quot;p4.m_A = &quot; &lt;&lt; p4.m_A &lt;&lt; &quot; p4.m_B = &quot; &lt;&lt; p4.m_B &lt;&lt; endl;
+	system(&quot;pause&quot;);
+	return 0;
+}
+</code></pre>
+<h2 id="左移运算符重载">左移运算符重载</h2>
+<p><strong>左移运算符：</strong><code>&lt;&lt;</code>;<br>
+在C++里面输出数据经常用cout加左移运算符来配合，但是左移运算符原来是不具备这种功能的，所以在C++里面，C++标准库对<strong>重载了</strong>左移运算符，使其可以用于输出各种标准类型的数据（运算符重载函数也可以发生函数重载），使 <code>&lt;&lt; </code>运算符可以配合 <strong>ostream 输出流对象，<strong>将不同类型的数据写入输出流。，而</strong>cout</strong>这个东西，实际上就是一个<code>ostream类的一个对象，标准输出流对象，</code>，每次写cout&lt;&lt;的时候，实际上就是对左移运算符重载函数的一次调用罢了。</p>
+<pre><code class="language-c++">cout &lt;&lt;&quot;hello world!&quot;;
+operator&lt;&lt;(cout,&quot;hello world!&quot;);
+//这两句代码的作用是一样的，第二行是第一行的本质写法，第一行是简化版本
+</code></pre>
+<p>由于现在的左移运算符可以数据标准类型数据了，但是不可以输出<strong>自定义的数据类型</strong>，因此我们可以进行再次<strong>运算操作符重载</strong>，达到输出我们自定义类-对象信息的作用。<br>
+<strong>一句话总结：</strong></p>
+<pre><code class="language-c">cout 是标准输出流对象；&lt;&lt; 是运算符；operator&lt;&lt;() 是对应的运算符重载函数。通过对 operator&lt;&lt; 进行重载，可以规定不同类型的数据应该如何输出。
+</code></pre>
+<pre><code class="language-c++">class Person
+{
+public:
+	//全局函数作友元，给予全局函数访问Person类内私有权限的成员属性的权限！！！
+	friend ostream&amp; operator&lt;&lt;(ostream&amp; cout, Person&amp; p);
+	Person(int a,int b)
+	{
+		this-&gt;m_A = a;
+		this-&gt;m_B = b;
+	}
+private:
+	int m_A;
+	int m_B;
+};
+ostream&amp; operator&lt;&lt;(ostream&amp; cout, Person&amp; p)
+{
+	cout &lt;&lt; &quot;p.m_A = &quot; &lt;&lt; p.m_A &lt;&lt; &quot; p.m_B = &quot; &lt;&lt; p.m_B;
+	return cout;
+}
+void test01()
+{
+	Person p(10, 10);
+	cout &lt;&lt; p &lt;&lt; endl;
+}
+//用全局函数来重载运算符，不用类内成员函数
+
+int main()
+{
+	test01();
+	system(&quot;pause&quot;);
+	return 0;
+}
+</code></pre>
+
+              </div>
+              <div class="toc-container">
+                <ul class="markdownIt-TOC">
+<li><a href="#%E8%BF%90%E7%AE%97%E7%AC%A6%E9%87%8D%E8%BD%BD">运算符重载</a>
+<ul>
+<li><a href="#%E5%8A%A0%E5%8F%B7%E8%BF%90%E7%AE%97%E7%AC%A6%E9%87%8D%E8%BD%BD">加号运算符重载</a></li>
+<li><a href="#%E5%B7%A6%E7%A7%BB%E8%BF%90%E7%AE%97%E7%AC%A6%E9%87%8D%E8%BD%BD">左移运算符重载</a></li>
+</ul>
+</li>
+</ul>
+
+              </div>
+            </div>
+          </article>
+        </div>
+
+        
+          <div class="next-post">
+            <div class="next">下一篇</div>
+            <a href="https://Hurricane-Q7.github.io/post/cxue-xi-lei-he-dui-xiang-2/">
+              <h3 class="post-title">
+                C++学习-友元-类和对象（2）
+              </h3>
+            </a>
+          </div>
+        
+
+        
+
+        <div class="site-footer">
+  Powered by <a href="https://github.com/getgridea/gridea" target="_blank">Gridea</a>
+  <a class="rss" href="https://Hurricane-Q7.github.io/atom.xml" target="_blank">
+    <i class="ri-rss-line"></i> RSS
+  </a>
+</div>
+
+      </div>
+    </div>
+
+    <script>
+      hljs.initHighlightingOnLoad()
+
+      let mainNavLinks = document.querySelectorAll(".markdownIt-TOC a");
+
+      // This should probably be throttled.
+      // Especially because it triggers during smooth scrolling.
+      // https://lodash.com/docs/4.17.10#throttle
+      // You could do like...
+      // window.addEventListener("scroll", () => {
+      //    _.throttle(doThatStuff, 100);
+      // });
+      // Only not doing it here to keep this Pen dependency-free.
+
+      window.addEventListener("scroll", event => {
+        let fromTop = window.scrollY;
+
+        mainNavLinks.forEach((link, index) => {
+          let section = document.getElementById(decodeURI(link.hash).substring(1));
+          let nextSection = null
+          if (mainNavLinks[index + 1]) {
+            nextSection = document.getElementById(decodeURI(mainNavLinks[index + 1].hash).substring(1));
+          }
+          if (section.offsetTop <= fromTop) {
+            if (nextSection) {
+              if (nextSection.offsetTop > fromTop) {
+                link.classList.add("current");
+              } else {
+                link.classList.remove("current");    
+              }
+            } else {
+              link.classList.add("current");
+            }
+          } else {
+            link.classList.remove("current");
+          }
+        });
+      });
+
+    </script>
+  </body>
+</html>
